@@ -1,10 +1,11 @@
 package edu.avans.hartigehap.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 @Entity
-public class HallWithWifi extends HallReservationDecorator {
+public class HallReservationOption extends HallReservationDecorator {
 
 	/**
 	 * 
@@ -14,14 +15,18 @@ public class HallWithWifi extends HallReservationDecorator {
 	@Transient
 	private HallReservation hallReservation;
 	
-	public HallWithWifi(HallReservation hallReservation)
+	@ManyToOne
+	private HallOption hallOption;
+	
+	public HallReservationOption(HallReservation hallReservation, HallOption hallOption)
 	{
 		this.hallReservation = hallReservation;
+		this.hallOption = hallOption;
 	}
 	
 	@Override
 	public Double getPrice() {
-		return 5.00 + hallReservation.getPrice();
+		return hallOption.getPrice() + hallReservation.getPrice();
 	}
 
 }
