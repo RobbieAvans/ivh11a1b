@@ -9,9 +9,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import edu.avans.hartigehap.domain.Customer;
 import edu.avans.hartigehap.domain.Owner;
-import edu.avans.hartigehap.domain.HallReservation;
 import edu.avans.hartigehap.service.testutil.AbstractTransactionRollbackTest;
 
 public class OwnerServiceTest extends AbstractTransactionRollbackTest {

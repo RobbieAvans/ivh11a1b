@@ -19,7 +19,7 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true, includeFieldNames = true)
 
-public abstract class RestervationState extends DomainObject {
+public abstract class ReservationState extends DomainObject {
 	private static final long 	serialVersionUID = 1L;
 	
 	public abstract void doAction(HallReservation hallReservation);

@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import edu.avans.hartigehap.domain.Bill;
 import edu.avans.hartigehap.domain.Owner;
 import edu.avans.hartigehap.domain.Restaurant;
 

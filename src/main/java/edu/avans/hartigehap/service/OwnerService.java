@@ -2,7 +2,7 @@ package edu.avans.hartigehap.service;
 
 import java.util.List;
 
-import edu.avans.hartigehap.domain.*;
+import edu.avans.hartigehap.domain.Owner;
 
 public interface OwnerService {
 	List<Owner> findAll();

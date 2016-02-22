@@ -8,11 +8,11 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import edu.avans.hartigehap.domain.ConcreteHallReservation;
-import edu.avans.hartigehap.domain.HallOption;
-import edu.avans.hartigehap.domain.PaidState;
 import edu.avans.hartigehap.domain.CreatedState;
+import edu.avans.hartigehap.domain.HallOption;
 import edu.avans.hartigehap.domain.HallReservation;
 import edu.avans.hartigehap.domain.HallReservationOption;
+import edu.avans.hartigehap.domain.PaidState;
 import edu.avans.hartigehap.repository.HallOptionRepository;
 import edu.avans.hartigehap.service.testutil.AbstractTransactionRollbackTest;
 

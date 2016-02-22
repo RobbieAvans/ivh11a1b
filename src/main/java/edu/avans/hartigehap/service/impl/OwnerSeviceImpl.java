@@ -1,17 +1,16 @@
 package edu.avans.hartigehap.service.impl;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.avans.hartigehap.repository.*;
-import edu.avans.hartigehap.service.*;
-import edu.avans.hartigehap.domain.*;
+import edu.avans.hartigehap.domain.Owner;
+import edu.avans.hartigehap.domain.StateException;
+import edu.avans.hartigehap.repository.OwnerRepository;
+import edu.avans.hartigehap.service.OwnerService;
 
 @Service("ownerService")
 @Repository
