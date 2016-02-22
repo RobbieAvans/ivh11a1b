@@ -3,6 +3,7 @@ package edu.avans.hartigehap.domain;
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -33,6 +34,9 @@ public class Restaurant extends DomainObjectNaturalId {
     // unidirectional one-to-one
     @OneToOne(cascade = CascadeType.ALL)
     private Menu menu = new Menu();
+    
+    @ManyToMany(mappedBy="restaurants")
+    private List<Owner> owners;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "restaurant")
     private Collection<DiningTable> diningTables = new ArrayList<>();
