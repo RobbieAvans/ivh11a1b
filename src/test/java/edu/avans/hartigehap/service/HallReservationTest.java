@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import edu.avans.hartigehap.domain.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.HallOption;
+import edu.avans.hartigehap.domain.PaidState;
+import edu.avans.hartigehap.domain.CreatedState;
 import edu.avans.hartigehap.domain.HallReservation;
 import edu.avans.hartigehap.domain.HallReservationOption;
 import edu.avans.hartigehap.repository.HallOptionRepository;
@@ -42,5 +44,20 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 		HallReservation foundReservation = foundHallReservations.get(0);
 		assertEquals("155.0", foundReservation.getPrice().toString());
 	}
+	
+	@Test
+	public void createHallStateTest(){
+		HallReservation reservation = new ConcreteHallReservation();
+		CreatedState createdState = new CreatedState();
+		createdState.doAction(reservation);
+		
+		assertEquals("Created state", reservation.getState().toString());
+		
+		PaidState paidState = new PaidState();
+		paidState.doAction(reservation);
+		assertEquals("Paid state", reservation.getState().toString());
+		
+	}
+	
 
 }
