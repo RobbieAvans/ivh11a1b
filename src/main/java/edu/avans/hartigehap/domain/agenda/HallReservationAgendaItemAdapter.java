@@ -4,7 +4,7 @@ import java.util.Date;
 
 import edu.avans.hartigehap.domain.HallReservation;
 
-public class ReservationAgendaItemAdapter implements AgendaItem {
+public class HallReservationAgendaItemAdapter implements AgendaItem {
 
 	private HallReservation reservation;
 	
@@ -13,7 +13,7 @@ public class ReservationAgendaItemAdapter implements AgendaItem {
 	 * 
 	 * @param reservation
 	 */
-	public ReservationAgendaItemAdapter(HallReservation reservation)
+	public HallReservationAgendaItemAdapter(HallReservation reservation)
 	{
 		this.reservation = reservation;
 	}

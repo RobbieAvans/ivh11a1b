@@ -1,32 +1,27 @@
 package edu.avans.hartigehap.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
+@Getter 
+@Setter
+@ToString(callSuper=true, includeFieldNames=true, of = {})
+@NoArgsConstructor
 public class HallReservationOption extends HallReservationDecorator {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
-	@Transient
-	private HallReservation hallReservation;
-	
-	@ManyToOne
-	private HallOption hallOption;
 	
 	public HallReservationOption(HallReservation hallReservation, HallOption hallOption)
 	{
-		this.hallReservation = hallReservation;
-		this.hallOption = hallOption;
+		super(hallReservation, hallOption);
 	}
-	
-	@Override
-	public Double getPrice() {
-		return hallOption.getPrice() + hallReservation.getPrice();
-	}
-
 }
