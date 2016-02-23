@@ -11,6 +11,7 @@ public class CancelledState extends ReservationState{
 	@Override
 	public void doAction(HallReservation hallReservation) {
 		hallReservation.setState(this);
+		hallReservation.NotifyAll();
 		
 	}
 	
