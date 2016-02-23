@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import edu.avans.hartigehap.domain.CancelledState;
 import edu.avans.hartigehap.domain.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.CreatedState;
 import edu.avans.hartigehap.domain.HallOption;
@@ -48,14 +49,18 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 	@Test
 	public void createHallStateTest(){
 		HallReservation reservation = new ConcreteHallReservation();
+		
 		CreatedState createdState = new CreatedState();
 		createdState.doAction(reservation);
-		
 		assertEquals("Created state", reservation.getState().toString());
 		
 		PaidState paidState = new PaidState();
 		paidState.doAction(reservation);
 		assertEquals("Paid state", reservation.getState().toString());
+		
+		CancelledState cancelledState = new CancelledState();
+		cancelledState.doAction(reservation);
+		assertEquals("Cancelled state", reservation.getState().toString());
 		
 	}
 	
