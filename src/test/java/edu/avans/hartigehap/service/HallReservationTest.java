@@ -12,6 +12,7 @@ import org.springframework.test.annotation.Rollback;
 import edu.avans.hartigehap.domain.CancelledState;
 import edu.avans.hartigehap.domain.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.CreatedState;
+import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
 import edu.avans.hartigehap.domain.HallReservation;
 import edu.avans.hartigehap.domain.HallReservationOption;
@@ -19,6 +20,7 @@ import edu.avans.hartigehap.domain.PaidState;
 import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.PartOfDayFactory;
 import edu.avans.hartigehap.repository.HallOptionRepository;
+import edu.avans.hartigehap.repository.HallRepository;
 import edu.avans.hartigehap.repository.PartOfDayRepository;
 import edu.avans.hartigehap.service.testutil.AbstractTransactionRollbackTest;
 
@@ -31,14 +33,21 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 	private HallOptionRepository hallOptionRepository;
 
 	@Autowired
+	private HallRepository hallRepository;
+	
+	@Autowired
 	private PartOfDayRepository partOfDayRepository;
 
 	@Test
 	@Rollback(false)
 	public void createHallReservationNoDecoration() {
+		// Create Hall in database
+		Hall hall = new Hall("Grote zaal", 180);
+		hallRepository.save(hall);
+		
 		// Create HallOptions in database
-		HallOption hall = new HallOption("Hall", 100.00);
-		hallOptionRepository.save(hall);
+		HallOption hallOption = new HallOption("Hall", 100.00);
+		hallOptionRepository.save(hallOption);
 
 		HallOption option = new HallOption("Wifi", 5.00);
 		hallOptionRepository.save(option);
@@ -46,17 +55,20 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 		HallOption option2 = new HallOption("DJ", 50.00);
 		hallOptionRepository.save(option2);
 
-		List<HallReservation> foundHallReservations;
-
-		HallReservation reservation = new ConcreteHallReservation(hall);
+		// Decorate reservation
+		HallReservation reservation = new ConcreteHallReservation(hallOption);
 		HallReservation hallOption1 = new HallReservationOption(reservation, option);
 		HallReservation hallOption2 = new HallReservationOption(hallOption1, option2);
-		hallReservationService.save(hallOption2);
+		
+		hall.addReservation(hallOption2);
+		hallRepository.save(hall);
 
-		foundHallReservations = hallReservationService.findAll();
+		// Get the hall from the database
+		long id = 1;
+		Hall hallFromDb = hallRepository.findOne(id);
 
-		HallReservation foundReservation = foundHallReservations.get(2);
-
+		HallReservation foundReservation = hallFromDb.getReservations().iterator().next();
+		
 		assertEquals("155.0", foundReservation.getPrice().toString());
 	}
 

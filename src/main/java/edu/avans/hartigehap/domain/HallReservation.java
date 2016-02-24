@@ -40,8 +40,11 @@ public abstract class HallReservation extends DomainObject {
     @ManyToOne
     private HallOption hallOption;
     
+    @ManyToOne
+    private Hall hall;
+    
     @Transient
-    private List<Observer> Observers  = new ArrayList<>();;
+    private List<Observer> Observers  = new ArrayList<>();
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hallReservation")
 	private List<PartOfDay> partOfDays = new ArrayList<>();

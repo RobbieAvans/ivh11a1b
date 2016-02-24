@@ -31,13 +31,12 @@ public abstract class HallReservationDecorator extends HallReservation {
 	@OneToOne
 	@Cascade({CascadeType.ALL})
 	private HallReservation hallReservation;
-	
+    
 	public HallReservationDecorator(HallReservation hallReservation, HallOption hallOption)
 	{
 		super(hallOption);
 		this.hallReservation = hallReservation;
 	}
-	
 	
 	@Transient
 	public Double getPrice()
