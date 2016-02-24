@@ -10,13 +10,11 @@ public class PartOfDayFactory {
 		}
 		if(Part.equalsIgnoreCase("MORNING")){
 	       return new Morning(date);
-	         
-	    } else if(Part.equalsIgnoreCase("NOON")){
-	       return new Noon(date);
-	         
-	    } else if(Part.equalsIgnoreCase("AFTERNOON")){
+		}else if(Part.equalsIgnoreCase("AFTERNOON")){
 	       return new Afternoon(date);
-	    }
+	    } else if(Part.equalsIgnoreCase("Evening")){
+		   return new Evening(date); 
+		}
 		return null;
 	}
 }
