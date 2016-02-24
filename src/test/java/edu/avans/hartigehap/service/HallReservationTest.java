@@ -2,18 +2,14 @@ package edu.avans.hartigehap.service;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import edu.avans.hartigehap.domain.CancelledState;
-import edu.avans.hartigehap.domain.ConcreteHallReservation;
-import edu.avans.hartigehap.domain.CreatedState;
-import edu.avans.hartigehap.domain.HallOption;
-import edu.avans.hartigehap.domain.HallReservation;
-import edu.avans.hartigehap.domain.HallReservationOption;
-import edu.avans.hartigehap.domain.PaidState;
+import edu.avans.hartigehap.domain.*;
 import edu.avans.hartigehap.repository.HallOptionRepository;
 import edu.avans.hartigehap.service.testutil.AbstractTransactionRollbackTest;
 
@@ -60,9 +56,48 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 		
 		CancelledState cancelledState = new CancelledState();
 		cancelledState.doAction(reservation);
-		assertEquals("Cancelled state", reservation.getState().toString());
-		
+		assertEquals("Cancelled state", reservation.getState().toString());	
 	}
 	
+	@Test
+	public void createPartOfDayTest(){
+		PartOfDayFactory factory = new PartOfDayFactory();
+		
+		HallOption option = new HallOption("Wifi", 5.00);
+		hallOptionRepository.save(option);
 
+		HallReservation reservation = 
+				new HallReservationOption(new ConcreteHallReservation(), option);
+		
+		Date date1 = new Date();
+		date1.setMonth(1);
+		date1.setDate(15);
+		
+		reservation.AddPartOfDay(factory.MakePartOfDay("morning", new Date()));
+		reservation.AddPartOfDay(factory.MakePartOfDay("noon",  new Date()));
+		reservation.AddPartOfDay(factory.MakePartOfDay("afternoon", date1));
+		
+		hallReservationService.save(reservation);
+		List<HallReservation> foundHallReservations;
+		foundHallReservations = hallReservationService.findAll();
+		
+		HallReservation ReservationFromDB = foundHallReservations.get(0);
+		
+		assertEquals("Morning", ReservationFromDB.getPartOfDays().get(0).getDescription());
+		assertEquals(8, ReservationFromDB.getPartOfDays().get(0).getStartTime().getHours());
+		assertEquals(13, ReservationFromDB.getPartOfDays().get(0).getEndTime().getHours());
+		assertEquals(new Date().getMonth(), ReservationFromDB.getPartOfDays().get(0).getStartTime().getMonth());
+		assertEquals(new Date().getDay(), ReservationFromDB.getPartOfDays().get(0).getStartTime().getDay());
+		
+		assertEquals("Noon", ReservationFromDB.getPartOfDays().get(1).getDescription());
+		assertEquals(13, ReservationFromDB.getPartOfDays().get(1).getStartTime().getHours());
+		assertEquals(18, ReservationFromDB.getPartOfDays().get(1).getEndTime().getHours());
+		
+		assertEquals("Afternoon", ReservationFromDB.getPartOfDays().get(2).getDescription());
+		assertEquals(18, ReservationFromDB.getPartOfDays().get(2).getStartTime().getHours());
+		assertEquals(23, ReservationFromDB.getPartOfDays().get(2).getEndTime().getHours());
+		assertEquals(1, ReservationFromDB.getPartOfDays().get(2).getStartTime().getMonth());
+		assertEquals(15, ReservationFromDB.getPartOfDays().get(2).getStartTime().getDate());
+
+	}
 }

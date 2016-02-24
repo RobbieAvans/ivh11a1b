@@ -1,8 +1,10 @@
 package edu.avans.hartigehap.domain;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -33,14 +35,23 @@ public abstract class HallReservation extends DomainObject {
     private Double				price;
     private ReservationState 	state;
     
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "hallReservation")
+    //private List<HallReservationSpecifications> hallReservationSpecifications = new ArrayList<>();
+    
     @OneToMany
     private List<Observer> Observers;
+    
+    @OneToMany
+	private List<PartOfDay> partOfDays = new ArrayList<>();
     
     public HallReservation(){
     	Observers = new ArrayList<>();
     	Observers.add(new Mailer(this));
     }
     
+    public void AddPartOfDay(PartOfDay partOfDay){
+    	partOfDays.add(partOfDay);
+    }
     
     public void NotifyAll(){
     	for (Observer observer : Observers) {
