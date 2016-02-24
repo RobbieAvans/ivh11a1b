@@ -2,7 +2,6 @@ package edu.avans.hartigehap.service;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +9,14 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
-import edu.avans.hartigehap.domain.*;
+import edu.avans.hartigehap.domain.CancelledState;
+import edu.avans.hartigehap.domain.ConcreteHallReservation;
+import edu.avans.hartigehap.domain.CreatedState;
+import edu.avans.hartigehap.domain.HallOption;
+import edu.avans.hartigehap.domain.HallReservation;
+import edu.avans.hartigehap.domain.HallReservationOption;
+import edu.avans.hartigehap.domain.PaidState;
+import edu.avans.hartigehap.domain.PartOfDayFactory;
 import edu.avans.hartigehap.repository.HallOptionRepository;
 import edu.avans.hartigehap.service.testutil.AbstractTransactionRollbackTest;
 
@@ -38,19 +44,15 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 		List<HallReservation> foundHallReservations;
 
 		HallReservation reservation = new ConcreteHallReservation(hall);
-		hallReservationService.save(reservation);
-
 		HallReservation hallOption1 = new HallReservationOption(reservation, option);
-		hallReservationService.save(hallOption1);
-		
 		HallReservation hallOption2 = new HallReservationOption(hallOption1, option2);
 		hallReservationService.save(hallOption2);
 		
 		foundHallReservations = hallReservationService.findAll();
 
-		HallReservation foundReservation = foundHallReservations.get(0);
+		HallReservation foundReservation = foundHallReservations.get(2);
 		
-		assertEquals("100.0", foundReservation.getPrice().toString());
+		assertEquals("155.0", foundReservation.getPrice().toString());
 	}
 	
 	@Test
@@ -76,9 +78,12 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 		
 		HallOption option = new HallOption("Wifi", 5.00);
 		hallOptionRepository.save(option);
+		
+		HallOption hall = new HallOption("Hall", 100.00);
+		hallOptionRepository.save(hall);
 
 		HallReservation reservation = 
-				new HallReservationOption(new ConcreteHallReservation(), option);
+				new HallReservationOption(new ConcreteHallReservation(hall), option);
 		
 		Date date1 = new Date();
 		date1.setMonth(1);

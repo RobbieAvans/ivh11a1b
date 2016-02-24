@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -26,6 +29,7 @@ public abstract class HallReservationDecorator extends HallReservation {
 	private static final long serialVersionUID = 1L;
 
 	@OneToOne
+	@Cascade({CascadeType.ALL})
 	private HallReservation hallReservation;
 	
 	public HallReservationDecorator(HallReservation hallReservation, HallOption hallOption)
