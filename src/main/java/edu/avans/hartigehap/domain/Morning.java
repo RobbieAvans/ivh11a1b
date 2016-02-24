@@ -2,6 +2,9 @@ package edu.avans.hartigehap.domain;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Morning extends PartOfDay{
 
 	private static int startTime = 8;

@@ -3,6 +3,9 @@ package edu.avans.hartigehap.domain;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Evening extends PartOfDay{
 	
 	private static int startTime = 13;

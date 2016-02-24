@@ -2,6 +2,8 @@ package edu.avans.hartigehap.domain;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+@Entity
 public class Afternoon extends PartOfDay{
 
 	private static final long serialVersionUID = 1L;

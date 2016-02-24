@@ -3,6 +3,7 @@ package edu.avans.hartigehap.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -39,14 +40,13 @@ public abstract class HallReservation extends DomainObject {
     @ManyToOne
     private HallOption hallOption;
     
-    @OneToMany
-    private List<Observer> Observers;
+    @Transient
+    private List<Observer> Observers  = new ArrayList<>();;
     
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hallReservation")
 	private List<PartOfDay> partOfDays = new ArrayList<>();
     
     public HallReservation(HallOption hallOption){
-    	Observers = new ArrayList<>();
     	Observers.add(new Mailer(this));
     	this.hallOption = hallOption;
     }
