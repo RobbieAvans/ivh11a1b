@@ -8,11 +8,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -28,15 +30,14 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true, includeFieldNames = true, of = {"description"})
+@NoArgsConstructor
 public abstract class HallReservation extends DomainObject {
 	
     private static final long 	serialVersionUID = 1L;
     private String 				description;
-    private Double				price;
     private ReservationState 	state;
     
-    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "hallReservation")
-    //private List<HallReservationSpecifications> hallReservationSpecifications = new ArrayList<>();
+    private HallOption hallOption;
     
     @OneToMany
     private List<Observer> Observers;
@@ -44,9 +45,10 @@ public abstract class HallReservation extends DomainObject {
     @OneToMany
 	private List<PartOfDay> partOfDays = new ArrayList<>();
     
-    public HallReservation(){
+    public HallReservation(HallOption hallOption){
     	Observers = new ArrayList<>();
     	Observers.add(new Mailer(this));
+    	this.hallOption = hallOption;
     }
     
     public void AddPartOfDay(PartOfDay partOfDay){
@@ -57,5 +59,9 @@ public abstract class HallReservation extends DomainObject {
     	for (Observer observer : Observers) {
 			observer.Notify();
 		}
+    }
+    @Transient
+    public Double getPrice(){
+    	return this.hallOption.getPrice();
     }
 }

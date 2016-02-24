@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 
 import edu.avans.hartigehap.domain.*;
 import edu.avans.hartigehap.repository.HallOptionRepository;
@@ -22,8 +23,12 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 	private HallOptionRepository hallOptionRepository;
 
 	@Test
+	@Rollback(false)
 	public void createHallReservationNoDecoration() {
 		// Create HallOptions in database
+		HallOption hall = new HallOption("Hall", 100.00);
+		hallOptionRepository.save(hall);
+		
 		HallOption option = new HallOption("Wifi", 5.00);
 		hallOptionRepository.save(option);
 
@@ -32,14 +37,20 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 
 		List<HallReservation> foundHallReservations;
 
-		HallReservation reservation = new HallReservationOption(
-				new HallReservationOption(new ConcreteHallReservation(), option), option2);
-
+		HallReservation reservation = new ConcreteHallReservation(hall);
 		hallReservationService.save(reservation);
+
+		HallReservation hallOption1 = new HallReservationOption(reservation, option);
+		hallReservationService.save(hallOption1);
+		
+		HallReservation hallOption2 = new HallReservationOption(hallOption1, option2);
+		hallReservationService.save(hallOption2);
+		
 		foundHallReservations = hallReservationService.findAll();
 
 		HallReservation foundReservation = foundHallReservations.get(0);
-		assertEquals("155.0", foundReservation.getPrice().toString());
+		
+		assertEquals("100.0", foundReservation.getPrice().toString());
 	}
 	
 	@Test
