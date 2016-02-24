@@ -26,5 +26,6 @@ public class ConcreteHallReservation extends HallReservation {
 	
 	public ConcreteHallReservation(HallOption hallOption) {
 		super(hallOption);
+		AddObserver(new Mailer(this));
 	}
 }

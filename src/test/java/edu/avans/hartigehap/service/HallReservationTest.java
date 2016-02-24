@@ -74,7 +74,10 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 
 	@Test
 	public void createHallStateTest() {
-		HallReservation reservation = new ConcreteHallReservation();
+		HallOption hall = new HallOption("Hall", 100.00);
+		hallOptionRepository.save(hall);
+
+		HallReservation reservation = new ConcreteHallReservation(hall);
 
 		CreatedState createdState = new CreatedState();
 		createdState.doAction(reservation);
@@ -93,14 +96,10 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 	public void createPartOfDayTest() {
 		PartOfDayFactory factory = new PartOfDayFactory();
 
-		HallOption option = new HallOption("Wifi", 5.00);
-		hallOptionRepository.save(option);
-
 		HallOption hall = new HallOption("Hall", 100.00);
 		hallOptionRepository.save(hall);
 
-		HallReservation reservation = new HallReservationOption(new ConcreteHallReservation(hall), option);
-
+		HallReservation reservation = new ConcreteHallReservation(hall);
 		Date date1 = new Date();
 		date1.setMonth(1);
 		date1.setDate(15);
@@ -121,7 +120,7 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 		List<HallReservation> foundHallReservations;
 		foundHallReservations = hallReservationService.findAll();
 
-		HallReservation ReservationFromDB = foundHallReservations.get(1);
+		HallReservation ReservationFromDB = foundHallReservations.get(0);
 
 		assertEquals("Morning", ReservationFromDB.getPartOfDays().get(0).getDescription());
 		assertEquals(8, ReservationFromDB.getPartOfDays().get(0).getStartTime().getHours());

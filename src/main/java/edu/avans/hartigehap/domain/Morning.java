@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 
 @Entity
 public class Morning extends PartOfDay{
-
+	private static final long serialVersionUID = 1L;
 	private static int startTime = 8;
 	private static int endTime = 13;
 	

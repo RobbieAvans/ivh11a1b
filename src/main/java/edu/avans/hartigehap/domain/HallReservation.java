@@ -50,8 +50,11 @@ public abstract class HallReservation extends DomainObject {
 	private List<PartOfDay> partOfDays = new ArrayList<>();
     
     public HallReservation(HallOption hallOption){
-    	Observers.add(new Mailer(this));
     	this.hallOption = hallOption;
+    }
+    
+    public void AddObserver(Observer observer){
+    	Observers.add(observer);
     }
     
     public void AddPartOfDay(PartOfDay partOfDay){

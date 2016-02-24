@@ -1,13 +1,12 @@
 package edu.avans.hartigehap.domain;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Entity;
 
 @Entity
 public class Evening extends PartOfDay{
-	
+	private static final long serialVersionUID = 1L;
 	private static int startTime = 13;
 	private static int endTime = 18;
 	
