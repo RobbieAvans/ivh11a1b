@@ -19,6 +19,7 @@ import edu.avans.hartigehap.domain.HallReservationOption;
 import edu.avans.hartigehap.domain.PaidState;
 import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.PartOfDayFactory;
+import edu.avans.hartigehap.domain.SubmittedMail;
 import edu.avans.hartigehap.repository.HallOptionRepository;
 import edu.avans.hartigehap.repository.HallRepository;
 import edu.avans.hartigehap.repository.PartOfDayRepository;
@@ -92,6 +93,13 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 		assertEquals("Cancelled state", reservation.getState().toString());
 	}
 
+	@Test
+	public void createMailTemplate() {
+		SubmittedMail submittedMail = new SubmittedMail();
+		submittedMail.prepareMail("tomgiesbergen@live.nl","Subject","Body");
+		
+	}
+	
 	@Test
 	public void createPartOfDayTest() {
 		PartOfDayFactory factory = new PartOfDayFactory();
