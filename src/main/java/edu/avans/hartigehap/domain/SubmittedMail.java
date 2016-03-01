@@ -1,11 +1,5 @@
 package edu.avans.hartigehap.domain;
 
-import java.util.Properties;
-
-import org.apache.tools.mail.MailMessage;
-
-
-
 public class SubmittedMail extends Mail{
 	
 	 void setReceiver(String strReceiver){

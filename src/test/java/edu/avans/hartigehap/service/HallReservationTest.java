@@ -3,8 +3,8 @@ package edu.avans.hartigehap.service;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
-import java.util.List;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -12,6 +12,7 @@ import org.springframework.test.annotation.Rollback;
 import edu.avans.hartigehap.domain.CancelledState;
 import edu.avans.hartigehap.domain.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.CreatedState;
+import edu.avans.hartigehap.domain.Customer;
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
 import edu.avans.hartigehap.domain.HallReservation;
@@ -20,16 +21,19 @@ import edu.avans.hartigehap.domain.PaidState;
 import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.PartOfDayFactory;
 import edu.avans.hartigehap.domain.SubmittedMail;
+import edu.avans.hartigehap.repository.CustomerRepository;
 import edu.avans.hartigehap.repository.HallOptionRepository;
 import edu.avans.hartigehap.repository.HallRepository;
+import edu.avans.hartigehap.repository.HallReservationRepository;
 import edu.avans.hartigehap.repository.PartOfDayRepository;
 import edu.avans.hartigehap.service.testutil.AbstractTransactionRollbackTest;
 
 public class HallReservationTest extends AbstractTransactionRollbackTest {
 
-	@Autowired
-	private HallReservationService hallReservationService;
 
+	@Autowired
+	private HallReservationRepository hallReservationRepository;
+	
 	@Autowired
 	private HallOptionRepository hallOptionRepository;
 
@@ -38,10 +42,13 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 	
 	@Autowired
 	private PartOfDayRepository partOfDayRepository;
+	
+	@Autowired
+	private CustomerRepository customerRepository;
 
 	@Test
 	@Rollback(false)
-	public void createHallReservationNoDecoration() {
+	public void createHallReservationWithDecoration() {
 		// Create Hall in database
 		Hall hall = new Hall("Grote zaal", 180);
 		hallRepository.save(hall);
@@ -100,6 +107,7 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	public void createPartOfDayTest() {
 		PartOfDayFactory factory = new PartOfDayFactory();
@@ -124,11 +132,8 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 		reservation.AddPartOfDay(day2);
 		reservation.AddPartOfDay(day3);
 
-		hallReservationService.save(reservation);
-		List<HallReservation> foundHallReservations;
-		foundHallReservations = hallReservationService.findAll();
-
-		HallReservation ReservationFromDB = foundHallReservations.get(0);
+		hallReservationRepository.save(reservation);
+		HallReservation ReservationFromDB = hallReservationRepository.findAll().iterator().next();
 
 		assertEquals("Morning", ReservationFromDB.getPartOfDays().get(0).getDescription());
 		assertEquals(8, ReservationFromDB.getPartOfDays().get(0).getStartTime().getHours());
@@ -146,5 +151,27 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 		assertEquals(1, ReservationFromDB.getPartOfDays().get(2).getStartTime().getMonth());
 		assertEquals(15, ReservationFromDB.getPartOfDays().get(2).getStartTime().getDate());
 
+	}
+	
+	@Test
+	public void createHallReservationCustomer() {
+
+		HallOption hallOption = new HallOption("Hall", 100.00);
+		hallOptionRepository.save(hallOption);
+		
+		byte[] photo = new byte[] { 127, -128, 0 };
+		Customer customer = new Customer("FirstName","LastName","email",new DateTime(),0,"description",photo);
+		customerRepository.save(customer);
+		
+		HallReservation reservation = new ConcreteHallReservation(hallOption);
+		reservation.setCustomer(customer);
+		
+		hallReservationRepository.save(reservation);
+		
+		long id = 5;
+		HallReservation hallReservationFromDb = hallReservationRepository.findOne(id);
+		
+		assertEquals("FirstName", hallReservationFromDb.getCustomer().getFirstName());
+		assertEquals("LastName", hallReservationFromDb.getCustomer().getLastName());
 	}
 }

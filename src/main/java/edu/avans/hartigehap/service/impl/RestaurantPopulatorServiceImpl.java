@@ -76,11 +76,11 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
 
         // create Customers
         byte[] photo = new byte[] { 127, -128, 0 };
-        createCustomer("peter", "limonade", new DateTime(), 1, "description", photo);
-        createCustomer("barry", "batsbak", new DateTime(), 1, "description", photo);
-        createCustomer("piet", "bakker", new DateTime(), 1, "description", photo);
-        createCustomer("piet", "bakker", new DateTime(), 1, "description", photo);
-        createCustomer("piet", "bakker", new DateTime(), 1, "description", photo);
+        createCustomer("peter", "limonade","peterlimonade@gmail.com", new DateTime(), 1, "description", photo);
+        createCustomer("barry", "batsbak","barrybatsbak@hotmail.com", new DateTime(), 1, "description", photo);
+        createCustomer("piet", "bakker","pietbakker@gmail.com", new DateTime(), 1, "description", photo);
+        createCustomer("piet", "bakker","pietbakker@hotmail.com", new DateTime(), 1, "description", photo);
+        createCustomer("piet", "bakker","pietbakker@live.nl", new DateTime(), 1, "description", photo);
     }
 
     private void createFoodCategory(String tag) {
@@ -110,9 +110,9 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         drinks.add(drink);
     }
 
-    private void createCustomer(String firstName, String lastName, DateTime birthDate, int partySize,
+    private void createCustomer(String firstName, String lastName, String email, DateTime birthDate, int partySize,
             String description, byte[] photo) {
-        Customer customer = new Customer(firstName, lastName, birthDate, partySize, description, photo);
+        Customer customer = new Customer(firstName, lastName, email, birthDate, partySize, description, photo);
         customers.add(customer);
         customerRepository.save(customer);
     }

@@ -38,6 +38,9 @@ public abstract class HallReservation extends DomainObject {
     private ReservationState 	state;
     
     @ManyToOne
+    private Customer customer;
+    
+    @ManyToOne
     private HallOption hallOption;
     
     @ManyToOne
@@ -63,7 +66,7 @@ public abstract class HallReservation extends DomainObject {
     
     public void NotifyAll(){
     	for (Observer observer : Observers) {
-			observer.Notify();
+			observer.notifyAllObservers();
 		}
     }
     @Transient

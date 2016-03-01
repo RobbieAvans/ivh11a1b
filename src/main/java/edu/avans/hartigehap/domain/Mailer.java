@@ -1,7 +1,5 @@
 package edu.avans.hartigehap.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +19,7 @@ public class Mailer extends Observer{
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public void Notify() {
+	public void notifyAllObservers() {
 		if(hallreservation.getState() instanceof PaidState){
 			System.out.println("Ik ben betaal, jippie! Stuur e-mail");
 		}else if(hallreservation.getState() instanceof CreatedState){

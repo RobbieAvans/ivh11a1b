@@ -62,6 +62,8 @@ public class Customer extends DomainObject {
     private int partySize;
 
     private String description;
+    
+    private String email;
 
     @Basic(fetch = FetchType.LAZY)
     @Lob
@@ -79,10 +81,11 @@ public class Customer extends DomainObject {
     private Collection<Bill> bills = new ArrayList<Bill>();
 
     // TODO not complete (bills)
-    public Customer(String firstName, String lastName, DateTime birthDate, int partySize, String description,
+    public Customer(String firstName, String lastName, String email, DateTime birthDate, int partySize, String description,
             byte[] photo) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
         this.birthDate = birthDate;
         this.partySize = partySize;
         this.description = description;
@@ -96,6 +99,7 @@ public class Customer extends DomainObject {
         lastName = customer.lastName;
         birthDate = customer.birthDate;
         description = customer.description;
+        email = customer.email;
         // hack
         // the "if" is a hack
         // when you change a customer without changing the photo, the customer

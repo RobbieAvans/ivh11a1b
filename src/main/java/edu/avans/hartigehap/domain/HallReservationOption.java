@@ -25,5 +25,6 @@ public class HallReservationOption extends HallReservationDecorator {
 		super(hallReservation, hallOption);
 		setObservers(hallReservation.getObservers());
 		setPartOfDays(hallReservation.getPartOfDays());
+		setCustomer(hallReservation.getCustomer());
 	}
 }
