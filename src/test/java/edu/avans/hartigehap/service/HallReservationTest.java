@@ -120,9 +120,9 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 		date1.setMonth(1);
 		date1.setDate(15);
 
-		PartOfDay day1 = factory.MakePartOfDay("morning", new Date());
-		PartOfDay day2 = factory.MakePartOfDay("Evening", new Date());
-		PartOfDay day3 = factory.MakePartOfDay("afternoon", date1);
+		PartOfDay day1 = factory.makePartOfDay("morning", new Date());
+		PartOfDay day2 = factory.makePartOfDay("Evening", new Date());
+		PartOfDay day3 = factory.makePartOfDay("afternoon", date1);
 
 		partOfDayRepository.save(day1);
 		partOfDayRepository.save(day2);
