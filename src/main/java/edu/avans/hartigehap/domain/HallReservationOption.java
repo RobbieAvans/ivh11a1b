@@ -12,16 +12,15 @@ import lombok.ToString;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
-@Getter 
+@Getter
 @Setter
-@ToString(callSuper=true, includeFieldNames=true, of = {})
+@ToString(callSuper = true, includeFieldNames = true, of = {})
 @NoArgsConstructor
 public class HallReservationOption extends HallReservationDecorator {
 
 	private static final long serialVersionUID = 1L;
-	
-	public HallReservationOption(HallReservation hallReservation, HallOption hallOption)
-	{
+
+	public HallReservationOption(HallReservation hallReservation, HallOption hallOption) {
 		super(hallReservation, hallOption);
 		setObservers(hallReservation.getObservers());
 		setPartOfDays(hallReservation.getPartOfDays());

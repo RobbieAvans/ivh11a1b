@@ -9,8 +9,8 @@ public class Afternoon extends PartOfDay {
 
 	private static final long serialVersionUID = 1L;
 
-	private static int startTimeHour = 18;
-	private static int endTimeHour = 23;
+	private static final int startTimeHour = 18;
+	private static final int endTimeHour = 23;
 
 	@SuppressWarnings("deprecation")
 	public Afternoon(Date date) {

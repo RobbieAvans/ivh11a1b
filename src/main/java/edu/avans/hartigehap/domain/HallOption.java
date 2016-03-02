@@ -13,9 +13,8 @@ public class HallOption extends DomainObject {
 
 	private String description;
 	private Double price;
-	
-	public HallOption(String description, Double price)
-	{
+
+	public HallOption(String description, Double price) {
 		this.description = description;
 		this.price = price;
 	}
