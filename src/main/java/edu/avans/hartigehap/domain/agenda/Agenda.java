@@ -8,12 +8,11 @@ public class Agenda {
 	 * Agenda Items
 	 */
 	private ArrayList<AgendaItem> items;
-	
-	public Agenda()
-	{
+
+	public Agenda() {
 		this.items = new ArrayList<AgendaItem>();
 	}
-	
+
 	/**
 	 * Add an item to the agenda
 	 * 
@@ -22,21 +21,19 @@ public class Agenda {
 	 * @param item
 	 * @return Agenda
 	 */
-	public Agenda addItem(AgendaItem item)
-	{
+	public Agenda addItem(AgendaItem item) {
 		items.add(item);
-		
+
 		// Return this for chaining
 		return this;
 	}
-	
+
 	/**
 	 * Create an iterator for the agenda
 	 * 
 	 * @return Iterator
 	 */
-	public Iterator createIterator()
-	{
+	public Iterator createIterator() {
 		return new AgendaIterator(items.toArray(new AgendaItem[items.size()]));
 	}
 }

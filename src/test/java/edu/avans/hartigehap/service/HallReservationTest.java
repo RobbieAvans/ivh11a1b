@@ -120,17 +120,17 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 		date1.setMonth(1);
 		date1.setDate(15);
 
-		PartOfDay day1 = factory.MakePartOfDay("morning", new Date());
-		PartOfDay day2 = factory.MakePartOfDay("Evening", new Date());
-		PartOfDay day3 = factory.MakePartOfDay("afternoon", date1);
+		PartOfDay day1 = factory.makePartOfDay("morning", new Date());
+		PartOfDay day2 = factory.makePartOfDay("Evening", new Date());
+		PartOfDay day3 = factory.makePartOfDay("afternoon", date1);
 
 		partOfDayRepository.save(day1);
 		partOfDayRepository.save(day2);
 		partOfDayRepository.save(day3);
 
-		reservation.AddPartOfDay(day1);
-		reservation.AddPartOfDay(day2);
-		reservation.AddPartOfDay(day3);
+		reservation.addPartOfDay(day1);
+		reservation.addPartOfDay(day2);
+		reservation.addPartOfDay(day3);
 
 		hallReservationRepository.save(reservation);
 		HallReservation ReservationFromDB = hallReservationRepository.findAll().iterator().next();
@@ -150,7 +150,6 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 		assertEquals(23, ReservationFromDB.getPartOfDays().get(2).getEndTime().getHours());
 		assertEquals(1, ReservationFromDB.getPartOfDays().get(2).getStartTime().getMonth());
 		assertEquals(15, ReservationFromDB.getPartOfDays().get(2).getStartTime().getDate());
-
 	}
 	
 	@Test

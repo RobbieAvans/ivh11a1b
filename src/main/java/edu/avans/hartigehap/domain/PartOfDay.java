@@ -11,24 +11,18 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public abstract class PartOfDay extends DomainObject{
+public abstract class PartOfDay extends DomainObject {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	private Date StartTime;
-	private Date EndTime;
-	private String Description;
-	
-	//abstract void getTime();
-	
+
+	private Date startTime;
+	private Date endTime;
+	private String description;
+
 	@ManyToOne()
 	private HallReservation hallReservation;
-	
-	public PartOfDay(Date date){
-		
-	}
-	
-	
+
+
 }

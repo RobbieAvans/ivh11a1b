@@ -5,26 +5,25 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 @Entity
-public class Morning extends PartOfDay{
+public class Morning extends PartOfDay {
 	private static final long serialVersionUID = 1L;
-	private static int startTime = 8;
-	private static int endTime = 13;
-	
+	private static final int STARTTIMEHOUR = 8;
+	private static final int ENDTIMEHOUR = 13;
+
 	@SuppressWarnings("deprecation")
 	public Morning(Date date) {
-		super(date);
-		
+
 		date.setMinutes(0);
 		date.setSeconds(0);
-		
-		Date StartTime = (Date) date.clone();
-		Date EndTime = (Date) date.clone();
-		
-		StartTime.setHours(startTime);
-		EndTime.setHours(endTime);
-		
-		setStartTime(StartTime);
-		setEndTime(EndTime);
+
+		Date startTime = (Date) date.clone();
+		Date endTime = (Date) date.clone();
+
+		startTime.setHours(STARTTIMEHOUR);
+		endTime.setHours(ENDTIMEHOUR);
+
+		setStartTime(startTime);
+		setEndTime(endTime);
 		setDescription("Morning");
 	}
 

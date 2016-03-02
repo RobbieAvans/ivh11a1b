@@ -3,33 +3,30 @@ package edu.avans.hartigehap.domain;
 import java.util.Date;
 
 import javax.persistence.Entity;
+
 @Entity
-public class Afternoon extends PartOfDay{
+public class Afternoon extends PartOfDay {
 
 	private static final long serialVersionUID = 1L;
 
-	private static int startTime = 18;
-	private static int endTime = 23;
-	
+	private static final int STARTTIMEHOUR = 18;
+	private static final int ENDTIMEHOUR = 23;
+
 	@SuppressWarnings("deprecation")
 	public Afternoon(Date date) {
-		
-		super(date);
-		
+
 		date.setMinutes(0);
 		date.setSeconds(0);
-		
-		Date StartTime = (Date) date.clone();
-		Date EndTime = (Date) date.clone();
-		
-		StartTime.setHours(startTime);
-		EndTime.setHours(endTime);
-		
-		setStartTime(StartTime);
-		setEndTime(EndTime);
+
+		Date startTime = (Date) date.clone();
+		Date endTime = (Date) date.clone();
+
+		startTime.setHours(STARTTIMEHOUR);
+		endTime.setHours(ENDTIMEHOUR);
+
+		setStartTime(startTime);
+		setEndTime(endTime);
 		setDescription("Afternoon");
 	}
-
-	
 
 }

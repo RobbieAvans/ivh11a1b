@@ -3,17 +3,17 @@ package edu.avans.hartigehap.domain;
 import java.util.Date;
 
 public class PartOfDayFactory {
-	
-	public PartOfDay MakePartOfDay(String Part, Date date){
-		if(Part == "" || date == null){
+
+	public PartOfDay makePartOfDay(String part, Date date) {
+		if (part == "" || date == null) {
 			return null;
 		}
-		if(Part.equalsIgnoreCase("MORNING")){
-	       return new Morning(date);
-		}else if(Part.equalsIgnoreCase("AFTERNOON")){
-	       return new Afternoon(date);
-	    } else if(Part.equalsIgnoreCase("Evening")){
-		   return new Evening(date); 
+		if ("MORNING".equalsIgnoreCase(part)) {
+			return new Morning(date);
+		} else if ("AFTERNOON".equalsIgnoreCase(part)) {
+			return new Afternoon(date);
+		} else if ("Evening".equalsIgnoreCase(part)) {
+			return new Evening(date);
 		}
 		return null;
 	}

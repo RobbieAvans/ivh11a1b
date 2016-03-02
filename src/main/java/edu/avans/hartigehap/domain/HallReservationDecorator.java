@@ -21,26 +21,24 @@ import lombok.ToString;
  */
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
-@Getter 
+@Getter
 @Setter
 @NoArgsConstructor
-@ToString(callSuper=true, includeFieldNames=true)
+@ToString(callSuper = true, includeFieldNames = true)
 public abstract class HallReservationDecorator extends HallReservation {
 	private static final long serialVersionUID = 1L;
 
 	@OneToOne
-	@Cascade({CascadeType.ALL})
+	@Cascade({ CascadeType.ALL })
 	private HallReservation hallReservation;
-    
-	public HallReservationDecorator(HallReservation hallReservation, HallOption hallOption)
-	{
+
+	public HallReservationDecorator(HallReservation hallReservation, HallOption hallOption) {
 		super(hallOption);
 		this.hallReservation = hallReservation;
 	}
-	
+
 	@Transient
-	public Double getPrice()
-	{
+	public Double getPrice() {
 		return getHallOption().getPrice() + hallReservation.getPrice();
 	}
 }
