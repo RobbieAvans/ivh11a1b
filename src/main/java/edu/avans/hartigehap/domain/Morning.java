@@ -7,8 +7,8 @@ import javax.persistence.Entity;
 @Entity
 public class Morning extends PartOfDay {
 	private static final long serialVersionUID = 1L;
-	private static final int startTimeHour = 8;
-	private static final int endTimeHour = 13;
+	private static final int STARTTIMEHOUR = 8;
+	private static final int ENDTIMEHOUR = 13;
 
 	@SuppressWarnings("deprecation")
 	public Morning(Date date) {
@@ -19,8 +19,8 @@ public class Morning extends PartOfDay {
 		Date startTime = (Date) date.clone();
 		Date endTime = (Date) date.clone();
 
-		startTime.setHours(startTimeHour);
-		endTime.setHours(endTimeHour);
+		startTime.setHours(STARTTIMEHOUR);
+		endTime.setHours(ENDTIMEHOUR);
 
 		setStartTime(startTime);
 		setEndTime(endTime);

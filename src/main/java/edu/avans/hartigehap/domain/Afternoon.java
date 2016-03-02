@@ -9,8 +9,8 @@ public class Afternoon extends PartOfDay {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final int startTimeHour = 18;
-	private static final int endTimeHour = 23;
+	private static final int STARTTIMEHOUR = 18;
+	private static final int ENDTIMEHOUR = 23;
 
 	@SuppressWarnings("deprecation")
 	public Afternoon(Date date) {
@@ -21,8 +21,8 @@ public class Afternoon extends PartOfDay {
 		Date startTime = (Date) date.clone();
 		Date endTime = (Date) date.clone();
 
-		startTime.setHours(startTimeHour);
-		endTime.setHours(endTimeHour);
+		startTime.setHours(STARTTIMEHOUR);
+		endTime.setHours(ENDTIMEHOUR);
 
 		setStartTime(startTime);
 		setEndTime(endTime);
