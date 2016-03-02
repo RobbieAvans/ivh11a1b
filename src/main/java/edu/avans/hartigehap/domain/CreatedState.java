@@ -11,7 +11,7 @@ public class CreatedState extends ReservationState {
 
 	public void doAction(HallReservation hallReservation){
 		hallReservation.setState(this);
-		hallReservation.NotifyAll();
+		hallReservation.notifyAllObservers();
 	}
 	
 	public String toString(){

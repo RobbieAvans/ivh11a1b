@@ -64,7 +64,7 @@ public abstract class HallReservation extends DomainObject {
     	partOfDays.add(partOfDay);
     }
     
-    public void NotifyAll(){
+    public void notifyAllObservers(){
     	for (Observer observer : Observers) {
 			observer.notifyAllObservers();
 		}
