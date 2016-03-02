@@ -120,9 +120,9 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 		date1.setMonth(1);
 		date1.setDate(15);
 
-		PartOfDay day1 = factory.MakePartOfDay("morning", new Date());
-		PartOfDay day2 = factory.MakePartOfDay("Evening", new Date());
-		PartOfDay day3 = factory.MakePartOfDay("afternoon", date1);
+		PartOfDay day1 = factory.makePartOfDay("morning", new Date());
+		PartOfDay day2 = factory.makePartOfDay("Evening", new Date());
+		PartOfDay day3 = factory.makePartOfDay("afternoon", date1);
 
 		partOfDayRepository.save(day1);
 		partOfDayRepository.save(day2);
@@ -136,21 +136,20 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 		HallReservation ReservationFromDB = hallReservationRepository.findAll().iterator().next();
 
 		assertEquals("Morning", ReservationFromDB.getPartOfDays().get(0).getDescription());
-		assertEquals(8, ReservationFromDB.getPartOfDays().get(0).getStartTimeHour().getHours());
-		assertEquals(13, ReservationFromDB.getPartOfDays().get(0).getEndTimeHour().getHours());
-		assertEquals(new Date().getMonth(), ReservationFromDB.getPartOfDays().get(0).getStartTimeHour().getMonth());
-		assertEquals(new Date().getDay(), ReservationFromDB.getPartOfDays().get(0).getStartTimeHour().getDay());
+		assertEquals(8, ReservationFromDB.getPartOfDays().get(0).getStartTime().getHours());
+		assertEquals(13, ReservationFromDB.getPartOfDays().get(0).getEndTime().getHours());
+		assertEquals(new Date().getMonth(), ReservationFromDB.getPartOfDays().get(0).getStartTime().getMonth());
+		assertEquals(new Date().getDay(), ReservationFromDB.getPartOfDays().get(0).getStartTime().getDay());
 
 		assertEquals("Evening", ReservationFromDB.getPartOfDays().get(1).getDescription());
-		assertEquals(13, ReservationFromDB.getPartOfDays().get(1).getStartTimeHour().getHours());
-		assertEquals(18, ReservationFromDB.getPartOfDays().get(1).getEndTimeHour().getHours());
+		assertEquals(13, ReservationFromDB.getPartOfDays().get(1).getStartTime().getHours());
+		assertEquals(18, ReservationFromDB.getPartOfDays().get(1).getEndTime().getHours());
 
 		assertEquals("Afternoon", ReservationFromDB.getPartOfDays().get(2).getDescription());
-		assertEquals(18, ReservationFromDB.getPartOfDays().get(2).getStartTimeHour().getHours());
-		assertEquals(23, ReservationFromDB.getPartOfDays().get(2).getEndTimeHour().getHours());
-		assertEquals(1, ReservationFromDB.getPartOfDays().get(2).getStartTimeHour().getMonth());
-		assertEquals(15, ReservationFromDB.getPartOfDays().get(2).getStartTimeHour().getDate());
-
+		assertEquals(18, ReservationFromDB.getPartOfDays().get(2).getStartTime().getHours());
+		assertEquals(23, ReservationFromDB.getPartOfDays().get(2).getEndTime().getHours());
+		assertEquals(1, ReservationFromDB.getPartOfDays().get(2).getStartTime().getMonth());
+		assertEquals(15, ReservationFromDB.getPartOfDays().get(2).getStartTime().getDate());
 	}
 	
 	@Test
