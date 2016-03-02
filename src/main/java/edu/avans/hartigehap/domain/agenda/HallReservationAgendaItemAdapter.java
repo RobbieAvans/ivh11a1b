@@ -7,17 +7,16 @@ import edu.avans.hartigehap.domain.HallReservation;
 public class HallReservationAgendaItemAdapter implements AgendaItem {
 
 	private HallReservation reservation;
-	
+
 	/**
 	 * Receive a HallReservation and translate it to an AgendaItem
 	 * 
 	 * @param reservation
 	 */
-	public HallReservationAgendaItemAdapter(HallReservation reservation)
-	{
+	public HallReservationAgendaItemAdapter(HallReservation reservation) {
 		this.reservation = reservation;
 	}
-	
+
 	@Override
 	public Date getStartDate() {
 		// TODO
