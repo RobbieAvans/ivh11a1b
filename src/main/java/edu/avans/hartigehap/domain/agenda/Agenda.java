@@ -1,14 +1,13 @@
 package edu.avans.hartigehap.domain.agenda;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Agenda {
 
 	/**
 	 * Agenda Items
 	 */
-	private List<AgendaItem> items;
+	private ArrayList<AgendaItem> items;
 
 	public Agenda() {
 		this.items = new ArrayList<AgendaItem>();
