@@ -7,29 +7,23 @@ import javax.persistence.Entity;
 @Entity
 public class Evening extends PartOfDay {
 	private static final long serialVersionUID = 1L;
-	private static int startTime = 13;
-	private static int endTime = 18;
+	private static int startTimeHoud = 13;
+	private static int endTimeHour = 18;
 
 	@SuppressWarnings("deprecation")
 	public Evening(Date date) {
-		super(date);
 
 		date.setMinutes(0);
 		date.setSeconds(0);
 
-		Date StartTime = (Date) date.clone();
-		Date EndTime = (Date) date.clone();
+		Date startTime = (Date) date.clone();
+		Date endTime = (Date) date.clone();
 
-		StartTime.setHours(startTime);
-		EndTime.setHours(endTime);
+		startTime.setHours(startTimeHoud);
+		endTime.setHours(endTimeHour);
 
-		setStartTime(StartTime);
-		setEndTime(EndTime);
+		setStartTime(startTime);
+		setEndTime(endTime);
 		setDescription("Evening");
 	}
-
-	// public Noon(Date StartTime, Date EndTime, String Description) {
-	// super(StartTime, EndTime, Description);
-	// }
-
 }

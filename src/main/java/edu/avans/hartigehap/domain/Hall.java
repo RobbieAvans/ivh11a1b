@@ -17,23 +17,21 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Hall extends DomainObject {
 	private static final long serialVersionUID = 1L;
-	
+
 	private int numberOfSeats;
 	private String description;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hall")
 	private Collection<HallReservation> reservations = new ArrayList<HallReservation>();
-	
-	public Hall(String description, int numberOfSeats)
-	{
+
+	public Hall(String description, int numberOfSeats) {
 		this.description = description;
 		this.numberOfSeats = numberOfSeats;
 	}
-	
-	public Hall addReservation(HallReservation hallReservation)
-	{
+
+	public Hall addReservation(HallReservation hallReservation) {
 		reservations.add(hallReservation);
-		
+
 		return this;
 	}
 }

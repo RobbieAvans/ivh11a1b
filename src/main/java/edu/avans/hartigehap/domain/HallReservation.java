@@ -47,7 +47,7 @@ public abstract class HallReservation extends DomainObject {
     private Hall hall;
     
     @Transient
-    private List<Observer> Observers  = new ArrayList<>();
+    private List<Observer> observers  = new ArrayList<>();
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hallReservation")
 	private List<PartOfDay> partOfDays = new ArrayList<>();
@@ -56,16 +56,16 @@ public abstract class HallReservation extends DomainObject {
     	this.hallOption = hallOption;
     }
     
-    public void AddObserver(Observer observer){
-    	Observers.add(observer);
+    public void addObserver(Observer observer){
+    	observers.add(observer);
     }
     
-    public void AddPartOfDay(PartOfDay partOfDay){
+    public void addPartOfDay(PartOfDay partOfDay){
     	partOfDays.add(partOfDay);
     }
     
     public void notifyAllObservers(){
-    	for (Observer observer : Observers) {
+    	for (Observer observer : observers) {
 			observer.notifyAllObservers();
 		}
     }

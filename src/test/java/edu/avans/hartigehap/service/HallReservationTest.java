@@ -128,9 +128,9 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 		partOfDayRepository.save(day2);
 		partOfDayRepository.save(day3);
 
-		reservation.AddPartOfDay(day1);
-		reservation.AddPartOfDay(day2);
-		reservation.AddPartOfDay(day3);
+		reservation.addPartOfDay(day1);
+		reservation.addPartOfDay(day2);
+		reservation.addPartOfDay(day3);
 
 		hallReservationRepository.save(reservation);
 		HallReservation ReservationFromDB = hallReservationRepository.findAll().iterator().next();
