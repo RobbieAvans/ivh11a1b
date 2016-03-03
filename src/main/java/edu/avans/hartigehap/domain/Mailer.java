@@ -6,16 +6,21 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Mailer extends Observer {
-	private HallReservation hallreservation;
+	private static HallReservation hallreservation;
 
 	private static final long serialVersionUID = 1L;
+	private static Mailer instance = new Mailer(hallreservation);
 
 	/**
 	 * 
 	 */
-	public Mailer(HallReservation hallreservation) {
-		this.hallreservation = hallreservation;
+	private Mailer(HallReservation hallres) {
+		hallreservation = hallres;
 	}
+	
+	public static Mailer getInstance(){
+	      return instance;
+	   }
 
 	@Override
 	public void notifyAllObservers() {
