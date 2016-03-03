@@ -66,7 +66,7 @@ public abstract class HallReservation extends DomainObject {
     
     public void notifyAllObservers(){
     	for (Observer observer : observers) {
-			observer.notifyAllObservers();
+			observer.notifyAllObservers(this);
 		}
     }
     @Transient

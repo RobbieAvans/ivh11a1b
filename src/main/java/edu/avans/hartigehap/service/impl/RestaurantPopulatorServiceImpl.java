@@ -14,10 +14,12 @@ import edu.avans.hartigehap.domain.Customer;
 import edu.avans.hartigehap.domain.DiningTable;
 import edu.avans.hartigehap.domain.Drink;
 import edu.avans.hartigehap.domain.FoodCategory;
+import edu.avans.hartigehap.domain.HallOption;
 import edu.avans.hartigehap.domain.Meal;
 import edu.avans.hartigehap.domain.Restaurant;
 import edu.avans.hartigehap.repository.CustomerRepository;
 import edu.avans.hartigehap.repository.FoodCategoryRepository;
+import edu.avans.hartigehap.repository.HallOptionRepository;
 import edu.avans.hartigehap.repository.MenuItemRepository;
 import edu.avans.hartigehap.repository.RestaurantRepository;
 import edu.avans.hartigehap.service.RestaurantPopulatorService;
@@ -35,11 +37,14 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
     private MenuItemRepository menuItemRepository;
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private HallOptionRepository hallOptionRepository;
 
     private List<Meal> meals = new ArrayList<>();
     private List<FoodCategory> foodCats = new ArrayList<>();
     private List<Drink> drinks = new ArrayList<>();
     private List<Customer> customers = new ArrayList<>();
+    private List<HallOption> hallOptions = new ArrayList<>();
 
     /**
      * menu items, food categories and customers are common to all restaurants
@@ -81,8 +86,20 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         createCustomer("piet", "bakker","pietbakker@gmail.com", new DateTime(), 1, "description", photo);
         createCustomer("piet", "bakker","pietbakker@hotmail.com", new DateTime(), 1, "description", photo);
         createCustomer("piet", "bakker","pietbakker@live.nl", new DateTime(), 1, "description", photo);
+        
+        createHallOptions("Hall", 100.00);
+        System.out.println("hall");
+        createHallOptions("Wifi", 5.00);
+        createHallOptions("DJ", 50.00);
     }
 
+    private void createHallOptions(String description, Double price){
+    	HallOption hallOption = new HallOption(description, price);
+    	hallOption = hallOptionRepository.save(hallOption);
+    	hallOptions.add(hallOption);
+    }
+    
+    
     private void createFoodCategory(String tag) {
         FoodCategory foodCategory = new FoodCategory(tag);
         foodCategory = foodCategoryRepository.save(foodCategory);

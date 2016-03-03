@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 public abstract class Observer extends DomainObject{
 	private static final long serialVersionUID = 1L;
-	public abstract void notifyAllObservers();
+	public abstract void notifyAllObservers(HallReservation hallReservation);
 }
