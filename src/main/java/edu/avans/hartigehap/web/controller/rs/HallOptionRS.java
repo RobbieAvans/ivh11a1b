@@ -16,8 +16,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import edu.avans.hartigehap.domain.HallOption;
 import edu.avans.hartigehap.service.HallOptionService;
+import lombok.extern.slf4j.Slf4j;
 
 // http://briansjavablog.blogspot.nl/2012/08/rest-services-with-spring.html
+@Slf4j
 @Controller
 public class HallOptionRS extends BaseRS {
 
@@ -52,6 +54,7 @@ public class HallOptionRS extends BaseRS {
 
 			return createSuccessResponse(savedHallOption);
 		} catch (Exception e) {
+			log.debug(e.getMessage());
 			return createErrorResponse("Error when creating a new hallOption");
 		}
 	}

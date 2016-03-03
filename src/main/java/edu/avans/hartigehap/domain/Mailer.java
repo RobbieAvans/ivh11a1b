@@ -2,7 +2,9 @@ package edu.avans.hartigehap.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Getter
 @Setter
 public class Mailer extends Observer {
@@ -16,13 +18,13 @@ public class Mailer extends Observer {
 	@Override
 	public void notifyAllObservers(HallReservation hallReservation) {
 		if (hallReservation.getState() instanceof PaidState) {
-			System.out.println("Ik ben betaal, jippie! Stuur e-mail");
+			log.debug("Ik ben betaal, jippie! Stuur e-mail");
 		} else if (hallReservation.getState() instanceof CreatedState) {
 			SubmittedMail submittedMail = new SubmittedMail();
 			submittedMail.prepareMail("tomgiesbergen@live.nl", "Reservering aangemaakt",
 					"Beste klant, de reservering is aangemaakt. We zien u graag verschijnen.");
 		} else {
-			System.out.println(hallReservation.getState().toString() + " is mijn status.");
+			log.debug(hallReservation.getState().toString() + " is mijn status.");
 		}
 
 	}

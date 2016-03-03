@@ -16,7 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.service.HallService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 public class HallRS extends BaseRS {
 
@@ -58,6 +60,7 @@ public class HallRS extends BaseRS {
             
             return createSuccessResponse(savedHall);
         } catch (Exception e) {
+        	log.debug(e.getMessage());
             return createErrorResponse("Error when creating a new hall");
         }
     }
