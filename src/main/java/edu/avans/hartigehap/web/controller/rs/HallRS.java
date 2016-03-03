@@ -1,7 +1,5 @@
 package edu.avans.hartigehap.web.controller.rs;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,25 +13,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
 
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.service.HallService;
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@Slf4j
-public class HallRS {
+public class HallRS extends BaseRS {
 
     @Autowired
     private HallService hallService;
-    
-    @Autowired
-    private View jsonView;
-    
-    private static final String DATA_FIELD = "data";
-    private static final String ERROR_FIELD = "error";
-    
+
     /**
      * Tested with curl:
      * curl -H "Content-Type: application/json" -X POST -d 
@@ -41,7 +30,14 @@ public class HallRS {
      * 
      * Response:
      * 
-     * {"data":{"@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test","reservations":[]}}
+     * {
+     * 		"success": {
+     * 			true
+     * 		},
+     * 		"data": {
+     * 			"@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test","reservations":[]
+     * 		}
+     * }
      * 
      * 
      * @param hall
@@ -59,11 +55,10 @@ public class HallRS {
             httpResponse.setStatus(HttpStatus.CREATED.value());
             httpResponse.setHeader("Location",
                     httpRequest.getContextPath() + "/hall/" + savedHall.getId());
-            return new ModelAndView(jsonView, DATA_FIELD, savedHall);
+            
+            return createSuccessResponse(savedHall);
         } catch (Exception e) {
-            log.error("Error creating new restaurant", e);
-            String message = "Error creating new restaurant. [%1$s]";
-            return createErrorResponse(String.format(message, e.toString()));
+            return createErrorResponse("Error when creating a new hall");
         }
     }
     
@@ -74,15 +69,22 @@ public class HallRS {
      * 
      * Response:
      * 
-     * [{"@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test","reservations":[]}]
+     * {
+     * 		"success": {
+     * 			true
+     * 		},
+     * 		"data": {
+     * 			"@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test","reservations":[]
+     * 		}
+     * }
      * 
      * @return
      */
     @RequestMapping(value = RSConstants.URL_PREFIX
             + "/hall", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<Hall> allHalls() {
-        return hallService.findAll();
+    public ModelAndView allHalls() {
+    	return createSuccessResponse(hallService.findAll());
     }
     
     /**
@@ -92,7 +94,14 @@ public class HallRS {
      * 
      * Response:
      * 
-     * {"@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test","reservations":[]}
+     * {
+     * 		"success": {
+     * 			true
+     * 		},
+     * 		"data": {
+     * 			"@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test","reservations":[]
+     * 		}
+     * }
      * 
      * Test with not existing hall
      * 
@@ -100,7 +109,14 @@ public class HallRS {
      * 
      * Response:
      * 
-     * Empty/nothing ???!!!
+     * {
+     * 		"success": {
+     * 			false
+     * 		},
+     * 		"data": {
+     * 			"Hall with id 2 was not found"
+     * 		}
+     * }
      * 
      * @param hallId
      * @return
@@ -108,8 +124,14 @@ public class HallRS {
     @RequestMapping(value = RSConstants.URL_PREFIX
             + "/hall/{hallId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Hall getHall(@PathVariable long hallId) {
-        return hallService.findById(hallId);
+    public ModelAndView getHall(@PathVariable long hallId) {
+    	Hall hall = hallService.findById(hallId);
+    	
+    	if (hall != null) {
+    		return createSuccessResponse(hall);
+    	}
+    	
+    	return createErrorResponse("Hall with id " + hallId + " was not found");
     }
     
     /**
@@ -121,7 +143,14 @@ public class HallRS {
      * 
      * Response:
      * 
-     * {"data":{"@id":1,"id":1,"version":0,"numberOfSeats":30,"description":"api_edit_test","reservations":[]}}
+     * {
+     * 		"success": {
+     * 			true
+     * 		},
+     * 		"data": {
+     * 			"@id":1,"id":1,"version":0,"numberOfSeats":30,"description":"api_edit_test","reservations":[]
+     * 		}
+     * }
      * 
      * Test with not existing hall
      * 
@@ -131,7 +160,14 @@ public class HallRS {
      * 
      * Response:
      * 
-     * {"error":"Hall doesn't exists."}
+     * {
+     * 		"success": {
+     * 			false
+     * 		},
+     * 		"data": {
+     * 			"Hall doesn't exists"
+     * 		}
+     * }
      * 
      * @param hall
      * @param hallId
@@ -149,10 +185,10 @@ public class HallRS {
         	
         	httpResponse.setStatus(HttpStatus.OK.value());  
         	
-        	return new ModelAndView(jsonView, DATA_FIELD, hall);
+        	return createSuccessResponse(hall);
     	}
     	
-    	return createErrorResponse("Hall doesn't exists.");
+    	return createErrorResponse("Hall doesn't exists");
     }
     
     /**
@@ -162,7 +198,7 @@ public class HallRS {
      * 
      * Response:
      * 
-     * {"data":1}
+     * {"success":true,"data":1}
      * 
      * Test with not existing hall
      * 
@@ -170,7 +206,7 @@ public class HallRS {
      * 
      * Response:
      * 
-     * {"data":2} Is this a problem??
+     * {"success":true,"data":2} Is this a problem??
      * 
      * @param hallId
      * @param httpResponse
@@ -184,10 +220,6 @@ public class HallRS {
         
         httpResponse.setStatus(HttpStatus.OK.value());  
         
-        return new ModelAndView(jsonView, DATA_FIELD, hallId);
-    }
-    
-    private ModelAndView createErrorResponse(String sMessage) {
-        return new ModelAndView(jsonView, ERROR_FIELD, sMessage);
+        return createSuccessResponse(hallId);
     }
 }
