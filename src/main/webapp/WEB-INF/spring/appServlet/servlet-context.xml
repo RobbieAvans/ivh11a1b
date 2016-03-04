@@ -27,7 +27,7 @@
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up 
 		static resources in the ${webappRoot}/resources directory -->
 	<!-- TODO too many locations?? -->
-	<resources mapping="/resources/**" location="/resources/, /images/, /styles/, /, classpath:/META-INF/web-resources/" />
+	<resources mapping="/resources/**" location="/resources/, /images/,/static/, /styles/, /, classpath:/META-INF/web-resources/" />
 
 	<default-servlet-handler />
 
