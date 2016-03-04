@@ -10,17 +10,22 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity
-// optional
-@Table(name = "RESERVATIONSTATE")
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
+
 @Getter
 @Setter
-@ToString(callSuper = true, includeFieldNames = true)
-
 public abstract class ReservationState extends DomainObject {
 	private static final long serialVersionUID = 1L;
-
-	public abstract void doAction(HallReservation hallReservation);
+	private static String state;
+	
+	public abstract String strMailBody();
+	public abstract String strMailSubject();
+	
+	
+	public abstract void submitReservation();
+	public abstract void payReservation();
+	public abstract void cancelReservation();
+	public String getState() {
+		return state;
+	}
 
 }

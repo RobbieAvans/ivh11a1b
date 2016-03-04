@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -33,9 +35,21 @@ import lombok.ToString;
 @NoArgsConstructor
 public abstract class HallReservation extends DomainObject {
 	
-    private static final long 	serialVersionUID = 1L;
+	@Transient
+    ReservationState cancelledState;
+	@Transient
+    ReservationState paidState;
+	@Transient
+    ReservationState submitedState;
+	
+    private static final long 	serialVersionUID 	= 1L;
     private String 				description;
+    private String				strState;
+    
+    @Transient
     private ReservationState 	state;
+    
+
     
     @ManyToOne
     private Customer customer;
@@ -54,6 +68,10 @@ public abstract class HallReservation extends DomainObject {
     
     public HallReservation(HallOption hallOption){
     	this.hallOption = hallOption;
+    	cancelledState 	= new CancelledState(this);
+    	submitedState 	= new SubmittedState(this);
+    	paidState 		= new PaidState(this);
+    	state 			= submitedState;
     }
     
     public void addObserver(Observer observer){
@@ -69,6 +87,21 @@ public abstract class HallReservation extends DomainObject {
 			observer.notifyAllObservers(this);
 		}
     }
+    
+	public void submitReservation() {
+		state.submitReservation();
+		this.strState = state.getState();
+	}
+
+	public void payReservation() {
+		state.payReservation();
+		this.strState = state.getState();
+	}
+
+	public void cancelReservation() {
+		state.cancelReservation();
+		this.strState = state.getState();
+	}
     
     @Transient
     public Double getPrice() {

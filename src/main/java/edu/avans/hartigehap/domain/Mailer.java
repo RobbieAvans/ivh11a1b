@@ -17,15 +17,9 @@ public class Mailer extends Observer {
 
 	@Override
 	public void notifyAllObservers(HallReservation hallReservation) {
-		if (hallReservation.getState() instanceof PaidState) {
-			log.debug("Ik ben betaal, jippie! Stuur e-mail");
-		} else if (hallReservation.getState() instanceof CreatedState) {
-			SubmittedMail submittedMail = new SubmittedMail();
-			submittedMail.prepareMail("tomgiesbergen@live.nl", "Reservering aangemaakt",
-					"Beste klant, de reservering is aangemaakt. We zien u graag verschijnen.");
-		} else {
-			log.debug(hallReservation.getState().toString() + " is mijn status.");
-		}
+		SimpleMail sendMail = new SimpleMail();
+		sendMail.prepareMail(hallReservation.getCustomer().getEmail(), hallReservation.getState().strMailSubject(),
+				hallReservation.getState().strMailBody(),hallReservation.getCustomer().getFirstName());
 
 	}
 

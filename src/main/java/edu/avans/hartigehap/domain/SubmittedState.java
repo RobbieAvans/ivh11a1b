@@ -7,37 +7,37 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PaidState extends ReservationState {
+public class SubmittedState extends ReservationState {
 	private static final long serialVersionUID = 1L;
 	private HallReservation hallReservation;
-	private String state = "PaidState";
+	private String state = "SubmittedState";
 
-	public PaidState(HallReservation hallReservation){
+	public SubmittedState(HallReservation hallReservation){
 			this.hallReservation = hallReservation;
 	}
 	
 	public String strMailBody() {
-		return "Beste %voornaam%, de reservering is betaald";
+		return "Beste %voornaam%, de reservering is aangemaakt";
 	}
 
 	public String strMailSubject() {
-		return "Reservering is Betaald";
+		return "Reservering is aangemaakt";
 	}
 
 	@Override
 	public void submitReservation() {
-		System.out.println("Je bent al betaald, submitten gaat niet meer");
+		System.out.println("Je bent al gesubmitted, nogmaals submitten gaat niet meer");
 	}
 
 	@Override
 	public void payReservation() {
-		System.out.println("Je bent al betaald, nogmaals betalen gaat niet meer");
+		hallReservation.setState(hallReservation.getPaidState());
+		hallReservation.notifyAllObservers();
 	}
 
 	@Override
 	public void cancelReservation() {
 		hallReservation.setState(hallReservation.getCancelledState());
 		hallReservation.notifyAllObservers();
-		
 	}
 }

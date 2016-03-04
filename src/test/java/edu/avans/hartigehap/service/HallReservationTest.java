@@ -11,7 +11,7 @@ import org.springframework.test.annotation.Rollback;
 
 import edu.avans.hartigehap.domain.CancelledState;
 import edu.avans.hartigehap.domain.ConcreteHallReservation;
-import edu.avans.hartigehap.domain.CreatedState;
+import edu.avans.hartigehap.domain.SubmittedState;
 import edu.avans.hartigehap.domain.Customer;
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
@@ -20,7 +20,7 @@ import edu.avans.hartigehap.domain.HallReservationOption;
 import edu.avans.hartigehap.domain.PaidState;
 import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.PartOfDayFactory;
-import edu.avans.hartigehap.domain.SubmittedMail;
+import edu.avans.hartigehap.domain.SimpleMail;
 import edu.avans.hartigehap.repository.CustomerRepository;
 import edu.avans.hartigehap.repository.HallOptionRepository;
 import edu.avans.hartigehap.repository.HallRepository;
@@ -81,32 +81,37 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 	}
 
 	@Test
-	public void createHallStateTest() {
-		HallOption hall = new HallOption("Hall", 100.00);
-		hallOptionRepository.save(hall);
-
-		HallReservation reservation = new ConcreteHallReservation(hall);
-
-		CreatedState createdState = new CreatedState();
-		createdState.doAction(reservation);
-		assertEquals("Created state", reservation.getState().toString());
-
-		PaidState paidState = new PaidState();
-		paidState.doAction(reservation);
-		assertEquals("Paid state", reservation.getState().toString());
-
-		CancelledState cancelledState = new CancelledState();
-		cancelledState.doAction(reservation);
-		assertEquals("Cancelled state", reservation.getState().toString());
-	}
-
-	@Test
-	public void createMailTemplate() {
-		SubmittedMail submittedMail = new SubmittedMail();
-		submittedMail.prepareMail("tomgiesbergen@live.nl","Subject","Body");
+	public void createHallStateTestWithMailTemplate() {
 		
+		HallOption hallOption = new HallOption("Hall", 100.00);
+		hallOptionRepository.save(hallOption);
+		
+		byte[] photo = new byte[] { 127, -128, 0 };
+		Customer customer = new Customer("Sander","LastName","email",new DateTime(),0,"description",photo);
+		customerRepository.save(customer);
+		
+		HallReservation reservation = new ConcreteHallReservation(hallOption);
+		reservation.setCustomer(customer);
+		
+		hallReservationRepository.save(reservation);
+
+		long id = 5;
+		HallReservation foundReservation =  hallReservationRepository.findOne(id);
+		foundReservation.submitReservation();
+		hallReservationRepository.save(foundReservation);
+
+		// Hij zou hier geen mailtje mogen sturen
+		assertEquals("SubmittedState", reservation.getState().getState().toString());
+
+		foundReservation.payReservation();
+		hallReservationRepository.save(foundReservation);
+		assertEquals("PaidState", reservation.getState().getState().toString());
+		
+		foundReservation.cancelReservation();
+		hallReservationRepository.save(foundReservation);
+		assertEquals("CancelledState", reservation.getState().getState().toString());
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Test
 	public void createPartOfDayTest() {
@@ -167,7 +172,7 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 		
 		hallReservationRepository.save(reservation);
 		
-		long id = 5;
+		long id = 6;
 		HallReservation hallReservationFromDb = hallReservationRepository.findOne(id);
 		
 		assertEquals("FirstName", hallReservationFromDb.getCustomer().getFirstName());
