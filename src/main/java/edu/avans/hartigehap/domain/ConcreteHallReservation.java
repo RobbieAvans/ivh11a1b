@@ -17,15 +17,15 @@ import lombok.ToString;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
-@Getter 
+@Getter
 @Setter
-@ToString(callSuper=true, includeFieldNames=true, of = {})
+@ToString(callSuper = true, includeFieldNames = true, of = {})
 @NoArgsConstructor
 public class ConcreteHallReservation extends HallReservation {
-	private static final long serialVersionUID = 1L;
-	
-	public ConcreteHallReservation(HallOption hallOption) {
-		super(hallOption);
-		addObserver(Mailer.getInstance());
-	}
+    private static final long serialVersionUID = 1L;
+
+    public ConcreteHallReservation(HallOption hallOption) {
+        super(hallOption);
+        addObserver(Mailer.getInstance());
+    }
 }

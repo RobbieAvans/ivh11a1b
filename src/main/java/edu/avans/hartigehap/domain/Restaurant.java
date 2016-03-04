@@ -39,8 +39,8 @@ public class Restaurant extends DomainObjectNaturalId {
     // unidirectional one-to-one
     @OneToOne(cascade = CascadeType.ALL)
     private Menu menu = new Menu();
-    
-    @ManyToMany(mappedBy="restaurants")
+
+    @ManyToMany(mappedBy = "restaurants")
     private List<Owner> owners;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "restaurant")

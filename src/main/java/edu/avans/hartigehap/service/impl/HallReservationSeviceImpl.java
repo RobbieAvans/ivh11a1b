@@ -19,19 +19,19 @@ public class HallReservationSeviceImpl implements HallReservationService {
 
     @Autowired
     private HallReservationRepository hallReservationRepository;
-   
-	@Override
-	public List<HallReservation> findAll() {
-		return (List<HallReservation>)hallReservationRepository.findAll();
-	}
 
-	@Override
-	public HallReservation save(HallReservation hallReservation) {
-		return hallReservationRepository.save(hallReservation);
-	}
+    @Override
+    public List<HallReservation> findAll() {
+        return (List<HallReservation>) hallReservationRepository.findAll();
+    }
 
-	@Override
-	public void delete(HallReservation hallReservation) {
-		hallReservationRepository.delete(hallReservation);
-	}
+    @Override
+    public HallReservation save(HallReservation hallReservation) {
+        return hallReservationRepository.save(hallReservation);
+    }
+
+    @Override
+    public void delete(HallReservation hallReservation) {
+        hallReservationRepository.delete(hallReservation);
+    }
 }

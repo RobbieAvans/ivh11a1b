@@ -26,19 +26,20 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString(callSuper = true, includeFieldNames = true)
 public abstract class HallReservationDecorator extends HallReservation {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@OneToOne
-	@Cascade({ CascadeType.ALL })
-	private HallReservation hallReservation;
+    @OneToOne
+    @Cascade({ CascadeType.ALL })
+    private HallReservation hallReservation;
 
-	public HallReservationDecorator(HallReservation hallReservation, HallOption hallOption) {
-		super(hallOption);
-		this.hallReservation = hallReservation;
-	}
+    public HallReservationDecorator(HallReservation hallReservation, HallOption hallOption) {
+        super(hallOption);
+        this.hallReservation = hallReservation;
+    }
 
-	@Transient
-	public Double getPrice() {
-		return getHallOption().getPrice() + hallReservation.getPrice();
-	}
+    @Override
+    @Transient
+    public Double getPrice() {
+        return getHallOption().getPrice() + hallReservation.getPrice();
+    }
 }

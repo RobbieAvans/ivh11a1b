@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -26,95 +25,96 @@ import lombok.ToString;
  */
 
 @Entity
-//optional
+// optional
 @Table(name = "HALLRESERVATION")
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 @Getter
 @Setter
-@ToString(callSuper = true, includeFieldNames = true, of = {"description"})
+@ToString(callSuper = true, includeFieldNames = true, of = { "description" })
 @NoArgsConstructor
 public abstract class HallReservation extends DomainObject {
-	
-	@Transient
-    ReservationState cancelledState;
-	@Transient
-    ReservationState paidState;
-	@Transient
-    ReservationState submitedState;
-	
-    private static final long 	serialVersionUID 	= 1L;
-    private String 				description;
-    private String				strState;
-    
-    @Transient
-    private ReservationState 	state;
-    
 
-    
+    private static final long serialVersionUID = 1L;
+    private String description;
+
+    @Transient
+    private ReservationState cancelledState = new CancelledState(this);
+    @Transient
+    private ReservationState paidState = new PaidState(this);
+    @Transient
+    private ReservationState submittedState = new SubmittedState(this);
+
+    /**
+     * This is a little bit weird, every reservation will have its own state.
+     * So if there are 10 reservations with a PaidState there will be also 10 rows
+     * for PaidState and those rows will all contain the same data (except the reservation_id).
+     * 
+     * Possible in another way?
+     * 
+     */
+    @OneToOne(cascade = CascadeType.ALL)
+    private ReservationState state;
+
     @ManyToOne
     private Customer customer;
-    
+
     @ManyToOne
     private HallOption hallOption;
-    
+
     @ManyToOne
     private Hall hall;
-    
+
     @Transient
-    private List<Observer> observers  = new ArrayList<>();
-    
+    private List<Observer> observers = new ArrayList<>();
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hallReservation")
-	private List<PartOfDay> partOfDays = new ArrayList<>();
-    
-    public HallReservation(HallOption hallOption){
-    	this.hallOption = hallOption;
-    	cancelledState 	= new CancelledState(this);
-    	submitedState 	= new SubmittedState(this);
-    	paidState 		= new PaidState(this);
-    	state 			= submitedState;
-    }
-    
-    public void addObserver(Observer observer){
-    	observers.add(observer);
-    }
-    
-    public void addPartOfDay(PartOfDay partOfDay){
-    	partOfDays.add(partOfDay);
-    }
-    
-    public void notifyAllObservers(){
-    	for (Observer observer : observers) {
-			observer.notifyAllObservers(this);
-		}
-    }
-    
-	public void submitReservation() {
-		state.submitReservation();
-		this.strState = state.getState();
-	}
+    private List<PartOfDay> partOfDays = new ArrayList<>();
 
-	public void payReservation() {
-		state.payReservation();
-		this.strState = state.getState();
-	}
+    public HallReservation(HallOption hallOption) {
+        this.hallOption = hallOption;
 
-	public void cancelReservation() {
-		state.cancelReservation();
-		this.strState = state.getState();
-	}
-    
+        // Default is submittedState ??
+        this.state = submittedState;
+    }
+
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void addPartOfDay(PartOfDay partOfDay) {
+        partOfDays.add(partOfDay);
+    }
+
+    public void notifyAllObservers() {
+        for (Observer observer : observers) {
+            observer.notifyAllObservers(this);
+        }
+    }
+
+    public void submitReservation() {
+        state.submitReservation();
+    }
+
+    public void payReservation() {
+        state.payReservation();
+    }
+
+    public void cancelReservation() {
+        state.cancelReservation();
+    }
+
     @Transient
     public Double getPrice() {
-    	return this.hallOption.getPrice();
+        return this.hallOption.getPrice();
     }
-    
+
     /**
-     * TODO: Should return whether the reservation is active or not.
-     * e.g. is in the future and has not the CancelledState
+     * TODO: Should return whether the reservation is active or not. e.g. is in
+     * the future and has not the CancelledState
      * 
      * @return
      */
     public boolean isActive() {
-    	return true;
+        return true;
     }
 }

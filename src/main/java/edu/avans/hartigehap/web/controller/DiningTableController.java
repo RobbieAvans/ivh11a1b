@@ -96,29 +96,29 @@ public class DiningTableController {
 
     private String submitOrder(String diningTableId, RedirectAttributes redirectAttributes, Model uiModel,
             Locale locale) {
-        
+
         DiningTable diningTable = warmupRestaurant(diningTableId, uiModel);
-        
+
         try {
             diningTableService.submitOrder(diningTable);
         } catch (StateException e) {
             return handleStateException(e, "message_submit_order_fail", diningTableId, uiModel, locale);
         }
-        
+
         // store the message temporarily in the session to allow displaying
         // after redirect
         redirectAttributes.addFlashAttribute("message", new Message("success",
                 messageSource.getMessage("message_submit_order_success", new Object[] {}, locale)));
-        
+
         return "redirect:/diningTables/" + diningTableId;
 
     }
 
     private String submitBill(String diningTableId, RedirectAttributes redirectAttributes, Model uiModel,
             Locale locale) {
-        
+
         DiningTable diningTable = warmupRestaurant(diningTableId, uiModel);
-        
+
         try {
             diningTableService.submitBill(diningTable);
         } catch (EmptyBillException e) {
@@ -129,12 +129,12 @@ public class DiningTableController {
         } catch (StateException e) {
             return handleStateException(e, "message_submit_bill_fail", diningTableId, uiModel, locale);
         }
-        
+
         // store the message temporarily in the session to allow displaying
         // after redirect
         redirectAttributes.addFlashAttribute("message", new Message("success",
                 messageSource.getMessage("message_submit_bill_success", new Object[] {}, locale)));
-        
+
         return "redirect:/diningTables/" + diningTableId;
     }
 
@@ -148,12 +148,12 @@ public class DiningTableController {
 
         return diningTable;
     }
-    
-    private String handleStateException(StateException e, String errorMessage, String diningTableId, 
-            Model uiModel, Locale locale) {
+
+    private String handleStateException(StateException e, String errorMessage, String diningTableId, Model uiModel,
+            Locale locale) {
         log.error("StateException", e);
-        uiModel.addAttribute("message", new Message("error",
-                messageSource.getMessage(errorMessage, new Object[] {}, locale)));
+        uiModel.addAttribute("message",
+                new Message("error", messageSource.getMessage(errorMessage, new Object[] {}, locale)));
 
         // StateException triggers a rollback; consequently all Entities are
         // invalidated by Hibernate

@@ -19,34 +19,34 @@ public class OwnerSeviceImpl implements OwnerService {
 
     @Autowired
     private OwnerRepository ownerRepository;
-   
-	@Override
-	public List<Owner> findAll() {
-		// TODO Auto-generated method stub
-		return (List<Owner>)ownerRepository.findAll();
-	}
 
-	@Override
-	public Owner findById(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public List<Owner> findAll() {
+        // TODO Auto-generated method stub
+        return (List<Owner>) ownerRepository.findAll();
+    }
 
-	@Override
-	public List<Owner> findByName(String name) {
-		// TODO Auto-generated method stub
-		return ownerRepository.findByName(name);
-	}
+    @Override
+    public Owner findById(long id) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public Owner save(Owner owner) {
-		// TODO Auto-generated method stub
-		return ownerRepository.save(owner);
-	}
+    @Override
+    public List<Owner> findByName(String name) {
+        // TODO Auto-generated method stub
+        return ownerRepository.findByName(name);
+    }
 
-	@Override
-	public void delete(Owner owner) {
-		// TODO Auto-generated method stub
-		ownerRepository.delete(owner);
-	}
+    @Override
+    public Owner save(Owner owner) {
+        // TODO Auto-generated method stub
+        return ownerRepository.save(owner);
+    }
+
+    @Override
+    public void delete(Owner owner) {
+        // TODO Auto-generated method stub
+        ownerRepository.delete(owner);
+    }
 }

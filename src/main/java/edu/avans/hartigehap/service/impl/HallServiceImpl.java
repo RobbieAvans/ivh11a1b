@@ -17,44 +17,44 @@ import edu.avans.hartigehap.service.HallService;
 @Transactional(rollbackFor = StateException.class)
 public class HallServiceImpl implements HallService {
 
-	@Autowired
+    @Autowired
     private HallRepository hallRepository;
-	
-	@Override
-	public List<Hall> findAll() {
-		return (List<Hall>)hallRepository.findAll();
-	}
 
-	@Override
-	public Hall findById(long id) {
-		return hallRepository.findOne(id);
-	}
+    @Override
+    public List<Hall> findAll() {
+        return (List<Hall>) hallRepository.findAll();
+    }
 
-	@Override
-	public Hall save(Hall hall) {
-		return hallRepository.save(hall);
-	}
+    @Override
+    public Hall findById(long id) {
+        return hallRepository.findOne(id);
+    }
 
-	@Override
-	public boolean deleteById(long hallId) {
-		Hall hall = hallRepository.findOne(hallId);
-		
-		if (hall != null) {
-			return delete(hall);
-		}
-		
-		return false;
-	}
-	
-	@Override
-	public boolean delete(Hall hall) {
-		if (hall.canBeDeleted()) {
-			hallRepository.delete(hall);
-			
-			return true;
-		}
-		
-		return false;
-	}
+    @Override
+    public Hall save(Hall hall) {
+        return hallRepository.save(hall);
+    }
+
+    @Override
+    public boolean deleteById(long hallId) {
+        Hall hall = hallRepository.findOne(hallId);
+
+        if (hall != null) {
+            return delete(hall);
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean delete(Hall hall) {
+        if (hall.canBeDeleted()) {
+            hallRepository.delete(hall);
+
+            return true;
+        }
+
+        return false;
+    }
 
 }

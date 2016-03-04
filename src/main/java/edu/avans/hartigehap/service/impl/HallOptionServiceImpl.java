@@ -22,30 +22,35 @@ public class HallOptionServiceImpl implements HallOptionService {
     @Autowired
     private HallOptionRepository hallOptionRepository;
 
+    @Override
     @Transactional(readOnly = true)
     public List<HallOption> findAll() {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
         return Lists.newArrayList(hallOptionRepository.findAll(sort));
     }
-    
+
+    @Override
     @Transactional(readOnly = true)
     public HallOption findById(Long hallOptionId) {
         return hallOptionRepository.findOne(hallOptionId);
     }
+
+    @Override
     public HallOption save(HallOption hallOption) {
         return hallOptionRepository.save(hallOption);
     }
 
     @Override
-	public void deleteById(long hallOptionId) {
-		HallOption hallOption = hallOptionRepository.findOne(hallOptionId);
-		
-		if (hallOption != null) {
-			delete(hallOption);
-		}
-	}
-    
+    public void deleteById(long hallOptionId) {
+        HallOption hallOption = hallOptionRepository.findOne(hallOptionId);
+
+        if (hallOption != null) {
+            delete(hallOption);
+        }
+    }
+
+    @Override
     public void delete(HallOption hallOption) {
-    	hallOptionRepository.delete(hallOption);
+        hallOptionRepository.delete(hallOption);
     }
 }

@@ -113,12 +113,12 @@ public class WaiterController {
         case "orderHasBeenServed":
             orderHasBeenServed(order);
             break;
-            
+
         default:
             log.error("Internal error: event " + event + " not recognized");
             break;
         }
-        
+
         return "redirect:/restaurants/" + order.getBill().getDiningTable().getRestaurant().getId() + "/waiter";
     }
 
@@ -130,7 +130,6 @@ public class WaiterController {
                     + "has not been changed to served state!", e);
         }
     }
-    
 
     @RequestMapping(value = "/waiter/bills/{billId}", method = RequestMethod.PUT)
     public String receiveBillEvent(@PathVariable("billId") String billId, @RequestParam String event, Model uiModel) {
@@ -149,7 +148,7 @@ public class WaiterController {
 
         return "redirect:/restaurants/" + bill.getDiningTable().getRestaurant().getId() + "/waiter";
     }
-    
+
     private void billHasBeenPaid(Bill bill) {
         try {
             billService.billHasBeenPaid(bill);
@@ -159,7 +158,6 @@ public class WaiterController {
         }
     }
 
-    
     private Order warmupRestaurantByOrder(String orderId, Model uiModel) {
         Order order = orderService.findById(Long.valueOf(orderId));
         Collection<Restaurant> restaurants = restaurantService.findAll();

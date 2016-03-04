@@ -17,29 +17,28 @@ public class OwnerServiceTest extends AbstractTransactionRollbackTest {
     @Autowired
     private OwnerService ownerService;
 
-
     @Test
     public void createOwner() {
-    	Owner owner = new Owner();
-    	owner.setName("Tommeke");
-    	ownerService.save(owner);
+        Owner owner = new Owner();
+        owner.setName("Tommeke");
+        ownerService.save(owner);
 
-    	List<Owner> foundOwners = ownerService.findByName("Tommeke");
-    	assertEquals("Tommeke", foundOwners.get(0).getName());
+        List<Owner> foundOwners = ownerService.findByName("Tommeke");
+        assertEquals("Tommeke", foundOwners.get(0).getName());
     }
-    
+
     @Test
     public void deleteOwner() {
-    	List<Owner> foundOwners;
-    	Owner owner = new Owner();
-    	owner.setName("Tommeke");
-    	ownerService.save(owner);
+        List<Owner> foundOwners;
+        Owner owner = new Owner();
+        owner.setName("Tommeke");
+        ownerService.save(owner);
 
-    	foundOwners = ownerService.findByName("Tommeke");
-    	assertEquals("Tommeke", foundOwners.get(0).getName());
-    	
-    	ownerService.delete(owner);
-    	foundOwners = ownerService.findAll();
+        foundOwners = ownerService.findByName("Tommeke");
+        assertEquals("Tommeke", foundOwners.get(0).getName());
+
+        ownerService.delete(owner);
+        foundOwners = ownerService.findAll();
         assertNotNull(foundOwners);
         assertFalse("deleted owner not in the list", foundOwners.contains(owner));
     }
