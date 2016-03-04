@@ -36,17 +36,25 @@ public class HallServiceImpl implements HallService {
 	}
 
 	@Override
-	public void deleteById(long hallId) {
+	public boolean deleteById(long hallId) {
 		Hall hall = hallRepository.findOne(hallId);
 		
 		if (hall != null) {
-			delete(hall);
+			return delete(hall);
 		}
+		
+		return false;
 	}
 	
 	@Override
-	public void delete(Hall hall) {
-		hallRepository.delete(hall);
+	public boolean delete(Hall hall) {
+		if (hall.canBeDeleted()) {
+			hallRepository.delete(hall);
+			
+			return true;
+		}
+		
+		return false;
 	}
 
 }

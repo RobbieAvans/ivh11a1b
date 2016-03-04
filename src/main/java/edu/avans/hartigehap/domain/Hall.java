@@ -34,4 +34,30 @@ public class Hall extends DomainObject {
 
 		return this;
 	}
+	
+	/**
+	 * Check if the hall has activeReservations at the moment
+	 * 
+	 * @return
+	 */
+	public boolean hasActiveReservations() {
+		boolean hasActive = false;
+		for (HallReservation hallReservation : reservations) {
+			if (hallReservation.isActive()) {
+				hasActive = true;
+				break;
+			}
+		}
+		
+		return hasActive;
+	}
+	
+	/**
+	 * Check if the hall can be safely deleted
+	 * 
+	 * @return
+	 */
+	public boolean canBeDeleted() {
+		return !hasActiveReservations();
+	}
 }

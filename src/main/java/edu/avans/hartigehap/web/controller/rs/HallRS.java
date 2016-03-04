@@ -209,7 +209,7 @@ public class HallRS extends BaseRS {
      * 
      * Response:
      * 
-     * {"success":true,"data":2} Is this a problem??
+     * {"success":false,"data":"Hall cannot be deleted. Maybe it has active reservations"}
      * 
      * @param hallId
      * @param httpResponse
@@ -219,10 +219,14 @@ public class HallRS extends BaseRS {
             + "/hall/{hallId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ModelAndView removeHall(@PathVariable long hallId, HttpServletResponse httpResponse) {
-        hallService.deleteById(hallId);
+        boolean result = hallService.deleteById(hallId);
         
-        httpResponse.setStatus(HttpStatus.OK.value());  
+        if (result) {
+        	httpResponse.setStatus(HttpStatus.OK.value());  
+            
+            return createSuccessResponse(hallId);
+        }
         
-        return createSuccessResponse(hallId);
+        return createErrorResponse("Hall cannot be deleted. Maybe it has active reservations");
     }
 }

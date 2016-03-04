@@ -11,7 +11,7 @@ public interface HallService {
 
 	Hall save(Hall hall);
 
-	void deleteById(long id);
+	boolean deleteById(long id);
 
-	void delete(Hall hall);
+	boolean delete(Hall hall);
 }

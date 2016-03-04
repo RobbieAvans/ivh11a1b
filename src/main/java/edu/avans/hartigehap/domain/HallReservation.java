@@ -69,8 +69,19 @@ public abstract class HallReservation extends DomainObject {
 			observer.notifyAllObservers(this);
 		}
     }
+    
     @Transient
-    public Double getPrice(){
+    public Double getPrice() {
     	return this.hallOption.getPrice();
+    }
+    
+    /**
+     * TODO: Should return whether the reservation is active or not.
+     * e.g. is in the future and has not the CancelledState
+     * 
+     * @return
+     */
+    public boolean isActive() {
+    	return true;
     }
 }
