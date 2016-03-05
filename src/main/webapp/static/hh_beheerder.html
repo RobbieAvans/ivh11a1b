@@ -18,31 +18,20 @@
     </script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.0.2/js/dataTables.responsive.min.js"></script>
-    <script src="../scripts/angular.min.js"></script>
+    <script src="../scripts/angular.js"></script>
+     <script src="../scripts/angular-datatables.js"></script>
     <script>
-        var app = angular.module('hh', []);
-        app.controller('Zalen', function ($scope, $http) {
-            //== get Zalen
-            //== Nu even hard coded maar de aanroep naar onze REST-API zit er al in!
-             $http.get('http://localhost:8082/hh/rest/v1/hall').
-             success(function (data) {
-                 //$scope.data = [{ "@id": 1, "id": 1, "version": 1, "numberOfSeats": 140, "description": "TestHall", "reservations": [] }, { "@id": 2, "id": 2, "version": 1, "numberOfSeats": 300, "description": "TestHall 2", "reservations": [] }];
-                 $scope.data = data.data;
-                 
-         	});
+       
+        angular.module('angularWay', ['datatables', 'ngResource'])
+        .controller('AngularWayOneTimeBindingCtrl',AngularWayOneTimeBindingCtrl);
 
-            
-            jQuery('#example').DataTable({
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Allemaal"]],
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Dutch.json"
-                },
-                "fnDrawCallback": function( oSettings ) {
-
-                    //jQuery('#example').dataTable().fnDraw();
-                  }
-            });
-        });
+        function AngularWayOneTimeBindingCtrl($resource) {
+           // var vm = this;
+            console.log("asdf");
+           // $resource('http://localhost:8082/hh/rest/v1/hall').query().$promise.then(function(data) {
+           //     vm.data = data.data;
+           // });
+        }
     </script>
 
     <section id="cntrTopPush" class="show-for-medium-up"></section>
@@ -128,32 +117,33 @@
                         </div>
                     </nav>
                 </div>
-                <div id="content" class="small-12 medium-12 large-12 left columns" ng-app="hh">
+                <div id="content" class="small-12 medium-12 large-12 left columns">
                     <aside>
                         <h1>Overzicht zalen</h1>
-                        <table id="example" class="display responsive">
-                            <thead>
-                                <tr>
-                                    <th>Omschrijving</th>
-                                    <th>Basis prijs</th>
-                                    <th>Restaurant</th>
-                                    <th>Aantal zitplaatsen</th>
-                                </tr>
-                            </thead>
-                            <tbody ng-controller="Zalen">
-                                <tr ng-repeat="zaal in data">
+					    <div ng-controller="AngularWayOneTimeBindingCtrl as showCase">
+					    <table datatable="ng" class="row-border hover">
+					        <thead>
+					        <tr>
+					            <th>ID</th>
+					            <th>FirstName</th>
+					            <th>LastName</th>
+					        </tr>
+					        </thead>
+					        <tbody>
+					        <tr ng-repeat="zaal in showCase.data">
                                     <td>{{zaal.description}}</td>
                                     <td>{{zaal.id}}</td>
                                     <td>{{zaal.version}}</td>
                                     <td>{{zaal.numberOfSeats}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+					        </tr>
+					        </tbody>
+					    </table>
+					</div>
                     </aside>
                 </div>
                 <div id="footer" class="small-12 medium-12 large-12 left columns">
                     <div class="border"></div>
-                    <p>© Copyright 2015</p>
+                    <p>© Copyright 2016</p>
                 </div>
             </div>
         </section>
