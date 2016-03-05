@@ -1,193 +1,207 @@
 ﻿<!DOCTYPE html>
-<html >
+<html ng-app="app">
 <head>
-    <title></title>
-	<meta charset="utf-8" />
-    <link href="../resources/normalize.css" rel="stylesheet" />
-    <link href="../resources/foundation.min.css" rel="stylesheet" />
-    <link href="../resources/general.css" rel="stylesheet" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/responsive/2.0.2/css/responsive.dataTables.min.css" rel="stylesheet" />
+<title></title>
+<meta charset="utf-8" />
+<link href="../resources/normalize.css" rel="stylesheet" />
+<link href="../resources/foundation.min.css" rel="stylesheet" />
+<link href="../resources/general.css" rel="stylesheet" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link
+	href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css"
+	rel="stylesheet" />
+<link
+	href="https://cdn.datatables.net/responsive/2.0.2/css/responsive.dataTables.min.css"
+	rel="stylesheet" />
 </head>
 <body>
-    <!-- jQuery via CDN, fallback via eigen script -->
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-    <script type="text/javascript">
-    window.jQuery || document.write('<script src="assets/js/vendor/jquery.js"><\/script>');
-    </script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.0.2/js/dataTables.responsive.min.js"></script>
-    <script src="../scripts/angular.js"></script>
-     <script src="../scripts/angular-datatables.js"></script>
-    <script>
-       
-        angular.module('angularWay', ['datatables', 'ngResource'])
-        .controller('AngularWayOneTimeBindingCtrl',AngularWayOneTimeBindingCtrl);
+	<!-- jQuery via CDN, fallback via eigen script -->
+	<script type="text/javascript"
+		src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+	<script type="text/javascript">
+		window.jQuery
+				|| document
+						.write('<script src="assets/js/vendor/jquery.js"><\/script>');
+	</script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/responsive/2.0.2/js/dataTables.responsive.min.js"></script>
+	<script src="../scripts/angular.js"></script>
+	<script src="../scripts/angular-datatables.instances.js"></script>
+	<script src="../scripts/angular-datatables.util.js"></script>
+	<script src="../scripts/angular-datatables.factory.js"></script>
+	<script src="../scripts/angular-datatables.options.js"></script>
+	<script src="../scripts/angular-datatables.renderer.js"></script>
+	<script src="../scripts/angular-datatables.directive.js"></script>
+	<script src="../scripts/angular-resource.min.js"></script>
+	<script src="../scripts/angular-datatables.js"></script>
+	<script>
+		var app = angular.module('app', [ 'datatables', 'ngResource' ]);
 
-        function AngularWayOneTimeBindingCtrl($resource) {
-           // var vm = this;
-            console.log("asdf");
-           // $resource('http://localhost:8082/hh/rest/v1/hall').query().$promise.then(function(data) {
-           //     vm.data = data.data;
-           // });
-        }
-    </script>
+		app.controller('AngularWayOneTimeBindingCtrl', function($scope,
+				$resource) {
+			$resource('http://localhost:8080/hh/rest/v1/hall').get().$promise
+					.then(function(data) {
+						if (data.success) {
+							$scope.halls = data.data;
+						} else {
+							console.log("Error with API");
+							$scope.halls = [];
+						}
+					});
+		});
+	</script>
 
-    <section id="cntrTopPush" class="show-for-medium-up"></section>
-    <section id="cntrHeader">
-        <div class="overlay"></div>
-    </section>
-    <section id="cntrHeaderPush"></section>
+	<section id="cntrTopPush" class="show-for-medium-up"></section>
+	<section id="cntrHeader">
+		<div class="overlay"></div>
+	</section>
+	<section id="cntrHeaderPush"></section>
 
-    <section id="cntr">
-        <section>
-            <div class="row centerRow" style="background-color:#fff;">
-                <div id="header" class="small-12 columns ">
-                    <a><p style="color:rgb(68, 157, 68); text-transform:uppercase; font-weight:bold; font-size:32px;">Planning subsysteem</p></a>
-                    <nav>
-                        <div class="show-for-large-up">
-                            <aside class="item active"  style="position:relative;">
-                                <a>Zalen</a>
-                                <div class="subMenu">
-                                    <ul>
-                                        <li>
-                                            <a>Zaal toevoegen</a>
-                                        </li>
-                                        <li>
-                                            <a>Zaal wijzigen</a>
-                                        </li>
-                                        <li>
-                                            <a>Zaal verwijderen</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </aside>
-                            <span></span>
-                            <aside class="item" style="position:relative;">
-                                <a>Opties</a>
-                                <div class="subMenu">
-                                    <ul>
-                                        <li>
-                                            <a>Optie toevoegen</a>
-                                        </li>
-                                        <li>
-                                            <a>Optie wijzigen</a>
-                                        </li>
-                                        <li>
-                                            <a>Optie verwijderen</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </aside>
-                            <span></span>
-                            <aside class="item" style="position:relative;">
-                                <a>Reserveringen</a>
-                            </aside>
-                            <span></span>
-                            <a class="item right">Mijn account</a>
-                            <span class="right"></span>
-                        </div>
-                        <div class="toggle show-for-medium-down"><a>menu</a></div>
-                        <div id="menuSmallContainer">
-                            <aside id="menuSmall" class="show-for-medium-down small" style="display:none;">
-                                <ul>
-                                    <li>
-                                        <a  class="toggleMenuSmallExtra item">Zalen</a>
-                                        <div class="menuSmallExtra" style="overflow: hidden; padding-bottom:0px !important; line-height:inherit !important; margin-bottom:0px !important; ">
-                                            <ul>
-                                                <li><a>Zaal toevoegen</a></li>
-                                                <li><a>Zaal wijzigen</a></li>
-                                                <li><a>Zaal verwijderen</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a class="toggleMenuSmallExtra item">Opties</a>
-                                        <div class="menuSmallExtra" style="overflow: hidden; padding-bottom:0px !important; line-height:inherit !important; margin-bottom:0px !important; ">
-                                            <ul>
-                                                <li><a>Optie toevoegen</a></li>
-                                                <li><a>Optie wijzigen</a></li>
-                                                <li><a>Optie verwijderen</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </aside>
-                        </div>
-                    </nav>
-                </div>
-                <div id="content" class="small-12 medium-12 large-12 left columns">
-                    <aside>
-                        <h1>Overzicht zalen</h1>
-					    <div ng-controller="AngularWayOneTimeBindingCtrl as showCase">
-					    <table datatable="ng" class="row-border hover">
-					        <thead>
-					        <tr>
-					            <th>ID</th>
-					            <th>FirstName</th>
-					            <th>LastName</th>
-					        </tr>
-					        </thead>
-					        <tbody>
-					        <tr ng-repeat="zaal in showCase.data">
-                                    <td>{{zaal.description}}</td>
-                                    <td>{{zaal.id}}</td>
-                                    <td>{{zaal.version}}</td>
-                                    <td>{{zaal.numberOfSeats}}</td>
-					        </tr>
-					        </tbody>
-					    </table>
-					</div>
-                    </aside>
-                </div>
-                <div id="footer" class="small-12 medium-12 large-12 left columns">
-                    <div class="border"></div>
-                    <p>© Copyright 2016</p>
-                </div>
-            </div>
-        </section>
+	<section id="cntr">
+		<section>
+			<div class="row centerRow" style="background-color: #fff;">
+				<div id="header" class="small-12 columns ">
+					<a><p
+							style="color: rgb(68, 157, 68); text-transform: uppercase; font-weight: bold; font-size: 32px;">Planning
+							subsysteem</p></a>
+					<nav>
+						<div class="show-for-large-up">
+							<aside class="item active" style="position: relative;">
+								<a>Zalen</a>
+								<div class="subMenu">
+									<ul>
+										<li><a>Zaal toevoegen</a></li>
+										<li><a>Zaal wijzigen</a></li>
+										<li><a>Zaal verwijderen</a></li>
+									</ul>
+								</div>
+							</aside>
+							<span></span>
+							<aside class="item" style="position: relative;">
+								<a>Opties</a>
+								<div class="subMenu">
+									<ul>
+										<li><a>Optie toevoegen</a></li>
+										<li><a>Optie wijzigen</a></li>
+										<li><a>Optie verwijderen</a></li>
+									</ul>
+								</div>
+							</aside>
+							<span></span>
+							<aside class="item" style="position: relative;">
+								<a>Reserveringen</a>
+							</aside>
+							<span></span> <a class="item right">Mijn account</a> <span
+								class="right"></span>
+						</div>
+						<div class="toggle show-for-medium-down">
+							<a>menu</a>
+						</div>
+						<div id="menuSmallContainer">
+							<aside id="menuSmall" class="show-for-medium-down small"
+								style="display: none;">
+								<ul>
+									<li><a class="toggleMenuSmallExtra item">Zalen</a>
+										<div class="menuSmallExtra"
+											style="overflow: hidden; padding-bottom: 0px !important; line-height: inherit !important; margin-bottom: 0px !important;">
+											<ul>
+												<li><a>Zaal toevoegen</a></li>
+												<li><a>Zaal wijzigen</a></li>
+												<li><a>Zaal verwijderen</a></li>
+											</ul>
+										</div></li>
+									<li><a class="toggleMenuSmallExtra item">Opties</a>
+										<div class="menuSmallExtra"
+											style="overflow: hidden; padding-bottom: 0px !important; line-height: inherit !important; margin-bottom: 0px !important;">
+											<ul>
+												<li><a>Optie toevoegen</a></li>
+												<li><a>Optie wijzigen</a></li>
+												<li><a>Optie verwijderen</a></li>
+											</ul>
+										</div></li>
+								</ul>
+							</aside>
+						</div>
+					</nav>
+				</div>
+				<div id="content" class="small-12 medium-12 large-12 left columns">
+					<aside>
+						<h1>Overzicht zalen</h1>
+						<div ng-controller="AngularWayOneTimeBindingCtrl">
+							<table datatable="ng" class="row-border hover">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>FirstName</th>
+										<th>LastName</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="hall in halls">
+										<td>{{hall.description}}</td>
+										<td>{{hall.id}}</td>
+										<td>{{hall.version}}</td>
+										<td>{{hall.numberOfSeats}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</aside>
+				</div>
+				<div id="footer" class="small-12 medium-12 large-12 left columns">
+					<div class="border"></div>
+					<p>© Copyright 2016</p>
+				</div>
+			</div>
+		</section>
 
-    </section>
+	</section>
 </body>
 </html>
 
 
 <script>
-    jQuery(document).ready(function () {
-        var smallMenuExtraDown = false;
-        var smallMenuExtraExtraDown = false;
-        var mobileToggle = false;
-        jQuery("nav .toggle").click(function () {
-            jQuery("#menuSmallContainer").slideToggle(250);
-        });
+	jQuery(document).ready(
+			function() {
+				var smallMenuExtraDown = false;
+				var smallMenuExtraExtraDown = false;
+				var mobileToggle = false;
+				jQuery("nav .toggle").click(function() {
+					jQuery("#menuSmallContainer").slideToggle(250);
+				});
 
-        jQuery("aside.item").on("mouseenter", function () {
-            jQuery(this).find(".subMenu").fadeIn(250);
-        })
-        .on("mouseleave", function () {
-            jQuery(this).find(".subMenu").fadeOut(250);
-        });
+				jQuery("aside.item").on("mouseenter", function() {
+					jQuery(this).find(".subMenu").fadeIn(250);
+				}).on("mouseleave", function() {
+					jQuery(this).find(".subMenu").fadeOut(250);
+				});
 
-        jQuery(".hasSub").on("mouseenter", function () {
-            var width = jQuery(".subSubMenu").parents(".subMenu").width();
-            var left = +width + "px";
-            jQuery(this).find(".subSubMenu").css("left", left).fadeIn(250);
-        })
-        .on("mouseleave", function () {
-            jQuery(this).find(".subSubMenu").fadeOut(250);
-        });
+				jQuery(".hasSub").on(
+						"mouseenter",
+						function() {
+							var width = jQuery(".subSubMenu").parents(
+									".subMenu").width();
+							var left = +width + "px";
+							jQuery(this).find(".subSubMenu").css("left", left)
+									.fadeIn(250);
+						}).on("mouseleave", function() {
+					jQuery(this).find(".subSubMenu").fadeOut(250);
+				});
 
+				jQuery(".toggleMenuSmallExtra").click(
+						function() {
+							jQuery(this).parent().find(".menuSmallExtra")
+									.slideToggle(250);
+						});
 
-        jQuery(".toggleMenuSmallExtra").click(function () {
-            jQuery(this).parent().find(".menuSmallExtra").slideToggle(250);
-        });
+				jQuery(".toggleMenuSmallExtraExtra").click(
+						function() {
+							jQuery(this).parent().find(".menuSmallExtraExtra")
+									.slideToggle(250);
+						});
 
-        jQuery(".toggleMenuSmallExtraExtra").click(function () {
-            jQuery(this).parent().find(".menuSmallExtraExtra").slideToggle(250);
-        });
-
-
-    });
+			});
 </script>
 
