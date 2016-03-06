@@ -44,7 +44,6 @@ public abstract class HallReservation extends DomainObject {
 	
     private static final long 	serialVersionUID 	= 1L;
     private String 				description;
-    private String				strState;
     
     @Transient
     private ReservationState 	state;
@@ -90,17 +89,17 @@ public abstract class HallReservation extends DomainObject {
     
 	public void submitReservation() {
 		state.submitReservation();
-		this.strState = state.getState();
+	//	this.strState = state.getState();
 	}
 
 	public void payReservation() {
 		state.payReservation();
-		this.strState = state.getState();
+	//	this.strState = state.getState();
 	}
 
 	public void cancelReservation() {
 		state.cancelReservation();
-		this.strState = state.getState();
+	//	this.strState = state.getState();
 	}
     
     @Transient

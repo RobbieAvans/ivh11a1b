@@ -63,12 +63,12 @@ public class HallOptionRS extends BaseRS {
 	 * Tested with curl:
 	 * 
 	 * curl -H "Content-Type: application/json" -X GET
-	 * http://localhost:8080/hh/rest/v1/halloptions
+	 * http://localhost:8080/hh/rest/v1/halloption
 	 * 
 	 * @return
 	 */
 	@RequestMapping(value = RSConstants.URL_PREFIX
-			+ "/halloptions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+			+ "/halloption", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ModelAndView allHallOptions() {
 		return createSuccessResponse(hallOptionService.findAll());

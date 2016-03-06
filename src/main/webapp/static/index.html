@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html ng-app="app">
+<html ng-app="bestellenApp">
 <head>
 <title></title>
 <meta charset="utf-8" />
@@ -36,22 +36,6 @@
 	<script src="../scripts/angular-datatables.directive.js"></script>
 	<script src="../scripts/angular-resource.min.js"></script>
 	<script src="../scripts/angular-datatables.js"></script>
-	<script>
-		var app = angular.module('app', [ 'datatables', 'ngResource' ]);
-
-		app.controller('AngularWayOneTimeBindingCtrl', function($scope,
-				$resource) {
-			$resource('http://localhost:8080/hh/rest/v1/hall').get().$promise
-					.then(function(data) {
-						if (data.success) {
-							$scope.halls = data.data;
-						} else {
-							console.log("Error with API");
-							$scope.halls = [];
-						}
-					});
-		});
-	</script>
 
 	<section id="cntrTopPush" class="show-for-medium-up"></section>
 	<section id="cntrHeader">
@@ -63,31 +47,15 @@
 		<section>
 			<div class="row centerRow" style="background-color: #fff;">
 				<div id="header" class="small-12 columns ">
-					<a><p
-							style="color: rgb(68, 157, 68); text-transform: uppercase; font-weight: bold; font-size: 32px;">Planning
-							subsysteem</p></a>
-					<nav>
+					<a><p style="color: rgb(68, 157, 68); text-transform: uppercase; font-weight: bold; font-size: 32px;">Planning subsysteem</p></a>
+					<nav auto-active>
 						<div class="show-for-large-up">
-							<aside class="item active" style="position: relative;">
-								<a>Zalen</a>
-								<div class="subMenu">
-									<ul>
-										<li><a>Zaal toevoegen</a></li>
-										<li><a>Zaal wijzigen</a></li>
-										<li><a>Zaal verwijderen</a></li>
-									</ul>
-								</div>
+							<aside  class="item"  style="position: relative;">
+								<a ui-sref="halls()">Zalen</a>
 							</aside>
 							<span></span>
-							<aside class="item" style="position: relative;">
-								<a>Opties</a>
-								<div class="subMenu">
-									<ul>
-										<li><a>Optie toevoegen</a></li>
-										<li><a>Optie wijzigen</a></li>
-										<li><a>Optie verwijderen</a></li>
-									</ul>
-								</div>
+							<aside  class="item" style="position: relative;">
+								<a ui-sref="hallOptions()">Opties</a>
 							</aside>
 							<span></span>
 							<aside class="item" style="position: relative;">
@@ -103,24 +71,12 @@
 							<aside id="menuSmall" class="show-for-medium-down small"
 								style="display: none;">
 								<ul>
-									<li><a class="toggleMenuSmallExtra item">Zalen</a>
-										<div class="menuSmallExtra"
-											style="overflow: hidden; padding-bottom: 0px !important; line-height: inherit !important; margin-bottom: 0px !important;">
-											<ul>
-												<li><a>Zaal toevoegen</a></li>
-												<li><a>Zaal wijzigen</a></li>
-												<li><a>Zaal verwijderen</a></li>
-											</ul>
-										</div></li>
-									<li><a class="toggleMenuSmallExtra item">Opties</a>
-										<div class="menuSmallExtra"
-											style="overflow: hidden; padding-bottom: 0px !important; line-height: inherit !important; margin-bottom: 0px !important;">
-											<ul>
-												<li><a>Optie toevoegen</a></li>
-												<li><a>Optie wijzigen</a></li>
-												<li><a>Optie verwijderen</a></li>
-											</ul>
-										</div></li>
+									<li>
+										<a class="toggleMenuSmallExtra item" ui-sref="halls()">Zalen</a>
+									</li>
+									<li>
+										<a class="toggleMenuSmallExtra item" ui-sref="hallOptions()">Opties</a>
+									</li>
 								</ul>
 							</aside>
 						</div>
@@ -128,26 +84,7 @@
 				</div>
 				<div id="content" class="small-12 medium-12 large-12 left columns">
 					<aside>
-						<h1>Overzicht zalen</h1>
-						<div ng-controller="AngularWayOneTimeBindingCtrl">
-							<table datatable="ng" class="row-border hover">
-								<thead>
-									<tr>
-										<th>ID</th>
-										<th>FirstName</th>
-										<th>LastName</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr ng-repeat="hall in halls">
-										<td>{{hall.description}}</td>
-										<td>{{hall.id}}</td>
-										<td>{{hall.version}}</td>
-										<td>{{hall.numberOfSeats}}</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+						<div ui-view></div>
 					</aside>
 				</div>
 				<div id="footer" class="small-12 medium-12 large-12 left columns">
@@ -158,8 +95,15 @@
 		</section>
 
 	</section>
+	<script src="../scripts/app.js"></script>
+	<script src="../scripts/controllers.js"></script>
+	<script src="../scripts/hall_service.js"></script>
+	<script src="../scripts/auto-active.js"></script>
+	<script src="../scripts/hallOption_service.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
 </body>
 </html>
+
 
 
 <script>
