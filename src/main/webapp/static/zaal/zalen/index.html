@@ -1,0 +1,23 @@
+
+<h1>Overzicht van zalen</h1>
+<table datatable="ng" class="row-border hover">
+      <thead>
+      <tr>
+          <th>Omschrijving</th>
+          <th>Restaurant</th>
+          <th>Aantal stoelen</th>
+          <th>Acties</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="hall in halls">
+    		<td>{{hall.description}}</td>
+    		<td>{{hall.id}}</td>
+    		<td>{{hall.numberOfSeats}}</td>
+            <td>
+            <a class="btn btn-primary" ui-sref="viewHall({id:hall.id})">Bekijken</a>
+      		<a class="btn btn-danger"  ng-click="deleteHall(hall)">Verwijderen</a></td>
+      </tr>
+      </tbody>
+  </table>
+  <a ui-sref="newHall" class="btn new">Nieuwe Zaal aanmaken</a>

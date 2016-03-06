@@ -26,7 +26,7 @@ public abstract class BaseRS {
     }
 
     /**
-     * Create a successful response and with the given object
+     * Create a successful response with the given object
      * 
      * @param object
      * @return

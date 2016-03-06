@@ -1,4 +1,4 @@
-﻿@import url(http://fonts.googleapis.com/css?family=Droid+Serif);
+@import url(http://fonts.googleapis.com/css?family=Droid+Serif);
 * {
 	margin: 0px;
 	padding: 0px;
@@ -115,7 +115,7 @@ aside.small ul li a.item.active{background-color:rgba(255,255,255,0.20) !importa
 #content .bannerSpace.first{margin-top:16px;}
 
 #content .bannerLeader{width:468px; height:60px; margin:0 auto; clear:both; background-color:rgb(22,114,187); }
-#content aside h1{font-size: 30px; color:#333 !important; margin:0px; width:auto; float:left; font-family: Arial, 'sans-serif' !important; font-weight:700; margin-bottom:15px;}
+#content aside h1{font-size: 30px; color:#333 !important; margin:0px; width:100%; float:left; font-family: Arial, 'sans-serif' !important; font-weight:700; margin-bottom:15px;}
 #content aside h2{font-size:20px; color:#333 !important; font-weight:700; margin:0px; margin-top:30px; margin-bottom:15px; width:auto;  float:left;  font-family: Arial, 'sans-serif' !important;}
 #content aside h3{font-size:14px; color:#333 !important; font-weight:700; margin:0px; width:auto;  float:left; clear:both !important; font-family: Arial, 'sans-serif' !important;}
 #content aside h3.big{font-size:20px;}
@@ -123,17 +123,15 @@ aside.small ul li a.item.active{background-color:rgba(255,255,255,0.20) !importa
 #content aside img.big.active{display:block;}
 #content aside .imgOverlay{width:100%; height:250px; position:absolute; top:0px; background-color:rgba(78,179,110,0.58); left:0px; background-image:url(../../img/lines.png); background-repeat:repeat;}
 #content aside p{color:rgb(29,53,75); float:left; clear:both; line-height:26px; text-align:justify; font-family:Arial; font-size:14px; font-family:Arial; }
-
+#content aside label{font-family:Arial; font-size:14px; color:#000; font-weight:bold;}
 
 #content aside input, #content aside textarea{border-color: inherit;  -webkit-box-shadow: none;  box-shadow: none; font-size:13px; font-family:Arial; padding:8px 12px; border-color:#CCC; background-color:#FFF !important;}
 #content aside textarea{max-width:100%; max-height:180px; height:100px;}
 #content aside input:focus, #content aside textarea:focus{border:1px solid #999;}
 #content aside input:hover, #content aside textarea:hover{border:1px solid #999;}
-.message {width:100%; box-sizing:border-box;  color:#fff;  padding:12px; font-size:13px; display:none; margin-bottom:15px;}
-.message.error{border:1px solid rgb(226,59,45); background-color:#FF9494; display:block;}
-.message.success{border:1px solid rgb(121,176,12); background-color:rgba(121,176,12,0.6); display:block; }
-.btnVerstuur{float:right; line-height:50px; padding:0px !important; border:1px solid #CCC !important; background-color:red; width:150px; text-decoration:underline; font-size:13px;  font-family:'Droid Serif'; }
-.btnVerstuur:hover{border:1px solid #999 !important; }
+#content aside .btn.save{padding:15px; font-size:14px; font-family:arial; background-color:#333 !Important; border:1px solid #333 !important; color:#fff !important; float:right; margin-top:15px;}
+#content aside .btn.new{background-color:#333; font-family:arial; font-size:14px; float:right !Important; color:#fff; margin-top:15px; border:1px solid #333; padding:16px 16px;}
+#content aside .btn.back{background-color:#fff; font-family:arial; font-size:14px; float:right !Important; color:#333; margin-top:15px; border:1px solid #333; padding:16px 16px;}
 
 .cntrNewsItem{float:left; width:100%; border-bottom:1px dashed #eee; padding-bottom:15px; padding-top:15px;}
 .cntrNewsItem h2{float:left; width:100%; clear:both;}

@@ -95,10 +95,17 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 
         // Hij zou hier geen mailtje mogen sturen
         assertEquals("SubmittedState", reservation.getState().getState());
+        // Hij zou hier geen mailtje mogen sturen
+        assertEquals("SubmittedState", reservation.getState().getState().toString());
+        // Hij zou hier geen mailtje mogen sturen
+        assertEquals("SubmittedState", reservation.getState().getState().toString());
 
         foundReservation.payReservation();
         hallReservationRepository.save(foundReservation);
         assertEquals("PaidState", reservation.getState().getState());
+        foundReservation.payReservation();
+        hallReservationRepository.save(foundReservation);
+        assertEquals("PaidState", reservation.getState().getState().toString());
 
         foundReservation.cancelReservation();
         hallReservationRepository.save(foundReservation);

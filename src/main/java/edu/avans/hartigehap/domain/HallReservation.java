@@ -45,9 +45,10 @@ public abstract class HallReservation extends DomainObject {
     private ReservationState submittedState = new SubmittedState(this);
 
     /**
-     * This is a little bit weird, every reservation will have its own state.
-     * So if there are 10 reservations with a PaidState there will be also 10 rows
-     * for PaidState and those rows will all contain the same data (except the reservation_id).
+     * This is a little bit weird, every reservation will have its own state. So
+     * if there are 10 reservations with a PaidState there will be also 10 rows
+     * for PaidState and those rows will all contain the same data (except the
+     * reservation_id).
      * 
      * Possible in another way?
      * 
