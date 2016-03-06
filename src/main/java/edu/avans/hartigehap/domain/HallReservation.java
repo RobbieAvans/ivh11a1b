@@ -48,8 +48,6 @@ public abstract class HallReservation extends DomainObject {
     @Transient
     private ReservationState 	state;
     
-
-    
     @ManyToOne
     private Customer customer;
     
