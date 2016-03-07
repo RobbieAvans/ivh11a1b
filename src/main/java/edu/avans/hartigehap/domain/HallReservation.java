@@ -7,8 +7,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -23,10 +21,8 @@ import lombok.ToString;
  * 
  * @author Tom GIesbergen
  */
-
+ 
 @Entity
-// optional
-@Table(name = "HALLRESERVATION")
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 @Getter
 @Setter
@@ -36,25 +32,18 @@ public abstract class HallReservation extends DomainObject {
 
     private static final long serialVersionUID = 1L;
     private String description;
+    
+    @Transient
+    private HallReservationState cancelledState = new CancelledState(this);
+    
+    @Transient
+    private HallReservationState paidState = new PaidState(this);
+    
+    @Transient
+    private HallReservationState submittedState = new SubmittedState(this);
 
-    @Transient
-    private ReservationState cancelledState = new CancelledState(this);
-    @Transient
-    private ReservationState paidState = new PaidState(this);
-    @Transient
-    private ReservationState submittedState = new SubmittedState(this);
-
-    /**
-     * This is a little bit weird, every reservation will have its own state. So
-     * if there are 10 reservations with a PaidState there will be also 10 rows
-     * for PaidState and those rows will all contain the same data (except the
-     * reservation_id).
-     * 
-     * Possible in another way?
-     * 
-     */
-    @OneToOne(cascade = CascadeType.ALL)
-    private ReservationState state;
+    @ManyToOne
+    private HallReservationState state;
 
     @ManyToOne
     private Customer customer;
@@ -73,11 +62,11 @@ public abstract class HallReservation extends DomainObject {
 
     public HallReservation(HallOption hallOption) {
         this.hallOption = hallOption;
-
+        
         // Default is submittedState ??
         this.state = submittedState;
     }
-
+    
     public void addObserver(Observer observer) {
         observers.add(observer);
     }

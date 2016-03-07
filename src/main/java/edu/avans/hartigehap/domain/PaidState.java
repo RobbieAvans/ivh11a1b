@@ -3,22 +3,27 @@ package edu.avans.hartigehap.domain;
 import javax.persistence.Entity;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-public class PaidState extends ReservationState {
+public class PaidState extends HallReservationState {
     private static final long serialVersionUID = 1L;
 
-    private String state = "PaidState";
-
+    public PaidState() {
+        setStateAsId();
+    }
+    
     public PaidState(HallReservation hallReservation) {
         super(hallReservation);
+        setStateAsId();
     }
 
+    private void setStateAsId() {
+        setId("PaidState");
+    }
+    
     @Override
     public String strMailBody() {
         return "Beste %voornaam%, de reservering is betaald";
@@ -41,8 +46,8 @@ public class PaidState extends ReservationState {
 
     @Override
     public void cancelReservation() {
-        getHallReservation().setState(getHallReservation().getCancelledState());
-        getHallReservation().notifyAllObservers();
+        getCurrentHallReservation().setState(getCurrentHallReservation().getCancelledState());
+        getCurrentHallReservation().notifyAllObservers();
 
     }
 }

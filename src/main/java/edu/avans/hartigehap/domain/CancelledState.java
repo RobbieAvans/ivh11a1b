@@ -3,22 +3,27 @@ package edu.avans.hartigehap.domain;
 import javax.persistence.Entity;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-public class CancelledState extends ReservationState {
+public class CancelledState extends HallReservationState {
     private static final long serialVersionUID = 1L;
 
-    private String state = "CancelledState";
-
+    public CancelledState() {
+        setStateAsId();
+    }
+    
     public CancelledState(HallReservation hallReservation) {
         super(hallReservation);
+        setStateAsId();
     }
 
+    private void setStateAsId() {
+        setId("CancelledState");
+    }
+    
     @Override
     public String strMailBody() {
         return "Beste %voornaam%, de reservering is geannuleerd";
@@ -36,13 +41,12 @@ public class CancelledState extends ReservationState {
 
     @Override
     public void payReservation() {
-        getHallReservation().setState(getHallReservation().getPaidState());
-        getHallReservation().notifyAllObservers();
+        getCurrentHallReservation().setState(getCurrentHallReservation().getPaidState());
+        getCurrentHallReservation().notifyAllObservers();
     }
 
     @Override
     public void cancelReservation() {
         System.out.println("Je bent al gecancelled, nogmaals cancellen gaat niet meer");
     }
-
 }

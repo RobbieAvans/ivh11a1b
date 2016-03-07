@@ -10,16 +10,21 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import edu.avans.hartigehap.domain.CancelledState;
 import edu.avans.hartigehap.domain.Customer;
 import edu.avans.hartigehap.domain.DiningTable;
 import edu.avans.hartigehap.domain.Drink;
 import edu.avans.hartigehap.domain.FoodCategory;
 import edu.avans.hartigehap.domain.HallOption;
+import edu.avans.hartigehap.domain.HallReservationState;
 import edu.avans.hartigehap.domain.Meal;
+import edu.avans.hartigehap.domain.PaidState;
 import edu.avans.hartigehap.domain.Restaurant;
+import edu.avans.hartigehap.domain.SubmittedState;
 import edu.avans.hartigehap.repository.CustomerRepository;
 import edu.avans.hartigehap.repository.FoodCategoryRepository;
 import edu.avans.hartigehap.repository.HallOptionRepository;
+import edu.avans.hartigehap.repository.HallReservationStateRepository;
 import edu.avans.hartigehap.repository.MenuItemRepository;
 import edu.avans.hartigehap.repository.RestaurantRepository;
 import edu.avans.hartigehap.service.RestaurantPopulatorService;
@@ -39,6 +44,8 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
     private CustomerRepository customerRepository;
     @Autowired
     private HallOptionRepository hallOptionRepository;
+    @Autowired
+    private HallReservationStateRepository hallReservationStateRepository;
 
     private List<Meal> meals = new ArrayList<>();
     private List<FoodCategory> foodCats = new ArrayList<>();
@@ -90,6 +97,8 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         createHallOptions("Hall", 100.00);
         createHallOptions("Wifi", 5.00);
         createHallOptions("DJ", 50.00);
+        
+        createStates();
     }
 
     private void createHallOptions(String description, Double price) {
@@ -98,6 +107,17 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         hallOptions.add(hallOption);
     }
 
+    private void createStates() {
+        HallReservationState cancelledState, paidState, submittedState;
+        cancelledState = new CancelledState();
+        paidState = new PaidState();
+        submittedState = new SubmittedState();
+        
+        hallReservationStateRepository.save(cancelledState);
+        hallReservationStateRepository.save(paidState);
+        hallReservationStateRepository.save(submittedState);
+    }
+    
     private void createFoodCategory(String tag) {
         FoodCategory foodCategory = new FoodCategory(tag);
         foodCategory = foodCategoryRepository.save(foodCategory);

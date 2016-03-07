@@ -91,24 +91,14 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         long id = 5;
         HallReservation foundReservation = hallReservationRepository.findOne(id);
         foundReservation.submitReservation();
-        hallReservationRepository.save(foundReservation);
 
         // Hij zou hier geen mailtje mogen sturen
         assertEquals("SubmittedState", reservation.getState().getState());
-        // Hij zou hier geen mailtje mogen sturen
-        assertEquals("SubmittedState", reservation.getState().getState().toString());
-        // Hij zou hier geen mailtje mogen sturen
-        assertEquals("SubmittedState", reservation.getState().getState().toString());
 
         foundReservation.payReservation();
-        hallReservationRepository.save(foundReservation);
         assertEquals("PaidState", reservation.getState().getState());
-        foundReservation.payReservation();
-        hallReservationRepository.save(foundReservation);
-        assertEquals("PaidState", reservation.getState().getState().toString());
 
         foundReservation.cancelReservation();
-        hallReservationRepository.save(foundReservation);
         assertEquals("CancelledState", reservation.getState().getState());
     }
 
@@ -120,7 +110,6 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         HallOption hall = new HallOption("Hall", 100.00);
         hallOptionRepository.save(hall);
 
-        HallReservation reservation = new ConcreteHallReservation(hall);
         Date date1 = new Date();
         date1.setMonth(1);
         date1.setDate(15);
@@ -132,13 +121,17 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         partOfDayRepository.save(day1);
         partOfDayRepository.save(day2);
         partOfDayRepository.save(day3);
+        
+        HallReservation reservation = new ConcreteHallReservation(hall);
 
         reservation.addPartOfDay(day1);
         reservation.addPartOfDay(day2);
         reservation.addPartOfDay(day3);
 
         hallReservationRepository.save(reservation);
-        HallReservation ReservationFromDB = hallReservationRepository.findAll().iterator().next();
+        System.out.println(reservation.getState().getState());
+        long id = 1 ;
+        HallReservation ReservationFromDB = hallReservationRepository.findOne(id);
 
         assertEquals("Morning", ReservationFromDB.getPartOfDays().get(0).getDescription());
         assertEquals(8, ReservationFromDB.getPartOfDays().get(0).getStartTime().getHours());
