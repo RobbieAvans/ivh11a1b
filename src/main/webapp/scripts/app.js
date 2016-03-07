@@ -34,6 +34,6 @@ angular.module('bestellenApp').config(function($stateProvider) {
 	    controller: 'HallOptionEditController'
   });
 }).run(function($state) {
-  $state.go('hallOptions');
+ // $state.go('halls');
 });
 
