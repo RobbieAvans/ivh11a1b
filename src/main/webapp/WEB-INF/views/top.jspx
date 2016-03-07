@@ -56,6 +56,15 @@
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="${homeUrl}">Home</a></li>
                     <sec:authorize access="hasRole('ROLE_EMPLOYEE')">
+                    	
+                    	<li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reservering subsysteem<span class="caret"><jsp:text /></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <spring:url var="customerSubsystem" value="/restaurants/${restaurant.id}/customers" />
+                                    <li><a href="static/#/hall/">Overzicht zalen</a></li>
+                                    <li><a href="static/#/halloption/">Overzicht zaalopties</a></li>
+                                </ul>
+                            </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">${labelRestaurants} <span class="caret"><jsp:text /></span></a>
                             <ul class="dropdown-menu" role="menu">
