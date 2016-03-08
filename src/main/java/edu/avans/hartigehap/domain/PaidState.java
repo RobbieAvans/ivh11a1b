@@ -5,26 +5,18 @@ import javax.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import lombok.NoArgsConstructor;
+
 
 
 @Slf4j
 @Entity
-@Getter
-@Setter
+@NoArgsConstructor
 public class PaidState extends HallReservationState {
     private static final long serialVersionUID = 1L;
-
-    public PaidState() {
-        setStateAsId();
-    }
-
+    
     public PaidState(HallReservation hallReservation) {
         super(hallReservation);
-        setStateAsId();
-    }
-
-    private void setStateAsId() {
-        setId("PaidState");
     }
 
 	@Override
