@@ -6,25 +6,36 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+
 @Slf4j
+@Entity
 @Getter
 @Setter
-public class PaidState extends ReservationState {
-	private static final long serialVersionUID = 1L;
-	private HallReservation hallReservation;
-	private String state = "PaidState";
+public class PaidState extends HallReservationState {
+    private static final long serialVersionUID = 1L;
 
-	public PaidState(HallReservation hallReservation){
-			this.hallReservation = hallReservation;
-	}
-	
-	public String strMailBody() {
-		return "Beste %voornaam%, de reservering is betaald";
-	}
+    public PaidState() {
+        setStateAsId();
+    }
 
+    public PaidState(HallReservation hallReservation) {
+        super(hallReservation);
+        setStateAsId();
+    }
+
+    private void setStateAsId() {
+        setId("PaidState");
+    }
+
+	@Override
 	public String strMailSubject() {
-		return "Reservering is Betaald";
+		return "Reservering is betaald";
 	}
+    
+    @Override
+    public String strMailBody() {
+        return "Beste %voornaam%, de reservering is betaald";
+    }
 
 	@Override
 	public void submitReservation() {
@@ -40,4 +51,6 @@ public class PaidState extends ReservationState {
 	public void cancelReservation() {
 		log.debug("Je bent al betaald, cancellen gaat niet meer");
 	}
+
+
 }

@@ -6,40 +6,48 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+
 @Slf4j
+@Entity
 @Getter
 @Setter
-public class SubmittedState extends ReservationState {
-	private static final long serialVersionUID = 1L;
-	private HallReservation hallReservation;
-	private String state = "SubmittedState";
+public class SubmittedState extends HallReservationState {
+    private static final long serialVersionUID = 1L;
 
-	public SubmittedState(HallReservation hallReservation){
-			this.hallReservation = hallReservation;
-	}
-	
-	public String strMailBody() {
-		return "Beste %voornaam%, de reservering is aangemaakt";
-	}
+    public SubmittedState() {
+        setStateAsId();
+    }
+    
+    public SubmittedState(HallReservation hallReservation) {
+        super(hallReservation);
+        setStateAsId();
+    }
 
-	public String strMailSubject() {
-		return "Reservering is aangemaakt";
-	}
+    private void setStateAsId() {
+        setId("SubmittedState");
+    }
+    
+    @Override
+    public String strMailBody() {
+        return "Beste %voornaam%, de reservering is aangemaakt";
+    }
 
-	@Override
-	public void submitReservation() {
-		log.debug("Je bent al gesubmitted, nogmaals submitten gaat niet meer");
-	}
+    @Override
+    public String strMailSubject() {
+        return "Reservering is aangemaakt";
+    }
 
-	@Override
+    @Override
+    public void submitReservation() {
+    	log.debug("Je bent al gesubmitted, nogmaals submitten gaat niet meer");
+    }
+    @Override
 	public void payReservation() {
-		hallReservation.setState(hallReservation.getPaidState());
-		hallReservation.notifyAllObservers();
+		super.payReservation();
 	}
 
 	@Override
 	public void cancelReservation() {
-		hallReservation.setState(hallReservation.getCancelledState());
-		hallReservation.notifyAllObservers();
+		super.cancelReservation();
 	}
 }

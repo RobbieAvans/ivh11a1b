@@ -26,5 +26,4 @@ public class SimpleMail extends Mail {
 		log.debug("Ik verstuur onderstaand bericht nu.");
 		log.debug(strMessage);
 	}
-
 }

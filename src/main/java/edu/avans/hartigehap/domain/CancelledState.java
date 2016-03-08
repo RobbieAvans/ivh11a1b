@@ -10,39 +10,44 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Entity
-@Getter @Setter
-public class CancelledState extends ReservationState{
-	private static final long serialVersionUID = 1L;
-	private HallReservation hallReservation;
-	private String state = "CancelledState";
+public class CancelledState extends HallReservationState {
+    private static final long serialVersionUID = 1L;
 
-	public CancelledState(HallReservation hallReservation){
-			this.hallReservation = hallReservation;
-	}
-	
-	public String strMailBody() {
-		return "Beste %voornaam%, de reservering is geannuleerd";
-	}
+    public CancelledState() {
+        setStateAsId();
+    }
 
-	public String strMailSubject() {
-		return "Annulering van reservering";
-	}
+    public CancelledState(HallReservation hallReservation) {
+        super(hallReservation);
+        setStateAsId();
+    }
 
-	@Override
-	public void submitReservation() {
-		log.debug("Je bent al gecancelled, submitten gaat niet meer");
-	}
+    private void setStateAsId() {
+        setId("CancelledState");
+    }
 
-	@Override
-	public void payReservation() {
-		hallReservation.setState(hallReservation.getPaidState());
-		hallReservation.notifyAllObservers();
-	}
+    @Override
+    public String strMailBody() {
+        return "Beste %voornaam%, de reservering is geannuleerd";
+    }
 
-	@Override
-	public void cancelReservation() {
-		log.debug("Je bent al gecancelled, nogmaals cancellen gaat niet meer");
-	}
+    @Override
+    public String strMailSubject() {
+        return "Annulering van reservering";
+    }
 
+    @Override
+    public void submitReservation() {
+        log.debug("Je bent al gecancelled, submitten gaat niet meer.");
+    }
 
+    @Override
+    public void cancelReservation() {
+    	log.debug("Je bent al gecancelled, nogmaals cancellen gaat niet meer.");
+    }
+    
+    @Override
+    public void payReservation(){
+    	log.debug("Je bent al gecancelled, betalen gaat niet meer.");
+    }
 }
