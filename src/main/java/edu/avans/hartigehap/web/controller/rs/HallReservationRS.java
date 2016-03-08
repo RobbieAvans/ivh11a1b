@@ -14,8 +14,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.avans.hartigehap.domain.Hall;
+import edu.avans.hartigehap.domain.HallOption;
 import edu.avans.hartigehap.domain.HallReservation;
+import edu.avans.hartigehap.domain.HallReservationAPIWrapper;
+import edu.avans.hartigehap.domain.HallReservationOption;
 import edu.avans.hartigehap.service.HallReservationService;
+import edu.avans.hartigehap.service.HallService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -24,23 +29,31 @@ public class HallReservationRS extends BaseRS {
 
     @Autowired
     private HallReservationService hallReservationService;
+    @Autowired
+    private HallService hallService;
 
     @RequestMapping(value = RSConstants.URL_PREFIX
             + "/hallReservation", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ModelAndView createHallReservation(@RequestBody HallReservation hallReservation,
+    public ModelAndView createHallReservation(@RequestBody HallReservationAPIWrapper hallReservationWrapper,
             HttpServletResponse httpResponse, WebRequest httpRequest) {
-        try {
-            HallReservation savedHallReservation = hallReservationService.save(hallReservation);
-            httpResponse.setStatus(HttpStatus.CREATED.value());
-            httpResponse.setHeader("Location",
-                    httpRequest.getContextPath() + "/hallReservation/" + savedHallReservation.getId());
-
-            return createSuccessResponse(savedHallReservation);
-        } catch (Exception e) {
-            log.debug(e.getMessage());
-            return createErrorResponse("Error when creating a new hallReservation");
+        
+        HallReservation hallReservation = hallReservationWrapper.getHallReservation();
+        Hall hall = hallReservation.getHall();
+        
+        // Decorate with the halloptions
+        for (HallOption hallOption : hallReservationWrapper.getHallOptions()) {
+            hallReservation = new HallReservationOption(hallReservation, hallOption);
         }
+        
+        hall.addReservation(hallReservation);
+        hallService.save(hall);
+        
+        httpResponse.setStatus(HttpStatus.CREATED.value());
+        httpResponse.setHeader("Location",
+                httpRequest.getContextPath() + "/hallReservation/" + hallReservation.getId());
+
+        return createSuccessResponse(hallReservation);
     }
 
     @RequestMapping(value = RSConstants.URL_PREFIX
