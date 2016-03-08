@@ -31,7 +31,8 @@ public class Hall extends DomainObject {
 
     public Hall addReservation(HallReservation hallReservation) {
         reservations.add(hallReservation);
-
+        hallReservation.setHall(this);
+        
         return this;
     }
 

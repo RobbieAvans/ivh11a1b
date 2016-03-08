@@ -10,16 +10,21 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import edu.avans.hartigehap.domain.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.Customer;
 import edu.avans.hartigehap.domain.DiningTable;
 import edu.avans.hartigehap.domain.Drink;
 import edu.avans.hartigehap.domain.FoodCategory;
+import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
+import edu.avans.hartigehap.domain.HallReservation;
+import edu.avans.hartigehap.domain.HallReservationOption;
 import edu.avans.hartigehap.domain.Meal;
 import edu.avans.hartigehap.domain.Restaurant;
 import edu.avans.hartigehap.repository.CustomerRepository;
 import edu.avans.hartigehap.repository.FoodCategoryRepository;
 import edu.avans.hartigehap.repository.HallOptionRepository;
+import edu.avans.hartigehap.repository.HallRepository;
 import edu.avans.hartigehap.repository.MenuItemRepository;
 import edu.avans.hartigehap.repository.RestaurantRepository;
 import edu.avans.hartigehap.service.RestaurantPopulatorService;
@@ -39,6 +44,8 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
     private CustomerRepository customerRepository;
     @Autowired
     private HallOptionRepository hallOptionRepository;
+    @Autowired
+    private HallRepository hallRepository;
     
     private List<Meal> meals = new ArrayList<>();
     private List<FoodCategory> foodCats = new ArrayList<>();
@@ -90,6 +97,18 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         createHallOptions("Hall", 100.00);
         createHallOptions("Wifi", 5.00);
         createHallOptions("DJ", 50.00);
+        
+        // Create Hall
+        Hall hall = new Hall("Grote zaal", 180);
+        hallRepository.save(hall);
+        
+        // Decorate reservation
+        HallReservation reservation = new ConcreteHallReservation(hallOptions.get(0));
+        HallReservation hallOption1 = new HallReservationOption(reservation, hallOptions.get(1));
+        HallReservation hallOption2 = new HallReservationOption(hallOption1, hallOptions.get(2));
+
+        hall.addReservation(hallOption2);
+        hallRepository.save(hall);
     }
 
     private void createHallOptions(String description, Double price) {

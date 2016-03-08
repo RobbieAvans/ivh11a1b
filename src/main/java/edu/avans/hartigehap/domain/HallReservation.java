@@ -11,6 +11,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Getter;
@@ -25,6 +26,7 @@ import lombok.ToString;
  
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
+@JsonIgnoreProperties({"cancelledState", "paidState", "submittedState", "observers"})
 @Getter
 @Setter
 @ToString(callSuper = true, includeFieldNames = true, of = { "description" })
