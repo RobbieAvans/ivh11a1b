@@ -1,10 +1,7 @@
 package edu.avans.hartigehap.domain;
 
-import java.util.Collection;
-
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import javax.persistence.OneToOne;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,13 +11,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public abstract class HallReservationState extends DomainObjectNaturalId {
+public abstract class HallReservationState extends DomainObject {
     private static final long serialVersionUID = 1L;
 
-    @OneToMany(mappedBy = "state")
-    private Collection<HallReservation> hallReservations;
-
-    @Transient
+    @OneToOne
     private HallReservation currentHallReservation;
 
     public HallReservationState(HallReservation hallReservation) {
@@ -42,9 +36,8 @@ public abstract class HallReservationState extends DomainObjectNaturalId {
         getCurrentHallReservation().setState(getCurrentHallReservation().getCancelledState());
         getCurrentHallReservation().notifyAllObservers();
     }
-
-    @Transient
+    
     public String getState() {
-        return getId();
+        return this.getClass().getSimpleName();
     }
 }
