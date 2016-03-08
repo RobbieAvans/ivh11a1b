@@ -2,26 +2,15 @@ package edu.avans.hartigehap.domain;
 
 import javax.persistence.Entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Getter
-@Setter
+@NoArgsConstructor
 public class CancelledState extends HallReservationState {
     private static final long serialVersionUID = 1L;
 
-    public CancelledState() {
-        setStateAsId();
-    }
-
     public CancelledState(HallReservation hallReservation) {
         super(hallReservation);
-        setStateAsId();
-    }
-
-    private void setStateAsId() {
-        setId("CancelledState");
     }
 
     @Override

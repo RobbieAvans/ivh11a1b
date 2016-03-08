@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -42,7 +43,7 @@ public abstract class HallReservation extends DomainObject {
     @Transient
     private HallReservationState submittedState = new SubmittedState(this);
 
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private HallReservationState state;
 
     @ManyToOne
