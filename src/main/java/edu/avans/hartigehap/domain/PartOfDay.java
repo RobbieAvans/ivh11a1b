@@ -25,7 +25,6 @@ public abstract class PartOfDay extends DomainObject {
     private Date endTime;
     private String description;
 
-    @ManyToOne()
+    @ManyToOne
     private HallReservation hallReservation;
-
 }

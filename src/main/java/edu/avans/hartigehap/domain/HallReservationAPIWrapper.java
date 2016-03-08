@@ -1,6 +1,6 @@
 package edu.avans.hartigehap.domain;
 
-import java.util.Collection;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -13,13 +13,13 @@ import lombok.Setter;
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class HallReservationAPIWrapper {
 
-    private Long id;
+    private Long id = null;
     private String description;
     private HallReservationState state;
     private Customer customer;
-    private Collection<HallOption> hallOptions;
+    private List<HallOption> hallOptions;
     private Hall hall;
-    private Collection<PartOfDay> partOfDays;
+    private List<PartOfDay> partOfDays;
 
     public HallReservationAPIWrapper(HallReservation hallReservation) {
         id = hallReservation.getId();
