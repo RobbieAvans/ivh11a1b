@@ -28,7 +28,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "MENUITEMS")
 // images are stored in a separate database table (optional)
-@SecondaryTable(name = "MENUITEM_IMAGES", pkJoinColumns = @PrimaryKeyJoinColumn(name = "id") )
+@SecondaryTable(name = "MENUITEM_IMAGES", pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 @Getter
 @Setter

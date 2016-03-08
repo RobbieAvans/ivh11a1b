@@ -28,7 +28,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 /**
  * 
  * @author Erco
@@ -62,7 +61,7 @@ public class Customer extends DomainObject {
     private int partySize;
 
     private String description;
-    
+
     private String email;
 
     @Basic(fetch = FetchType.LAZY)
@@ -81,8 +80,8 @@ public class Customer extends DomainObject {
     private Collection<Bill> bills = new ArrayList<Bill>();
 
     // TODO not complete (bills)
-    public Customer(String firstName, String lastName, String email, DateTime birthDate, int partySize, String description,
-            byte[] photo) {
+    public Customer(String firstName, String lastName, String email, DateTime birthDate, int partySize,
+            String description, byte[] photo) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -103,12 +102,15 @@ public class Customer extends DomainObject {
         // hack
         // the "if" is a hack
         // when you change a customer without changing the photo, the customer
-        // object passed to the server by editcustomer has the non-changed fields
+        // object passed to the server by editcustomer has the non-changed
+        // fields
         // filled in, except for the photo.
-        // result is that changing only one field of a customer effectively deletes the photo
+        // result is that changing only one field of a customer effectively
+        // deletes the photo
         // hack: only update the photo when a new photo is passed
-        // downside of this hack: it is not possible any more to delete the photo
-        if(customer.photo.length != 0) {
+        // downside of this hack: it is not possible any more to delete the
+        // photo
+        if (customer.photo.length != 0) {
             photo = customer.photo;
         }
         partySize = customer.partySize;

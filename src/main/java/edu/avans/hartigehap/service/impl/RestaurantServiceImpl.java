@@ -24,6 +24,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
+    @Override
     @Transactional(readOnly = true)
     public List<Restaurant> findAll() {
         // MySQL and H2 return the restaurants of findAll() in different order
@@ -32,19 +33,23 @@ public class RestaurantServiceImpl implements RestaurantService {
         return Lists.newArrayList(restaurantRepository.findAll(sort));
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Restaurant findById(String restaurant) {
         return restaurantRepository.findOne(restaurant);
     }
 
+    @Override
     public Restaurant save(Restaurant restaurant) {
         return restaurantRepository.save(restaurant);
     }
 
+    @Override
     public void delete(String restaurant) {
         restaurantRepository.delete(restaurant);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Page<Restaurant> findAllByPage(Pageable pageable) {
         return restaurantRepository.findAll(pageable);
@@ -54,6 +59,7 @@ public class RestaurantServiceImpl implements RestaurantService {
      * to be able to follow associations outside the context of a transaction,
      * prefetch the associated entities by traversing the associations
      */
+    @Override
     @Transactional(readOnly = true)
     public Restaurant fetchWarmedUp(String restaurantName) {
         Restaurant restaurant = restaurantRepository.findOne(restaurantName);

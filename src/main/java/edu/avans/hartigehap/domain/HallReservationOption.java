@@ -18,12 +18,12 @@ import lombok.ToString;
 @NoArgsConstructor
 public class HallReservationOption extends HallReservationDecorator {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public HallReservationOption(HallReservation hallReservation, HallOption hallOption) {
-		super(hallReservation, hallOption);
-		setObservers(hallReservation.getObservers());
-		setPartOfDays(hallReservation.getPartOfDays());
-		setCustomer(hallReservation.getCustomer());
-	}
+    public HallReservationOption(HallReservation hallReservation, HallOption hallOption) {
+        super(hallReservation, hallOption);
+        setObservers(hallReservation.getObservers());
+        setPartOfDays(hallReservation.getPartOfDays());
+        setCustomer(hallReservation.getCustomer());
+    }
 }

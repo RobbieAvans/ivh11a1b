@@ -25,6 +25,7 @@ public class HallReservationSeviceImpl implements HallReservationService {
     
     @Autowired
     private HallService hallService;
+
    
 	@Override
 	public List<HallReservation> findAll() {
@@ -39,15 +40,15 @@ public class HallReservationSeviceImpl implements HallReservationService {
         return reservations;
 	}
 
-	@Override
-	public HallReservation save(HallReservation hallReservation) {
-		return hallReservationRepository.save(hallReservation);
-	}
+    @Override
+    public HallReservation save(HallReservation hallReservation) {
+        return hallReservationRepository.save(hallReservation);
+    }
 
-	@Override
-	public void delete(HallReservation hallReservation) {
-		hallReservationRepository.delete(hallReservation);
-	}
+    @Override
+    public void delete(HallReservation hallReservation) {
+        hallReservationRepository.delete(hallReservation);
+    }
 
     @Override
     public HallReservation findById(Long hallReservationId) {

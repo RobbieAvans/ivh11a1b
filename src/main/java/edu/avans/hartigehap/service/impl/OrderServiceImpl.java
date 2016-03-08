@@ -25,6 +25,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Override
     @Transactional(readOnly = true)
     public Order findById(Long orderId) {
         return orderRepository.findOne(orderId);
@@ -36,6 +37,7 @@ public class OrderServiceImpl implements OrderService {
     // * a named query (using entityManager)
     // * a query created using a repository method name
     // * a repository with a custom method implementation
+    @Override
     @Transactional(readOnly = true)
     public List<Order> findSubmittedOrdersForRestaurant(Restaurant restaurant) {
 
@@ -67,28 +69,33 @@ public class OrderServiceImpl implements OrderService {
         return submittedOrdersList;
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<Order> findPlannedOrdersForRestaurant(Restaurant restaurant) {
         // a query created using a repository method name
-        return orderRepository.findByOrderStatusAndBillDiningTableRestaurant(
-                Order.OrderStatus.PLANNED, restaurant, new Sort(Sort.Direction.ASC, "plannedTime"));
+        return orderRepository.findByOrderStatusAndBillDiningTableRestaurant(Order.OrderStatus.PLANNED, restaurant,
+                new Sort(Sort.Direction.ASC, "plannedTime"));
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<Order> findPreparedOrdersForRestaurant(Restaurant restaurant) {
         // a query created using a repository method name
-        return orderRepository.findByOrderStatusAndBillDiningTableRestaurant(
-                Order.OrderStatus.PREPARED, restaurant, new Sort(Sort.Direction.ASC, "preparedTime"));
+        return orderRepository.findByOrderStatusAndBillDiningTableRestaurant(Order.OrderStatus.PREPARED, restaurant,
+                new Sort(Sort.Direction.ASC, "preparedTime"));
     }
 
+    @Override
     public void planOrder(Order order) throws StateException {
         order.plan();
     }
 
+    @Override
     public void orderPrepared(Order order) throws StateException {
         order.prepared();
     }
 
+    @Override
     public void orderServed(Order order) throws StateException {
         order.served();
     }

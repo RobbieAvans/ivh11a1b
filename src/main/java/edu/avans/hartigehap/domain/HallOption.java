@@ -11,13 +11,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class HallOption extends DomainObject {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private String description;
-	private Double price;
+    private String description;
+    private Double price;
 
-	public HallOption(String description, Double price) {
-		this.description = description;
-		this.price = price;
-	}
+    public HallOption(String description, Double price) {
+        this.description = description;
+        this.price = price;
+    }
 }

@@ -31,24 +31,29 @@ public class DiningTableServiceImpl implements DiningTableService {
     @Autowired
     private MenuItemRepository menuItemRepository;
 
+    @Override
     @Transactional(readOnly = true)
     public List<DiningTable> findAll() {
         return Lists.newArrayList(diningTableRepository.findAll());
     }
 
+    @Override
     @Transactional(readOnly = true)
     public DiningTable findById(Long id) {
         return diningTableRepository.findOne(id);
     }
 
+    @Override
     public DiningTable save(DiningTable diningTable) {
         return diningTableRepository.save(diningTable);
     }
 
+    @Override
     public void delete(Long id) {
         diningTableRepository.delete(id);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Page<DiningTable> findAllByPage(Pageable pageable) {
         return diningTableRepository.findAll(pageable);
@@ -56,6 +61,7 @@ public class DiningTableServiceImpl implements DiningTableService {
 
     // to be able to follow associations outside the context of a transaction,
     // prefetch the associated entities by traversing the associations
+    @Override
     @Transactional(readOnly = true)
     public DiningTable fetchWarmedUp(Long id) {
         log.info("(fetchWarmedUp) diningTable id: " + id);
@@ -72,16 +78,19 @@ public class DiningTableServiceImpl implements DiningTableService {
         return diningTable;
     }
 
+    @Override
     public void addOrderItem(DiningTable diningTable, String menuItemName) {
         MenuItem menuItem = menuItemRepository.findOne(menuItemName);
         diningTable.getCurrentBill().getCurrentOrder().addOrderItem(menuItem);
     }
 
+    @Override
     public void deleteOrderItem(DiningTable diningTable, String menuItemName) {
         MenuItem menuItem = menuItemRepository.findOne(menuItemName);
         diningTable.getCurrentBill().getCurrentOrder().deleteOrderItem(menuItem);
     }
 
+    @Override
     public void submitOrder(DiningTable diningTable) throws StateException {
         diningTable.getCurrentBill().submitOrder();
 
@@ -89,6 +98,7 @@ public class DiningTableServiceImpl implements DiningTableService {
         // StateException("boe")
     }
 
+    @Override
     public void submitBill(DiningTable diningTable) throws StateException, EmptyBillException {
         diningTable.submitBill();
     }
