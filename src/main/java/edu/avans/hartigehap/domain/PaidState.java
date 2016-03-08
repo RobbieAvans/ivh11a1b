@@ -14,7 +14,7 @@ public class PaidState extends HallReservationState {
     public PaidState() {
         setStateAsId();
     }
-    
+
     public PaidState(HallReservation hallReservation) {
         super(hallReservation);
         setStateAsId();
@@ -23,7 +23,7 @@ public class PaidState extends HallReservationState {
     private void setStateAsId() {
         setId("PaidState");
     }
-    
+
     @Override
     public String strMailBody() {
         return "Beste %voornaam%, de reservering is betaald";
@@ -42,12 +42,5 @@ public class PaidState extends HallReservationState {
     @Override
     public void payReservation() {
         System.out.println("Je bent al betaald, nogmaals betalen gaat niet meer");
-    }
-
-    @Override
-    public void cancelReservation() {
-        getCurrentHallReservation().setState(getCurrentHallReservation().getCancelledState());
-        getCurrentHallReservation().notifyAllObservers();
-
     }
 }

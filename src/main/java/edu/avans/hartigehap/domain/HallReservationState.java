@@ -17,9 +17,9 @@ import lombok.Setter;
 public abstract class HallReservationState extends DomainObjectNaturalId {
     private static final long serialVersionUID = 1L;
 
-    @OneToMany(mappedBy="state")
+    @OneToMany(mappedBy = "state")
     private Collection<HallReservation> hallReservations;
-    
+
     @Transient
     private HallReservation currentHallReservation;
 
@@ -33,9 +33,15 @@ public abstract class HallReservationState extends DomainObjectNaturalId {
 
     public abstract void submitReservation();
 
-    public abstract void payReservation();
+    public void payReservation() {
+        getCurrentHallReservation().setState(getCurrentHallReservation().getPaidState());
+        getCurrentHallReservation().notifyAllObservers();
+    }
 
-    public abstract void cancelReservation();
+    public void cancelReservation() {
+        getCurrentHallReservation().setState(getCurrentHallReservation().getCancelledState());
+        getCurrentHallReservation().notifyAllObservers();
+    }
 
     @Transient
     public String getState() {

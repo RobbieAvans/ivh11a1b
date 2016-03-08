@@ -38,16 +38,4 @@ public class SubmittedState extends HallReservationState {
     public void submitReservation() {
         System.out.println("Je bent al gesubmitted, nogmaals submitten gaat niet meer");
     }
-
-    @Override
-    public void payReservation() {
-        getCurrentHallReservation().setState(getCurrentHallReservation().getPaidState());
-        getCurrentHallReservation().notifyAllObservers();
-    }
-
-    @Override
-    public void cancelReservation() {
-        getCurrentHallReservation().setState(getCurrentHallReservation().getCancelledState());
-        getCurrentHallReservation().notifyAllObservers();
-    }
 }

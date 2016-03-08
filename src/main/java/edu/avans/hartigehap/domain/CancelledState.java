@@ -14,7 +14,7 @@ public class CancelledState extends HallReservationState {
     public CancelledState() {
         setStateAsId();
     }
-    
+
     public CancelledState(HallReservation hallReservation) {
         super(hallReservation);
         setStateAsId();
@@ -23,7 +23,7 @@ public class CancelledState extends HallReservationState {
     private void setStateAsId() {
         setId("CancelledState");
     }
-    
+
     @Override
     public String strMailBody() {
         return "Beste %voornaam%, de reservering is geannuleerd";
@@ -37,12 +37,6 @@ public class CancelledState extends HallReservationState {
     @Override
     public void submitReservation() {
         System.out.println("Je bent al gecancelled, submitten gaat niet meer");
-    }
-
-    @Override
-    public void payReservation() {
-        getCurrentHallReservation().setState(getCurrentHallReservation().getPaidState());
-        getCurrentHallReservation().notifyAllObservers();
     }
 
     @Override
