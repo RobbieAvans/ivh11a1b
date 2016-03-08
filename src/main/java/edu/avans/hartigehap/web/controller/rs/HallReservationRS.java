@@ -1,5 +1,8 @@
 package edu.avans.hartigehap.web.controller.rs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.avans.hartigehap.domain.Hall;
-import edu.avans.hartigehap.domain.HallOption;
 import edu.avans.hartigehap.domain.HallReservation;
 import edu.avans.hartigehap.domain.HallReservationAPIWrapper;
-import edu.avans.hartigehap.domain.HallReservationOption;
 import edu.avans.hartigehap.service.HallReservationService;
 import edu.avans.hartigehap.service.HallService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +37,7 @@ public class HallReservationRS extends BaseRS {
     @ResponseBody
     public ModelAndView createHallReservation(@RequestBody HallReservationAPIWrapper hallReservationWrapper,
             HttpServletResponse httpResponse, WebRequest httpRequest) {
-        
+        /**
         HallReservation hallReservation = hallReservationWrapper.getHallReservation();
         Hall hall = hallReservation.getHall();
         
@@ -54,13 +54,22 @@ public class HallReservationRS extends BaseRS {
                 httpRequest.getContextPath() + "/hallReservation/" + hallReservation.getId());
 
         return createSuccessResponse(hallReservation);
+        */
+        return createSuccessResponse(null);
     }
 
     @RequestMapping(value = RSConstants.URL_PREFIX
             + "/hallReservation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ModelAndView allHallReservations() {
-        return createSuccessResponse(hallReservationService.findAll());
+        List<HallReservationAPIWrapper> wrapper = new ArrayList<>();
+        
+        // Fill wrapper
+        for (HallReservation hallReservation : hallReservationService.findAll()) {
+            wrapper.add(new HallReservationAPIWrapper(hallReservation));
+        }
+        
+        return createSuccessResponse(wrapper);
     }
 
     @RequestMapping(value = RSConstants.URL_PREFIX
@@ -70,7 +79,7 @@ public class HallReservationRS extends BaseRS {
         HallReservation hallReservation = hallReservationService.findById(hallReservationId);
 
         if (hallReservation != null) {
-            return createSuccessResponse(hallReservation);
+            return createSuccessResponse(new HallReservationAPIWrapper(hallReservation));
         }
 
         return createErrorResponse("HallReservation with id " + hallReservationId + " was not found");
