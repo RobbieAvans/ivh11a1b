@@ -25,19 +25,22 @@ public class BillServiceImpl implements BillService {
     @Autowired
     private BillRepository billRepository;
 
+    @Override
     @Transactional(readOnly = true)
     public Bill findById(Long billId) {
         return billRepository.findOne(billId);
     }
 
+    @Override
     public void billHasBeenPaid(Bill bill) throws StateException {
         bill.paid();
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<Bill> findSubmittedBillsForRestaurant(Restaurant restaurant) {
         // a query created using a repository method name
-        return billRepository.findByBillStatusAndDiningTableRestaurant(
-                Bill.BillStatus.SUBMITTED, restaurant, new Sort(Sort.Direction.ASC, "submittedTime"));
+        return billRepository.findByBillStatusAndDiningTableRestaurant(Bill.BillStatus.SUBMITTED, restaurant,
+                new Sort(Sort.Direction.ASC, "submittedTime"));
     }
 }

@@ -7,26 +7,26 @@ import lombok.Setter;
 @Setter
 public abstract class Mail {
 
-	public final void prepareMail(String strReceiver, String strSubject, String strMessage, String strFirstName) {
-		setReceiver(strReceiver);
-		setSubject(strSubject);
-		setBody(strMessage);
-		setFirstName(strFirstName);
-		sent();
-		hook();
-	}
+    public final void prepareMail(String strReceiver, String strSubject, String strMessage, String strFirstName) {
+        setReceiver(strReceiver);
+        setSubject(strSubject);
+        setBody(strMessage);
+        setFirstName(strFirstName);
+        sent();
+        hook();
+    }
 
-	abstract void setReceiver(String strReceiver);
+    abstract void setReceiver(String strReceiver);
 
-	abstract void setSubject(String strSubject);
+    abstract void setSubject(String strSubject);
 
-	abstract void setBody(String strMessage);
-	
-	abstract void setFirstName(String strFirstName);
+    abstract void setBody(String strMessage);
 
-	abstract void sent();
+    abstract void setFirstName(String strFirstName);
 
-	void hook() {
-	};
+    abstract void sent();
+
+    void hook() {
+    };
 
 }

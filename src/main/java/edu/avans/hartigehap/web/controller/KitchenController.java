@@ -60,7 +60,6 @@ public class KitchenController {
         Order order = warmupRestaurant(orderId, uiModel);
         Restaurant resto = order.getBill().getDiningTable().getRestaurant();
 
-
         List<Order> allSubmittedOrders = orderService.findSubmittedOrdersForRestaurant(resto);
         uiModel.addAttribute("allSubmittedOrders", allSubmittedOrders);
 
@@ -97,7 +96,7 @@ public class KitchenController {
             log.error("Internal error: event " + event + " not recognized");
             break;
         }
-        
+
         return "redirect:/restaurants/" + order.getBill().getDiningTable().getRestaurant().getId() + "/kitchen";
     }
 

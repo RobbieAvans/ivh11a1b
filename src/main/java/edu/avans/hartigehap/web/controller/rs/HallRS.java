@@ -26,20 +26,15 @@ public class HallRS extends BaseRS {
     private HallService hallService;
 
     /**
-     * Tested with curl:
-     * curl -H "Content-Type: application/json" -X POST -d 
-     * '{"version":0,"description":"api_test","numberOfSeats":20}' http://localhost:8080/hh/rest/v1/hall
+     * Tested with curl: curl -H "Content-Type: application/json" -X POST -d
+     * '{"version":0,"description":"api_test","numberOfSeats":20}'
+     * http://localhost:8080/hh/rest/v1/hall
      * 
      * Response:
      * 
-     * {
-     * 		"success": {
-     * 			true
-     * 		},
-     * 		"data": {
-     * 			"@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test","reservations":[]
-     * 		}
-     * }
+     * { "success": { true }, "data": {
+     * "@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test",
+     * "reservations":[] } }
      * 
      * 
      * @param hall
@@ -50,36 +45,30 @@ public class HallRS extends BaseRS {
     @RequestMapping(value = RSConstants.URL_PREFIX
             + "/hall", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ModelAndView createHall(@RequestBody Hall hall, HttpServletResponse httpResponse,
-            WebRequest httpRequest) {
+    public ModelAndView createHall(@RequestBody Hall hall, HttpServletResponse httpResponse, WebRequest httpRequest) {
         try {
             Hall savedHall = hallService.save(hall);
             httpResponse.setStatus(HttpStatus.CREATED.value());
-            httpResponse.setHeader("Location",
-                    httpRequest.getContextPath() + "/hall/" + savedHall.getId());
-            
+            httpResponse.setHeader("Location", httpRequest.getContextPath() + "/hall/" + savedHall.getId());
+
             return createSuccessResponse(savedHall);
         } catch (Exception e) {
-        	log.debug(e.getMessage());
+            log.debug(e.getMessage());
             return createErrorResponse("Error when creating a new hall");
         }
     }
-    
+
     /**
      * Tested with curl:
      * 
-     * curl -H "Content-Type: application/json" -X GET http://localhost:8080/hh/rest/v1/hall
+     * curl -H "Content-Type: application/json" -X GET
+     * http://localhost:8080/hh/rest/v1/hall
      * 
      * Response:
      * 
-     * {
-     * 		"success": {
-     * 			true
-     * 		},
-     * 		"data": {
-     * 			"@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test","reservations":[]
-     * 		}
-     * }
+     * { "success": { true }, "data": {
+     * "@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test",
+     * "reservations":[] } }
      * 
      * @return
      */
@@ -87,39 +76,29 @@ public class HallRS extends BaseRS {
             + "/hall", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ModelAndView allHalls() {
-    	return createSuccessResponse(hallService.findAll());
+        return createSuccessResponse(hallService.findAll());
     }
-    
+
     /**
      * Tested with curl:
      * 
-     * curl -H "Content-Type: application/json" -X GET http://localhost:8080/hh/rest/v1/hall/1
+     * curl -H "Content-Type: application/json" -X GET
+     * http://localhost:8080/hh/rest/v1/hall/1
      * 
      * Response:
      * 
-     * {
-     * 		"success": {
-     * 			true
-     * 		},
-     * 		"data": {
-     * 			"@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test","reservations":[]
-     * 		}
-     * }
+     * { "success": { true }, "data": {
+     * "@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test",
+     * "reservations":[] } }
      * 
      * Test with not existing hall
      * 
-     * curl -H "Content-Type: application/json" -X GET http://localhost:8080/hh/rest/v1/hall/2
+     * curl -H "Content-Type: application/json" -X GET
+     * http://localhost:8080/hh/rest/v1/hall/2
      * 
      * Response:
      * 
-     * {
-     * 		"success": {
-     * 			false
-     * 		},
-     * 		"data": {
-     * 			"Hall with id 2 was not found"
-     * 		}
-     * }
+     * { "success": { false }, "data": { "Hall with id 2 was not found" } }
      * 
      * @param hallId
      * @return
@@ -128,49 +107,37 @@ public class HallRS extends BaseRS {
             + "/hall/{hallId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ModelAndView getHall(@PathVariable long hallId) {
-    	Hall hall = hallService.findById(hallId);
-    	
-    	if (hall != null) {
-    		return createSuccessResponse(hall);
-    	}
-    	
-    	return createErrorResponse("Hall with id " + hallId + " was not found");
+        Hall hall = hallService.findById(hallId);
+
+        if (hall != null) {
+            return createSuccessResponse(hall);
+        }
+
+        return createErrorResponse("Hall with id " + hallId + " was not found");
     }
-    
+
     /**
      * Tested with curl:
      * 
-     * curl -H "Content-Type: application/json" -X PUT -d 
-     * '{"version":0,"description":"api_edit_test","numberOfSeats":30}' 
+     * curl -H "Content-Type: application/json" -X PUT -d
+     * '{"version":0,"description":"api_edit_test","numberOfSeats":30}'
      * http://localhost:8080/hh/rest/v1/hall/1
      * 
      * Response:
      * 
-     * {
-     * 		"success": {
-     * 			true
-     * 		},
-     * 		"data": {
-     * 			"@id":1,"id":1,"version":0,"numberOfSeats":30,"description":"api_edit_test","reservations":[]
-     * 		}
-     * }
+     * { "success": { true }, "data": {
+     * "@id":1,"id":1,"version":0,"numberOfSeats":30,"description":
+     * "api_edit_test","reservations":[] } }
      * 
      * Test with not existing hall
      * 
-     * curl -H "Content-Type: application/json" -X PUT -d 
-     * '{"version":0,"description":"api_edit_test","numberOfSeats":30}' 
+     * curl -H "Content-Type: application/json" -X PUT -d
+     * '{"version":0,"description":"api_edit_test","numberOfSeats":30}'
      * http://localhost:8080/hh/rest/v1/hall/2
      * 
      * Response:
      * 
-     * {
-     * 		"success": {
-     * 			false
-     * 		},
-     * 		"data": {
-     * 			"Hall doesn't exists"
-     * 		}
-     * }
+     * { "success": { false }, "data": { "Hall doesn't exists" } }
      * 
      * @param hall
      * @param hallId
@@ -180,24 +147,26 @@ public class HallRS extends BaseRS {
     @RequestMapping(value = RSConstants.URL_PREFIX
             + "/hall/{hallId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ModelAndView updateHall(@RequestBody Hall hall, @PathVariable long hallId, HttpServletResponse httpResponse) {
-    	
-    	if (hallService.findById(hallId) != null) {
-    		hall.setId(hallId);
-        	hallService.save(hall);
-        	
-        	httpResponse.setStatus(HttpStatus.OK.value());  
-        	
-        	return createSuccessResponse(hall);
-    	}
-    	
-    	return createErrorResponse("Hall doesn't exists");
+    public ModelAndView updateHall(@RequestBody Hall hall, @PathVariable long hallId,
+            HttpServletResponse httpResponse) {
+
+        if (hallService.findById(hallId) != null) {
+            hall.setId(hallId);
+            hallService.save(hall);
+
+            httpResponse.setStatus(HttpStatus.OK.value());
+
+            return createSuccessResponse(hall);
+        }
+
+        return createErrorResponse("Hall doesn't exists");
     }
-    
+
     /**
      * Tested with curl:
      * 
-     * curl -H "Content-Type: application/json" -X DELETE http://localhost:8080/hh/rest/v1/hall/1
+     * curl -H "Content-Type: application/json" -X DELETE
+     * http://localhost:8080/hh/rest/v1/hall/1
      * 
      * Response:
      * 
@@ -205,11 +174,13 @@ public class HallRS extends BaseRS {
      * 
      * Test with not existing hall
      * 
-     * curl -H "Content-Type: application/json" -X DELETE http://localhost:8080/hh/rest/v1/hall/2
+     * curl -H "Content-Type: application/json" -X DELETE
+     * http://localhost:8080/hh/rest/v1/hall/2
      * 
      * Response:
      * 
-     * {"success":false,"data":"Hall cannot be deleted. Maybe it has active reservations"}
+     * {"success":false,"data":
+     * "Hall cannot be deleted. Maybe it has active reservations"}
      * 
      * @param hallId
      * @param httpResponse
@@ -220,13 +191,13 @@ public class HallRS extends BaseRS {
     @ResponseBody
     public ModelAndView removeHall(@PathVariable long hallId, HttpServletResponse httpResponse) {
         boolean result = hallService.deleteById(hallId);
-        
+
         if (result) {
-        	httpResponse.setStatus(HttpStatus.OK.value());  
-            
+            httpResponse.setStatus(HttpStatus.OK.value());
+
             return createSuccessResponse(hallId);
         }
-        
+
         return createErrorResponse("Hall cannot be deleted. Maybe it has active reservations");
     }
 }

@@ -16,48 +16,48 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Hall extends DomainObject {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private int numberOfSeats;
-	private String description;
+    private int numberOfSeats;
+    private String description;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hall")
-	private Collection<HallReservation> reservations = new ArrayList<HallReservation>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hall")
+    private Collection<HallReservation> reservations = new ArrayList<HallReservation>();
 
-	public Hall(String description, int numberOfSeats) {
-		this.description = description;
-		this.numberOfSeats = numberOfSeats;
-	}
+    public Hall(String description, int numberOfSeats) {
+        this.description = description;
+        this.numberOfSeats = numberOfSeats;
+    }
 
-	public Hall addReservation(HallReservation hallReservation) {
-		reservations.add(hallReservation);
+    public Hall addReservation(HallReservation hallReservation) {
+        reservations.add(hallReservation);
 
-		return this;
-	}
-	
-	/**
-	 * Check if the hall has activeReservations at the moment
-	 * 
-	 * @return
-	 */
-	public boolean hasActiveReservations() {
-		boolean hasActive = false;
-		for (HallReservation hallReservation : reservations) {
-			if (hallReservation.isActive()) {
-				hasActive = true;
-				break;
-			}
-		}
-		
-		return hasActive;
-	}
-	
-	/**
-	 * Check if the hall can be safely deleted
-	 * 
-	 * @return
-	 */
-	public boolean canBeDeleted() {
-		return !hasActiveReservations();
-	}
+        return this;
+    }
+
+    /**
+     * Check if the hall has activeReservations at the moment
+     * 
+     * @return
+     */
+    public boolean hasActiveReservations() {
+        boolean hasActive = false;
+        for (HallReservation hallReservation : reservations) {
+            if (hallReservation.isActive()) {
+                hasActive = true;
+                break;
+            }
+        }
+
+        return hasActive;
+    }
+
+    /**
+     * Check if the hall can be safely deleted
+     * 
+     * @return
+     */
+    public boolean canBeDeleted() {
+        return !hasActiveReservations();
+    }
 }

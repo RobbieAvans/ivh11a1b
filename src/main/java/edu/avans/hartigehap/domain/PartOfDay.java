@@ -12,17 +12,16 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class PartOfDay extends DomainObject {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-	private Date startTime;
-	private Date endTime;
-	private String description;
+    private Date startTime;
+    private Date endTime;
+    private String description;
 
-	@ManyToOne()
-	private HallReservation hallReservation;
-
+    @ManyToOne()
+    private HallReservation hallReservation;
 
 }
