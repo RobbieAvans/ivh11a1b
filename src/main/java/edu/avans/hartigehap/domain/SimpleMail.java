@@ -7,11 +7,11 @@ public class SimpleMail extends Mail {
 	private String strMessage;
 	
 	void setReceiver(String strReceiver) {
-		//System.out.println("Ik zet nu de ontvanger op: " + strReceiver);
+		log.debug("Zet de ontvanger op: " + strReceiver);
 	}
 
 	void setSubject(String strSubject) {
-		//System.out.println("Zet het subject: " + strSubject);
+		log.debug("Zet het subject: " + strSubject);
 	}
 
 	void setBody(String strBody) {
@@ -23,8 +23,8 @@ public class SimpleMail extends Mail {
 	}
 
 	void sent() {
-		System.out.println("Ik verstuur onderstaand bericht nu.");
-		System.out.println(strMessage);
+		log.debug("Ik verstuur onderstaand bericht nu.");
+		log.debug(strMessage);
 	}
 
 }

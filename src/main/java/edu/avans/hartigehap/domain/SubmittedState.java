@@ -4,7 +4,9 @@ import javax.persistence.Entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Getter
 @Setter
 public class SubmittedState extends ReservationState {
@@ -26,7 +28,7 @@ public class SubmittedState extends ReservationState {
 
 	@Override
 	public void submitReservation() {
-		System.out.println("Je bent al gesubmitted, nogmaals submitten gaat niet meer");
+		log.debug("Je bent al gesubmitted, nogmaals submitten gaat niet meer");
 	}
 
 	@Override

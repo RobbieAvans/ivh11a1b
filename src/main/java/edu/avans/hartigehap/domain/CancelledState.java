@@ -2,9 +2,13 @@ package edu.avans.hartigehap.domain;
 
 import javax.persistence.Entity;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Entity
 @Getter @Setter
 public class CancelledState extends ReservationState{
@@ -26,7 +30,7 @@ public class CancelledState extends ReservationState{
 
 	@Override
 	public void submitReservation() {
-		System.out.println("Je bent al gecancelled, submitten gaat niet meer");
+		log.debug("Je bent al gecancelled, submitten gaat niet meer");
 	}
 
 	@Override
@@ -37,7 +41,7 @@ public class CancelledState extends ReservationState{
 
 	@Override
 	public void cancelReservation() {
-		System.out.println("Je bent al gecancelled, nogmaals cancellen gaat niet meer");
+		log.debug("Je bent al gecancelled, nogmaals cancellen gaat niet meer");
 	}
 
 

@@ -87,17 +87,14 @@ public abstract class HallReservation extends DomainObject {
     
 	public void submitReservation() {
 		state.submitReservation();
-	//	this.strState = state.getState();
 	}
 
 	public void payReservation() {
 		state.payReservation();
-	//	this.strState = state.getState();
 	}
 
 	public void cancelReservation() {
 		state.cancelReservation();
-	//	this.strState = state.getState();
 	}
     
     @Transient

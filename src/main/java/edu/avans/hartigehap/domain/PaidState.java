@@ -4,7 +4,9 @@ import javax.persistence.Entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Getter
 @Setter
 public class PaidState extends ReservationState {
@@ -26,18 +28,16 @@ public class PaidState extends ReservationState {
 
 	@Override
 	public void submitReservation() {
-		System.out.println("Je bent al betaald, submitten gaat niet meer");
+		log.debug("Je bent al betaald, submitten gaat niet meer");
 	}
 
 	@Override
 	public void payReservation() {
-		System.out.println("Je bent al betaald, nogmaals betalen gaat niet meer");
+		log.debug("Je bent al betaald, nogmaals betalen gaat niet meer");
 	}
 
 	@Override
 	public void cancelReservation() {
-		hallReservation.setState(hallReservation.getCancelledState());
-		hallReservation.notifyAllObservers();
-		
+		log.debug("Je bent al betaald, cancellen gaat niet meer");
 	}
 }
