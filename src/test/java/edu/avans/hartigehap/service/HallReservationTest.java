@@ -8,7 +8,6 @@ import java.util.Date;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 
 import edu.avans.hartigehap.domain.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.Customer;
@@ -43,7 +42,6 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
     private CustomerRepository customerRepository;
 
     @Test
-    @Rollback(false)
     public void createHallReservationWithDecoration() {
         // Create Hall in database
         Hall hall = new Hall("Grote zaal", 180);
