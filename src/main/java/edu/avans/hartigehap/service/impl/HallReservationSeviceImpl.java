@@ -1,7 +1,6 @@
 package edu.avans.hartigehap.service.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +8,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.avans.hartigehap.domain.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.Hall;
-import edu.avans.hartigehap.domain.HallOption;
 import edu.avans.hartigehap.domain.HallReservation;
-import edu.avans.hartigehap.domain.HallReservationAPIWrapper;
-import edu.avans.hartigehap.domain.HallReservationOption;
 import edu.avans.hartigehap.domain.StateException;
 import edu.avans.hartigehap.repository.HallReservationRepository;
 import edu.avans.hartigehap.service.HallReservationService;

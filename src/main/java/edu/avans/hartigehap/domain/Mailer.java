@@ -2,19 +2,24 @@ package edu.avans.hartigehap.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Getter
 @Setter
 public class Mailer extends Observer {
     private static final long serialVersionUID = 1L;
-    private static Mailer instance = new Mailer();
+    private static Mailer instance;
 
     public static Mailer getInstance() {
+        if(instance == null){
+            instance = new Mailer();
+        }
         return instance;
     }
-
+    
+    private Mailer(){
+        
+    }
+    
     @Override
     public void notifyAllObservers(HallReservation hallReservation) {
         SimpleMail sendMail = new SimpleMail();
