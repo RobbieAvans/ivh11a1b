@@ -69,8 +69,6 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         HallReservation hallOption2 = new HallReservationOption(hallOption1, option2);
         hall.addReservation(hallOption2);
 
-        // hallReservationRepository.save(hallOption2);
-
         // Get the hall from the database
         ArrayList<Hall> list = (ArrayList<Hall>) hallRepository.findAll();
         Hall hallFromDb = list.get(list.size() - 1);
@@ -80,7 +78,6 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         HallReservation foundReservation = HallReservationList.get(HallReservationList.size() - 1);
 
         assertEquals("155.0", foundReservation.getPrice().toString());
-
     }
 
     @Test
