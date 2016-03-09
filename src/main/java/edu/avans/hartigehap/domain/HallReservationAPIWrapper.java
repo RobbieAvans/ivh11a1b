@@ -20,7 +20,7 @@ public class HallReservationAPIWrapper {
     private String description;
     private HallReservationState state = null;
     private Customer customer = null;
-    private List<HallOption> hallOptions;
+    private List<HallOption> hallOptions = new ArrayList<>();
     private Hall hall;
     private List<PartOfDay> partOfDays = new ArrayList<>();
 
@@ -28,9 +28,37 @@ public class HallReservationAPIWrapper {
         id = hallReservation.getId();
         description = hallReservation.getDescription();
         state = hallReservation.getState();
-        customer = hallReservation.getCustomer();
-        hall = hallReservation.getHall();
+        
+        /**
+         * We have to clone some objects because they can exist multiple times
+         * in the json. In this way the have all a unique json @id property
+         */
+        
+        // Clone the customer
+        Customer customer = hallReservation.getCustomer();
+        if (customer != null) {
+            Customer cloneCustomer = new Customer(customer.getFirstName(), customer.getLastName(),
+                    customer.getEmail(), customer.getBirthDate(), customer.getPartySize(), customer.getDescription(),
+                    customer.getPhoto());
+            cloneCustomer.setId(customer.getId());
+            
+            this.customer = cloneCustomer;
+        }
+        
+        // Clone the hall
+        Hall hall = hallReservation.getHall();
+        Hall cloneHall = new Hall(hall.getDescription(), hall.getNumberOfSeats());
+        cloneHall.setId(hall.getId());
+        
+        this.hall = cloneHall;
+        
         partOfDays = hallReservation.getPartOfDays();
-        hallOptions = hallReservation.getHallOptions();
+        
+        // Clone the hallOptions
+        for (HallOption hallOption : hallReservation.getHallOptions()) {
+            HallOption clone = new HallOption(hallOption.getDescription(), hallOption.getPrice());
+            clone.setId(hallOption.getId());
+            hallOptions.add(clone);
+        }
     }
 }

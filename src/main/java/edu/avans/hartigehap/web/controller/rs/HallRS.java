@@ -33,8 +33,7 @@ public class HallRS extends BaseRS {
      * Response:
      * 
      * { "success": { true }, "data": {
-     * "@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test",
-     * "reservations":[] } }
+     * "@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test" } }
      * 
      * 
      * @param hall
@@ -67,8 +66,7 @@ public class HallRS extends BaseRS {
      * Response:
      * 
      * { "success": { true }, "data": {
-     * "@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test",
-     * "reservations":[] } }
+     * "@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test" } }
      * 
      * @return
      */
@@ -88,8 +86,7 @@ public class HallRS extends BaseRS {
      * Response:
      * 
      * { "success": { true }, "data": {
-     * "@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test",
-     * "reservations":[] } }
+     * "@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test" } }
      * 
      * Test with not existing hall
      * 
@@ -127,7 +124,7 @@ public class HallRS extends BaseRS {
      * 
      * { "success": { true }, "data": {
      * "@id":1,"id":1,"version":0,"numberOfSeats":30,"description":
-     * "api_edit_test","reservations":[] } }
+     * "api_edit_test" } }
      * 
      * Test with not existing hall
      * 
