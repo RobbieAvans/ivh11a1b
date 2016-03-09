@@ -7,12 +7,14 @@ import java.util.Date;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 
 import edu.avans.hartigehap.domain.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.Customer;
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
 import edu.avans.hartigehap.domain.HallReservation;
+import edu.avans.hartigehap.domain.HallReservationAPIWrapper;
 import edu.avans.hartigehap.domain.HallReservationOption;
 import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.PartOfDayFactory;
@@ -40,7 +42,11 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private HallReservationService hallReservationService;
+
     @Test
+    @Rollback(false)
     public void createHallReservationWithDecoration() {
         // Create Hall in database
         Hall hall = new Hall("Grote zaal", 180);
@@ -65,7 +71,7 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         hallRepository.save(hall);
 
         // Get the hall from the database
-        long id = 1;
+        long id = 2;
         Hall hallFromDb = hallRepository.findOne(id);
 
         HallReservation foundReservation = hallFromDb.getReservations().iterator().next();
@@ -121,7 +127,7 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         partOfDayRepository.save(day1);
         partOfDayRepository.save(day2);
         partOfDayRepository.save(day3);
-        
+
         HallReservation reservation = new ConcreteHallReservation(hall);
 
         reservation.addPartOfDay(day1);
@@ -130,7 +136,7 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 
         hallReservationRepository.save(reservation);
         System.out.println(reservation.getState().getState());
-        long id = 1 ;
+        long id = 1;
         HallReservation ReservationFromDB = hallReservationRepository.findOne(id);
 
         assertEquals("Morning", ReservationFromDB.getPartOfDays().get(0).getDescription());

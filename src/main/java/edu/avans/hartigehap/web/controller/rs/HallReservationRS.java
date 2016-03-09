@@ -1,7 +1,6 @@
 package edu.avans.hartigehap.web.controller.rs;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class HallReservationRS extends BaseRS {
         // Get the hall where we will save it on
         Hall hall = hallReservationWrapper.getHall();
 
-        Collection<HallOption> hallOptions = hallReservationWrapper.getHallOptions();
+        List<HallOption> hallOptions = hallReservationWrapper.getHallOptions();
         Iterator<HallOption> hallOptionsIterator = hallOptions.iterator();
 
         if (hallOptionsIterator.hasNext()) {
@@ -57,7 +56,8 @@ public class HallReservationRS extends BaseRS {
             while (hallOptionsIterator.hasNext()) {
                 reservation = new HallReservationOption(reservation, hallOptionsIterator.next());
             }
-
+            
+            reservation.setDescription(hallReservationWrapper.getDescription());
             hall.addReservation(reservation);
             hallService.save(hall);
 
