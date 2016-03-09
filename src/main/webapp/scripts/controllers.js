@@ -121,16 +121,22 @@ angular.module('bestellenApp.controllers', [])
 	    
 	    console.log($scope.selection);
 	  };
-}).controller('HallReservationCreateController', function($scope, $state, $stateParams,HallReservation, HallOption) {
+}).controller('HallReservationCreateController', function($scope, $state, $stateParams,HallReservation, HallOption, Hall) {
 		var responseHallOption = HallOption.get();
 		responseHallOption.$promise.then(function(data){
 			$scope.hallOptions = data.data;
+		});
+		
+		var responseHall = Hall.get();
+		responseHall.$promise.then(function(data){
+			$scope.halls = data.data;
 		});
 	
 	  $scope.hallReservation = new HallReservation();  
 
 	  $scope.addHallReservation = function() {
-		  $scope.hallReservation.hallOptions = []
+		 $scope.hallReservation.hall = JSON.parse($scope.hallReservation.hall);
+		 $scope.hallReservation.hallOptions = []
 		 jQuery("#hallReservationOptions input:checked").each(function(){
 			 $scope.hallReservation.hallOptions.push(JSON.parse(jQuery(this).val()));
 		 }); 

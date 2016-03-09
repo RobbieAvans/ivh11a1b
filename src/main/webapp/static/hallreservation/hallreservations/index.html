@@ -18,14 +18,4 @@
     </tr>
     </tbody>
 </table>
-
-<label ng-repeat="hallOption in hallOptions">
-  <input
-    type="checkbox"
-    name="selectedHallOptions[]"
-    value="{{hallOption}}"
-    ng-checked="selection.indexOf(hallOption.description) != -1"
-    ng-click="toggleSelection(hallOption.description)"
-  > {{hallOption.description}}
-</label>
  <a ui-sref="newHallReservation" class="btn new">Nieuwe Hallreservation aanmaken</a>
