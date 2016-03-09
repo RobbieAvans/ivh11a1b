@@ -96,7 +96,7 @@ public abstract class HallReservation extends DomainObject {
     
     @Transient
     public Double getPrice() {
-        return this.hallOption.getPrice();
+        return this.hallOption.getPrice() + this.hall.getPrice();
     }
 
     @Transient

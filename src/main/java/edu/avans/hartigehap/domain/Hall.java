@@ -26,13 +26,15 @@ public class Hall extends DomainObject {
 
     private int numberOfSeats;
     private String description;
+    private double price;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hall")
     private Collection<HallReservation> reservations = new ArrayList<HallReservation>();
 
-    public Hall(String description, int numberOfSeats) {
+    public Hall(String description, int numberOfSeats, double price) {
         this.description = description;
         this.numberOfSeats = numberOfSeats;
+        this.price = price;
     }
 
     public Hall addReservation(HallReservation hallReservation) {

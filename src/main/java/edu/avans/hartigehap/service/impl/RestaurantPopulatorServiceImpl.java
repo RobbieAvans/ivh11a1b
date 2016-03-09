@@ -94,16 +94,16 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         createCustomer("piet", "bakker", "pietbakker@hotmail.com", new DateTime(), 1, "description", photo);
         createCustomer("piet", "bakker", "pietbakker@live.nl", new DateTime(), 1, "description", photo);
 
-        createHallOptions("Hall", 100.00);
+        createHallOptions("Hall", 0.0);
         createHallOptions("Wifi", 5.00);
         createHallOptions("DJ", 50.00);
         
         // Create Hall
-        Hall hall = new Hall("Grote zaal", 180);
+        Hall hall = new Hall("Grote zaal", 180, 100);
         hallRepository.save(hall);
         
         // Decorate reservation
-        HallReservation reservation = new ConcreteHallReservation(hallOptions.get(0));
+        HallReservation reservation = new ConcreteHallReservation(hallOptions.get(0), hall);
         HallReservation hallOption1 = new HallReservationOption(reservation, hallOptions.get(1));
         HallReservation hallOption2 = new HallReservationOption(hallOption1, hallOptions.get(2));
 

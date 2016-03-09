@@ -49,7 +49,7 @@ public class HallReservationRS extends BaseRS {
 
         if (hallOptionsIterator.hasNext()) {
             // Create the HallReservation
-            HallReservation reservation = new ConcreteHallReservation(hallOptionsIterator.next());
+            HallReservation reservation = new ConcreteHallReservation(hallOptionsIterator.next(), hall);
 
             while (hallOptionsIterator.hasNext()) {
                 reservation = new HallReservationOption(reservation, hallOptionsIterator.next());
