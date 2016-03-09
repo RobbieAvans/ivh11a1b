@@ -125,11 +125,20 @@ angular.module('bestellenApp.controllers', [])
 		var responseHallOption = HallOption.get();
 		responseHallOption.$promise.then(function(data){
 			$scope.hallOptions = data.data;
+			
+			// Remove @id
+			angular.forEach($scope.hallOptions,function(option){
+				delete option["@id"];
+			});
 		});
 		
 		var responseHall = Hall.get();
 		responseHall.$promise.then(function(data){
 			$scope.halls = data.data;
+			// Remove @id
+			angular.forEach($scope.halls,function(hall){
+				delete hall["@id"];
+			});
 		});
 	
 	  $scope.hallReservation = new HallReservation();  
