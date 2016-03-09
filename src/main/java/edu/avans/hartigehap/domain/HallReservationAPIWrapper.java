@@ -47,7 +47,7 @@ public class HallReservationAPIWrapper {
         
         // Clone the hall
         Hall hall = hallReservation.getHall();
-        Hall cloneHall = new Hall(hall.getDescription(), hall.getNumberOfSeats());
+        Hall cloneHall = new Hall(hall.getDescription(), hall.getNumberOfSeats(), hall.getPrice());
         cloneHall.setId(hall.getId());
         
         this.hall = cloneHall;
