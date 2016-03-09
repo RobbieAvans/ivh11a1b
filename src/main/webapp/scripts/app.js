@@ -1,4 +1,4 @@
-angular.module('bestellenApp', ['ui.router','datatables', 'ngResource', 'bestellenApp.controllers', 'services.hall','services.hallOption','autoActive']);
+angular.module('bestellenApp', ['ui.router','datatables', 'ngResource', 'bestellenApp.controllers', 'services.hall','services.hallOption','services.hallReservation','autoActive']);
 angular.module('bestellenApp').config(function($stateProvider) {
   $stateProvider.state('halls', { 
     url: '/hall/',
@@ -32,6 +32,14 @@ angular.module('bestellenApp').config(function($stateProvider) {
 	    url: '/halloption/:id',
 	    templateUrl: 'halloption/wijzigen/index.html',
 	    controller: 'HallOptionEditController'
+  }).state('hallReservations', { 
+	    url: '/hallreservation/:id',
+	    templateUrl: 'hallreservation/hallreservations/index.html',
+	    controller: 'HallReservationListController'
+  }).state('newHallReservation', { 
+	    url: '/hallreservation/:id',
+	    templateUrl: 'hallreservation/toevoegen/index.html',
+	    controller: 'HallReservationCreateController'
   });
 }).run(function($state) {
  // $state.go('halls');

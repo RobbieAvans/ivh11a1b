@@ -1,0 +1,23 @@
+<div class="form-group">
+  <label for="title" class="col-sm-2 control-label">ID</label>
+  <div class="col-sm-10">
+    <input type="text" ng-model="hallReservation.description" class="form-control" id="id" placeholder="ID ..." required/>
+  </div>
+</div>
+<div id="hallReservationOptions" class="form-group">
+  <label for="director" class="col-sm-2 control-label">HallOpties</label>
+  <p ng-repeat="hallOption in hallOptions">
+	  <input
+	    type="checkbox"
+	    name="selectedHallOptions[]"
+	    value="{{hallOption}}"
+	    ng-click="toggleSelection(hallOption.description)"
+	  > {{hallOption.description}}
+	</p>
+</div>
+<div class="form-group">
+  <div class="col-sm-offset-2 col-sm-10">
+    <input type="submit" class="btn save" value="Opslaan"/>
+    <a class="btn back" ui-sref="hallReservations()">Terug naar begin</a>
+  </div>
+</div>
