@@ -12,16 +12,13 @@ import edu.avans.hartigehap.domain.Bill;
 import edu.avans.hartigehap.domain.Restaurant;
 import edu.avans.hartigehap.domain.StateException;
 import edu.avans.hartigehap.repository.BillRepository;
-import edu.avans.hartigehap.repository.OrderRepository;
 import edu.avans.hartigehap.service.BillService;
 
 @Service("billService")
 @Repository
 @Transactional(rollbackFor = StateException.class)
 public class BillServiceImpl implements BillService {
-
-    @Autowired
-    private OrderRepository orderRepository;
+    
     @Autowired
     private BillRepository billRepository;
 

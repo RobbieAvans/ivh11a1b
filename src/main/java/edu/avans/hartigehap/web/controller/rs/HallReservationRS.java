@@ -26,9 +26,7 @@ import edu.avans.hartigehap.domain.HallReservationAPIWrapper;
 import edu.avans.hartigehap.domain.HallReservationOption;
 import edu.avans.hartigehap.service.HallReservationService;
 import edu.avans.hartigehap.service.HallService;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Controller
 public class HallReservationRS extends BaseRS {
 

@@ -1,9 +1,6 @@
 package edu.avans.hartigehap.domain;
 
 import javax.persistence.Entity;
-
-import lombok.Getter;
-import lombok.Setter;
 import lombok.NoArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
