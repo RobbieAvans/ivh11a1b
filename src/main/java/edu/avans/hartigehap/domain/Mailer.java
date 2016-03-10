@@ -9,17 +9,17 @@ public class Mailer extends Observer {
     private static final long serialVersionUID = 1L;
     private static Mailer instance;
 
+    private Mailer() {
+
+    }
+
     public static Mailer getInstance() {
-        if(instance == null){
+        if (instance == null) {
             instance = new Mailer();
         }
         return instance;
     }
-    
-    private Mailer(){
-        
-    }
-    
+
     @Override
     public void notifyAllObservers(HallReservation hallReservation) {
         SimpleMail sendMail = new SimpleMail();

@@ -13,7 +13,6 @@ public abstract class Mail {
         setBody(strMessage);
         setFirstName(strFirstName);
         sent();
-        hook();
     }
 
     abstract void setReceiver(String strReceiver);
@@ -25,8 +24,5 @@ public abstract class Mail {
     abstract void setFirstName(String strFirstName);
 
     abstract void sent();
-
-    void hook() {
-    };
 
 }

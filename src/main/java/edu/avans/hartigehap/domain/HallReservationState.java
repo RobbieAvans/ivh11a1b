@@ -13,7 +13,7 @@ import lombok.Setter;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
-@JsonIgnoreProperties({"currentHallReservation"})
+@JsonIgnoreProperties({ "currentHallReservation" })
 @Getter
 @Setter
 @NoArgsConstructor
@@ -42,7 +42,7 @@ public abstract class HallReservationState extends DomainObject {
         getCurrentHallReservation().setState(getCurrentHallReservation().getCancelledState());
         getCurrentHallReservation().notifyAllObservers();
     }
-    
+
     public String getState() {
         return this.getClass().getSimpleName();
     }

@@ -32,11 +32,11 @@ public class CancelledState extends HallReservationState {
 
     @Override
     public void cancelReservation() {
-    	log.debug("Je bent al gecancelled, nogmaals cancellen gaat niet meer.");
+        log.debug("Je bent al gecancelled, nogmaals cancellen gaat niet meer.");
     }
-    
+
     @Override
-    public void payReservation(){
-    	log.debug("Je bent al gecancelled, betalen gaat niet meer.");
+    public void payReservation() {
+        log.debug("Je bent al gecancelled, betalen gaat niet meer.");
     }
 }
