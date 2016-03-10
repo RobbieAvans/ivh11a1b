@@ -63,9 +63,7 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 
         // Decorate reservation
         HallReservation reservation = new ConcreteHallReservation(hallOption, hall);
-        hall.addReservation(reservation);
         HallReservation hallOption1 = new HallReservationOption(reservation, option);
-        hall.addReservation(hallOption1);
         HallReservation hallOption2 = new HallReservationOption(hallOption1, option2);
         hall.addReservation(hallOption2);
 
