@@ -1,4 +1,5 @@
 angular.module('bestellenApp', ['ui.router','datatables', 'ngResource', 'bestellenApp.controllers', 'services.hall','services.hallOption','services.hallReservation','autoActive']);
+
 angular.module('bestellenApp').config(function($stateProvider) {
   $stateProvider.state('halls', { 
     url: '/hall/',
@@ -48,4 +49,6 @@ angular.module('bestellenApp').config(function($stateProvider) {
 }).run(function($state) {
  // $state.go('halls');
 });
+
+
 

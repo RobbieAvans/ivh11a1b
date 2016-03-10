@@ -1,4 +1,7 @@
 angular.module('bestellenApp.controllers', [])
+	.controller('MainController', function($scope, $state, $window, Hall,i18n) {
+	    
+	})
     .controller('HallListController', function($scope, $state, $window, Hall) {
         var response = Hall.get();
         response.$promise.then(function(data) {
@@ -181,6 +184,13 @@ angular.module('bestellenApp.controllers', [])
             });
         };
     }).controller('HallReservationViewController', function($scope, $stateParams, HallReservation, HallOption, Hall) {
+    	$scope.language = function () {
+            return i18n.language;
+        };
+        $scope.setLanguage = function (lang) {
+            i18n.setLanguage(lang);
+        };
+        
         var response = HallReservation.get({
             id: $stateParams.id
         });

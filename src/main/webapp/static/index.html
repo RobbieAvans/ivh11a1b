@@ -14,7 +14,7 @@
 	href="https://cdn.datatables.net/responsive/2.0.2/css/responsive.dataTables.min.css"
 	rel="stylesheet" />
 </head>
-<body>
+<body ng-controller="MainController">
 	<!-- jQuery via CDN, fallback via eigen script -->
 	<script type="text/javascript"
 		src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
@@ -51,19 +51,19 @@
 					<nav auto-active>
 						<div class="show-for-large-up">
 							<aside  class="item"  style="position: relative;">
-								<a ui-sref="halls()">Zalen</a>
+								<a ui-sref="halls()"><msg key="label_hall"></msg></a>
 							</aside>
 							<span></span>
 							<aside  class="item" style="position: relative;">
-								<a ui-sref="hallOptions()">Opties</a>
+								<a ui-sref="hallOptions()"><msg key="label_halloption"></msg></a>
 							</aside>
 							<span></span>
 							<aside class="item" style="position: relative;">
-								<a ui-sref="hallReservations()">Reserveringen</a>
+								<a ui-sref="hallReservations()"><msg key="label_hallreservation"></msg></a>
 							</aside>
 							<span></span>
 							<aside  class="item" style="position: relative;">
-								<a href="../../hh">Management systeem</a>
+								<a href="../../hh"><msg key="label_management_subsystem"></msg></a>
 							</aside>
 							<span></span>
 						</div>
@@ -75,16 +75,16 @@
 								style="display: none;">
 								<ul>
 									<li>
-										<a class="toggleMenuSmallExtra item" ui-sref="halls()">Zalen</a>
+										<a class="toggleMenuSmallExtra item" ui-sref="halls()"><msg key="label_hall"></msg></a>
 									</li>
 									<li>
-										<a class="toggleMenuSmallExtra item" ui-sref="hallOptions()">Opties</a>
+										<a class="toggleMenuSmallExtra item" ui-sref="hallOptions()"><msg key="label_halloption"></msg></a>
 									</li>
 									<li>
-										<a class="toggleMenuSmallExtra item" ui-sref="hallReservations()">Reserveringen</a>
+										<a class="toggleMenuSmallExtra item" ui-sref="hallReservations()"><msg key="label_hallreservation"></msg></a>
 									</li>
 									<li>
-										<a class="toggleMenuSmallExtra item" href="../../hh">Management systeem</a>
+										<a class="toggleMenuSmallExtra item" href="../../hh"><msg key="label_management_subsystem"></msg></a>
 									</li>
 								</ul>
 							</aside>
@@ -110,6 +110,8 @@
 	<script src="../scripts/hallReservation_service.js"></script>
 	<script src="../scripts/auto-active.js"></script>
 	<script src="../scripts/hallOption_service.js"></script>
+		<script src="../scripts/angular-i18n-properties.min.js"></script>
+	<script src="../scripts/angular-i18n.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
 </body>
 </html>
