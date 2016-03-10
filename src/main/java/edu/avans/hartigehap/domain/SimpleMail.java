@@ -4,32 +4,26 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SimpleMail extends Mail {
-    private String strMessage;
+	private String strMessage;
+	
+	void setReceiver(String strReceiver) {
+		log.debug("Zet de ontvanger op: " + strReceiver);
+	}
 
-    @Override
-    void setReceiver(String strReceiver) {
-        // System.out.println("Ik zet nu de ontvanger op: " + strReceiver);
-    }
+	void setSubject(String strSubject) {
+		log.debug("Zet het subject: " + strSubject);
+	}
 
-    @Override
-    void setSubject(String strSubject) {
-        // System.out.println("Zet het subject: " + strSubject);
-    }
+	void setBody(String strBody) {
+		strMessage = strBody;
+	}
+	
+	void setFirstName(String strFirstname) {
+		strMessage = strMessage.replaceAll("%voornaam%", strFirstname);
+	}
 
-    @Override
-    void setBody(String strBody) {
-        strMessage = strBody;
-    }
-
-    @Override
-    void setFirstName(String strFirstname) {
-        strMessage = strMessage.replaceAll("%voornaam%", strFirstname);
-    }
-
-    @Override
-    void sent() {
-        System.out.println("Ik verstuur onderstaand bericht nu.");
-        System.out.println(strMessage);
-    }
-
+	void sent() {
+		log.debug("Ik verstuur onderstaand bericht nu.");
+		log.debug(strMessage);
+	}
 }

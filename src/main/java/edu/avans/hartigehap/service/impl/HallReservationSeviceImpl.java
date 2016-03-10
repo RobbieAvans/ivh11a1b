@@ -25,7 +25,6 @@ public class HallReservationSeviceImpl implements HallReservationService {
     
     @Autowired
     private HallService hallService;
-
    
 	@Override
 	public List<HallReservation> findAll() {
@@ -40,18 +39,64 @@ public class HallReservationSeviceImpl implements HallReservationService {
         return reservations;
 	}
 
-    @Override
-    public HallReservation save(HallReservation hallReservation) {
-        return hallReservationRepository.save(hallReservation);
-    }
-
+	@Override
+	public HallReservation findById (long id) {
+	    return hallReservationRepository.findOne(id);
+	}
+	
     @Override
     public void delete(HallReservation hallReservation) {
         hallReservationRepository.delete(hallReservation);
     }
 
+    /**
     @Override
-    public HallReservation findById(Long hallReservationId) {
-        return hallReservationRepository.findOne(hallReservationId);
+    public HallReservation update(HallReservationAPIWrapper newReservation, HallReservation oldReservation) {
+        List<HallOption> oldHallOptions = oldReservation.getHallOptions();
+        List<HallOption> newHallOptions = newReservation.getHallOptions();
+//        
+//        for (HallOption newHallOption : newHallOptions) {
+//            if (oldHallOptions.contains(newHallOption)) {
+//                // Remove from both arrays
+//                oldHallOptions.remove(newHallOption);
+//                newHallOptions.remove(newHallOption);
+//            }
+//        }
+//                
+//        // Remove oldHallOptions that are left
+//        for (HallOption oldHallOption : oldHallOptions) {
+//            
+//        }
+//        
+//        // Decorate with newHallOptions
+        
+        if (oldHallOptions.size() > 1) {
+            HallReservationOption oldReservationComplete = (HallReservationOption) oldReservation;
+            
+              
+        }
+        
+        // Get the hall where we will save it on
+        Hall hall = newReservation.getHall();
+
+        List<HallOption> hallOptions = newReservation.getHallOptions();
+        Iterator<HallOption> hallOptionsIterator = hallOptions.iterator();
+
+        if (hallOptionsIterator.hasNext()) {
+            // Create the HallReservation
+            HallReservation reservation = new ConcreteHallReservation(hallOptionsIterator.next());
+
+            while (hallOptionsIterator.hasNext()) {
+                reservation = new HallReservationOption(reservation, hallOptionsIterator.next());
+            }
+
+            hall.addReservation(reservation);
+            hallService.save(hall);
+            
+            return reservation;
+        }
+        
+        return null;
     }
+    */
 }

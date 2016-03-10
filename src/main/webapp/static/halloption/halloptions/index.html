@@ -1,15 +1,17 @@
 
-<h1>Overzicht van hall opties</h1>
+<h1>Overzicht van zaalopties</h1>
 <table datatable="ng" class="row-border hover">
     <thead>
     <tr>
         <th>Omschrijving</th>
+        <th>Meerprijs</th>
         <th>Acties</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="hallOption in hallOptions">
   		<td>{{hallOption.description}}</td>
+  		<td>&#8364;{{hallOption.price}}</td>
           <td>
           <a class="btn btn-primary" style="color:rgb(68, 157, 68);" ui-sref="viewHallOption({id:hallOption.id})">Bekijken</a>
     		<a class="btn btn-danger"  style="color:rgb(68, 157, 68);" ng-click="deleteHallOption(hallOption)">Verwijderen</a></td>

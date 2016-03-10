@@ -1,27 +1,20 @@
 package edu.avans.hartigehap.domain;
 
 import javax.persistence.Entity;
+import lombok.extern.slf4j.Slf4j;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
+
+
+@Slf4j
 @Entity
-@Getter
-@Setter
+@NoArgsConstructor
 public class SubmittedState extends HallReservationState {
     private static final long serialVersionUID = 1L;
-
-    public SubmittedState() {
-        setStateAsId();
-    }
     
     public SubmittedState(HallReservation hallReservation) {
         super(hallReservation);
-        setStateAsId();
-    }
-
-    private void setStateAsId() {
-        setId("SubmittedState");
     }
     
     @Override
@@ -36,18 +29,15 @@ public class SubmittedState extends HallReservationState {
 
     @Override
     public void submitReservation() {
-        System.out.println("Je bent al gesubmitted, nogmaals submitten gaat niet meer");
+    	log.debug("Je bent al gesubmitted, nogmaals submitten gaat niet meer");
     }
-
     @Override
-    public void payReservation() {
-        getCurrentHallReservation().setState(getCurrentHallReservation().getPaidState());
-        getCurrentHallReservation().notifyAllObservers();
-    }
+	public void payReservation() {
+		super.payReservation();
+	}
 
-    @Override
-    public void cancelReservation() {
-        getCurrentHallReservation().setState(getCurrentHallReservation().getCancelledState());
-        getCurrentHallReservation().notifyAllObservers();
-    }
+	@Override
+	public void cancelReservation() {
+		super.cancelReservation();
+	}
 }

@@ -2,6 +2,7 @@ package edu.avans.hartigehap.service;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.joda.time.DateTime;
@@ -40,35 +41,39 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
     @Autowired
     private CustomerRepository customerRepository;
 
+    private Hall hall = new Hall("Grote zaal", 180, 100);
+
+    private HallOption hallOption = new HallOption("Hall", 0.0);
+    private HallOption option = new HallOption("Wifi", 5.00);
+    private HallOption option2 = new HallOption("DJ", 50.00);
+
+    byte[] photo = new byte[] { 127, -128, 0 };
+    private Customer customer = new Customer("FirstName", "LastName", "email", new DateTime(), 0, "description", photo);
+
     @Test
     public void createHallReservationWithDecoration() {
-        // Create Hall in database
-        Hall hall = new Hall("Grote zaal", 180);
+
+        // save Hall in database
         hallRepository.save(hall);
 
-        // Create HallOptions in database
-        HallOption hallOption = new HallOption("Hall", 100.00);
+        // save HallOptions in database
         hallOptionRepository.save(hallOption);
-
-        HallOption option = new HallOption("Wifi", 5.00);
         hallOptionRepository.save(option);
-
-        HallOption option2 = new HallOption("DJ", 50.00);
         hallOptionRepository.save(option2);
 
         // Decorate reservation
-        HallReservation reservation = new ConcreteHallReservation(hallOption);
+        HallReservation reservation = new ConcreteHallReservation(hallOption, hall);
         HallReservation hallOption1 = new HallReservationOption(reservation, option);
         HallReservation hallOption2 = new HallReservationOption(hallOption1, option2);
-
         hall.addReservation(hallOption2);
-        hallRepository.save(hall);
 
         // Get the hall from the database
-        long id = 1;
-        Hall hallFromDb = hallRepository.findOne(id);
+        ArrayList<Hall> list = (ArrayList<Hall>) hallRepository.findAll();
+        Hall hallFromDb = list.get(list.size() - 1);
 
-        HallReservation foundReservation = hallFromDb.getReservations().iterator().next();
+        // get the last Hallreservation
+        ArrayList<HallReservation> HallReservationList = new ArrayList<>(hallFromDb.getReservations());
+        HallReservation foundReservation = HallReservationList.get(HallReservationList.size() - 1);
 
         assertEquals("155.0", foundReservation.getPrice().toString());
     }
@@ -76,30 +81,28 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
     @Test
     public void createHallStateTestWithMailTemplate() {
 
-        HallOption hallOption = new HallOption("Hall", 100.00);
+        hallRepository.save(hall);
         hallOptionRepository.save(hallOption);
 
-        byte[] photo = new byte[] { 127, -128, 0 };
-        Customer customer = new Customer("Sander", "LastName", "email", new DateTime(), 0, "description", photo);
         customerRepository.save(customer);
 
-        HallReservation reservation = new ConcreteHallReservation(hallOption);
+        HallReservation reservation = new ConcreteHallReservation(hallOption, hall);
         reservation.setCustomer(customer);
 
         hallReservationRepository.save(reservation);
 
-        long id = 5;
-        HallReservation foundReservation = hallReservationRepository.findOne(id);
+        ArrayList<HallReservation> list = (ArrayList<HallReservation>) hallReservationRepository.findAll();
+        HallReservation foundReservation = list.get(list.size() - 1);
         foundReservation.submitReservation();
 
         // Hij zou hier geen mailtje mogen sturen
-        assertEquals("SubmittedState", reservation.getState().getState());
+        assertEquals("SubmittedState", foundReservation.getState().getState());
 
         foundReservation.payReservation();
-        assertEquals("PaidState", reservation.getState().getState());
+        assertEquals("PaidState", foundReservation.getState().getState());
 
         foundReservation.cancelReservation();
-        assertEquals("CancelledState", reservation.getState().getState());
+        assertEquals("PaidState", foundReservation.getState().getState());
     }
 
     @SuppressWarnings("deprecation")
@@ -107,8 +110,9 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
     public void createPartOfDayTest() {
         PartOfDayFactory factory = new PartOfDayFactory();
 
-        HallOption hall = new HallOption("Hall", 100.00);
-        hallOptionRepository.save(hall);
+        hallRepository.save(hall);
+
+        hallOptionRepository.save(hallOption);
 
         Date date1 = new Date();
         date1.setMonth(1);
@@ -121,17 +125,17 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         partOfDayRepository.save(day1);
         partOfDayRepository.save(day2);
         partOfDayRepository.save(day3);
-        
-        HallReservation reservation = new ConcreteHallReservation(hall);
+
+        HallReservation reservation = new ConcreteHallReservation(hallOption, hall);
 
         reservation.addPartOfDay(day1);
         reservation.addPartOfDay(day2);
         reservation.addPartOfDay(day3);
 
         hallReservationRepository.save(reservation);
-        System.out.println(reservation.getState().getState());
-        long id = 1 ;
-        HallReservation ReservationFromDB = hallReservationRepository.findOne(id);
+
+        ArrayList<HallReservation> list = (ArrayList<HallReservation>) hallReservationRepository.findAll();
+        HallReservation ReservationFromDB = list.get(list.size() - 1);
 
         assertEquals("Morning", ReservationFromDB.getPartOfDays().get(0).getDescription());
         assertEquals(8, ReservationFromDB.getPartOfDays().get(0).getStartTime().getHours());
@@ -153,20 +157,19 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
     @Test
     public void createHallReservationCustomer() {
 
-        HallOption hallOption = new HallOption("Hall", 100.00);
+        hallRepository.save(hall);
+
         hallOptionRepository.save(hallOption);
 
-        byte[] photo = new byte[] { 127, -128, 0 };
-        Customer customer = new Customer("FirstName", "LastName", "email", new DateTime(), 0, "description", photo);
         customerRepository.save(customer);
 
-        HallReservation reservation = new ConcreteHallReservation(hallOption);
+        HallReservation reservation = new ConcreteHallReservation(hallOption, hall);
         reservation.setCustomer(customer);
 
         hallReservationRepository.save(reservation);
 
-        long id = 6;
-        HallReservation hallReservationFromDb = hallReservationRepository.findOne(id);
+        ArrayList<HallReservation> list = (ArrayList<HallReservation>) hallReservationRepository.findAll();
+        HallReservation hallReservationFromDb = list.get(list.size() - 1);
 
         assertEquals("FirstName", hallReservationFromDb.getCustomer().getFirstName());
         assertEquals("LastName", hallReservationFromDb.getCustomer().getLastName());

@@ -1,5 +1,7 @@
 package edu.avans.hartigehap.domain;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
@@ -41,5 +43,13 @@ public abstract class HallReservationDecorator extends HallReservation {
     @Transient
     public Double getPrice() {
         return getHallOption().getPrice() + hallReservation.getPrice();
+    }
+    
+    @Override
+    @Transient
+    public List<HallOption> getHallOptions() {
+        List<HallOption> hallOptions = hallReservation.getHallOptions();
+        hallOptions.add(getHallOption());
+        return hallOptions;
     }
 }

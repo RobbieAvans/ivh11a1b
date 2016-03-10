@@ -7,10 +7,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +21,6 @@ import lombok.ToString;
  */
  
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 @Getter
 @Setter
 @ToString(callSuper = true, includeFieldNames = true, of = { "description" })
@@ -42,7 +39,7 @@ public abstract class HallReservation extends DomainObject {
     @Transient
     private HallReservationState submittedState = new SubmittedState(this);
 
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private HallReservationState state;
 
     @ManyToOne
@@ -80,24 +77,35 @@ public abstract class HallReservation extends DomainObject {
             observer.notifyAllObservers(this);
         }
     }
-
-    public void submitReservation() {
-        state.submitReservation();
+    
+    public void setState(HallReservationState state){
+    	this.state = state;
     }
+  
+	public void submitReservation() {
+		state.submitReservation();
+	}
 
-    public void payReservation() {
-        state.payReservation();
-    }
+	public void payReservation() {
+		state.payReservation();
+	}
 
-    public void cancelReservation() {
-        state.cancelReservation();
+	public void cancelReservation() {
+		state.cancelReservation();
+	}
+    
+    @Transient
+    public Double getPrice() {
+        return this.hallOption.getPrice() + this.hall.getPrice();
     }
 
     @Transient
-    public Double getPrice() {
-        return this.hallOption.getPrice();
+    public List<HallOption> getHallOptions() {
+        ArrayList<HallOption> hallOptions = new ArrayList<>();
+        hallOptions.add(hallOption);
+        return hallOptions;
     }
-
+    
     /**
      * TODO: Should return whether the reservation is active or not. e.g. is in
      * the future and has not the CancelledState

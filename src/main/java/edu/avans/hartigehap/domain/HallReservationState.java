@@ -1,26 +1,26 @@
 package edu.avans.hartigehap.domain;
 
-import java.util.Collection;
-
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
+@JsonIgnoreProperties({"currentHallReservation"})
 @Getter
 @Setter
 @NoArgsConstructor
-public abstract class HallReservationState extends DomainObjectNaturalId {
+public abstract class HallReservationState extends DomainObject {
     private static final long serialVersionUID = 1L;
 
-    @OneToMany(mappedBy="state")
-    private Collection<HallReservation> hallReservations;
-    
-    @Transient
+    @OneToOne
     private HallReservation currentHallReservation;
 
     public HallReservationState(HallReservation hallReservation) {
@@ -33,12 +33,17 @@ public abstract class HallReservationState extends DomainObjectNaturalId {
 
     public abstract void submitReservation();
 
-    public abstract void payReservation();
+    public void payReservation() {
+        getCurrentHallReservation().setState(getCurrentHallReservation().getPaidState());
+        getCurrentHallReservation().notifyAllObservers();
+    }
 
-    public abstract void cancelReservation();
-
-    @Transient
+    public void cancelReservation() {
+        getCurrentHallReservation().setState(getCurrentHallReservation().getCancelledState());
+        getCurrentHallReservation().notifyAllObservers();
+    }
+    
     public String getState() {
-        return getId();
+        return this.getClass().getSimpleName();
     }
 }

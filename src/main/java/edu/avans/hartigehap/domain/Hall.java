@@ -7,11 +7,17 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
+@JsonIgnoreProperties({"reservations"})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,18 +26,21 @@ public class Hall extends DomainObject {
 
     private int numberOfSeats;
     private String description;
+    private double price;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hall")
     private Collection<HallReservation> reservations = new ArrayList<HallReservation>();
 
-    public Hall(String description, int numberOfSeats) {
+    public Hall(String description, int numberOfSeats, double price) {
         this.description = description;
         this.numberOfSeats = numberOfSeats;
+        this.price = price;
     }
 
     public Hall addReservation(HallReservation hallReservation) {
         reservations.add(hallReservation);
-
+        hallReservation.setHall(this);
+        
         return this;
     }
 

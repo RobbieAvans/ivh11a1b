@@ -2,14 +2,14 @@ package edu.avans.hartigehap.domain.agenda;
 
 import java.util.ArrayList;
 
-public class Agenda {
+public class AgendaCollection {
 
     /**
      * Agenda Items
      */
     private ArrayList<AgendaItem> items;
 
-    public Agenda() {
+    public AgendaCollection() {
         this.items = new ArrayList<AgendaItem>();
     }
 
@@ -21,7 +21,7 @@ public class Agenda {
      * @param item
      * @return Agenda
      */
-    public Agenda addItem(AgendaItem item) {
+    public AgendaCollection addItem(AgendaItem item) {
         items.add(item);
 
         // Return this for chaining
