@@ -70,42 +70,73 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         createFoodCategory("energizing drinks");
 
         // create Meals
-        createMeal("spaghetti", "spaghetti.jpg", 8, "easy",
-                Arrays.<FoodCategory> asList(foodCats.get(3), foodCats.get(1)));
-        createMeal("macaroni", "macaroni.jpg", 8, "easy",
-                Arrays.<FoodCategory> asList(foodCats.get(3), foodCats.get(1)));
-        createMeal("canneloni", "canneloni.jpg", 9, "easy",
-                Arrays.<FoodCategory> asList(foodCats.get(3), foodCats.get(1)));
-        createMeal("pizza", "pizza.jpg", 9, "easy", Arrays.<FoodCategory> asList(foodCats.get(3), foodCats.get(1)));
-        createMeal("carpaccio", "carpaccio.jpg", 7, "easy",
-                Arrays.<FoodCategory> asList(foodCats.get(3), foodCats.get(0)));
-        createMeal("ravioli", "ravioli.jpg", 8, "easy",
-                Arrays.<FoodCategory> asList(foodCats.get(3), foodCats.get(1), foodCats.get(2)));
+        int lowFat = 0;
+        int highEnergy = 1;
+        int vegatarian = 2;
+        int italian = 3;
+        
+        int spaghettiPrice = 8;
+        int macaroniPrice = 8;
+        int canneloniPrice = 9;
+        int pizzaPrice = 9;
+        int carpaccioPrice = 7; 
+        int ravioliPrice = 8;
+        
+        createMeal("spaghetti", "spaghetti.jpg", spaghettiPrice, "easy",
+                Arrays.<FoodCategory> asList(foodCats.get(italian), foodCats.get(highEnergy)));
+        createMeal("macaroni", "macaroni.jpg", macaroniPrice, "easy",
+                Arrays.<FoodCategory> asList(foodCats.get(italian), foodCats.get(highEnergy)));
+        createMeal("canneloni", "canneloni.jpg", canneloniPrice, "easy",
+                Arrays.<FoodCategory> asList(foodCats.get(italian), foodCats.get(highEnergy)));
+        createMeal("pizza", "pizza.jpg", pizzaPrice, "easy",
+                Arrays.<FoodCategory> asList(foodCats.get(italian), foodCats.get(highEnergy)));
+        createMeal("carpaccio", "carpaccio.jpg", carpaccioPrice, "easy",
+                Arrays.<FoodCategory> asList(foodCats.get(italian), foodCats.get(lowFat)));
+        createMeal("ravioli", "ravioli.jpg", ravioliPrice, "easy",
+                Arrays.<FoodCategory> asList(foodCats.get(italian), foodCats.get(highEnergy), foodCats.get(vegatarian)));
 
         // create Drinks
-        createDrink("beer", "beer.jpg", 1, Drink.Size.LARGE, Arrays.<FoodCategory> asList(foodCats.get(5)));
-        createDrink("coffee", "coffee.jpg", 1, Drink.Size.MEDIUM, Arrays.<FoodCategory> asList(foodCats.get(6)));
+        int alcoholicDrinks = 5;
+        int energizingDrinks = 6;
+        
+        int DrinkPrice = 1;
+        
+        createDrink("beer", "beer.jpg", DrinkPrice, Drink.Size.LARGE, Arrays.<FoodCategory> asList(foodCats.get(alcoholicDrinks)));
+        createDrink("coffee", "coffee.jpg", DrinkPrice, Drink.Size.MEDIUM, Arrays.<FoodCategory> asList(foodCats.get(energizingDrinks)));
 
         // create Customers
-        byte[] photo = new byte[] { 127, -128, 0 };
+        byte photo1 = 127;
+        byte photo2 = -128;
+        
+        byte[] photo = new byte[] { photo1, photo2, 0 };
         createCustomer("peter", "limonade", "peterlimonade@gmail.com", new DateTime(), 1, "description", photo);
         createCustomer("barry", "batsbak", "barrybatsbak@hotmail.com", new DateTime(), 1, "description", photo);
         createCustomer("piet", "bakker", "pietbakker@gmail.com", new DateTime(), 1, "description", photo);
         createCustomer("piet", "bakker", "pietbakker@hotmail.com", new DateTime(), 1, "description", photo);
         createCustomer("piet", "bakker", "pietbakker@live.nl", new DateTime(), 1, "description", photo);
 
+        double wifiPrice = 5.0;
+        double djPrice = 50.0;
+        
         createHallOptions("Hall", 0.0);
-        createHallOptions("Wifi", 5.00);
-        createHallOptions("DJ", 50.00);
+        createHallOptions("Wifi", wifiPrice);
+        createHallOptions("DJ", djPrice);
 
         // Create Hall
-        Hall hall = new Hall("Grote zaal", 180, 100);
+        int hallSeats = 180;
+        double hallPrice=100;
+        
+        Hall hall = new Hall("Grote zaal", hallSeats, hallPrice);
         hallRepository.save(hall);
 
         // Decorate reservation
-        HallReservation reservation = new ConcreteHallReservation(hallOptions.get(0), hall);
-        HallReservation hallOption1 = new HallReservationOption(reservation, hallOptions.get(1));
-        HallReservation hallOption2 = new HallReservationOption(hallOption1, hallOptions.get(2));
+        int hallId = 0;
+        int wifiId = 1;
+        int djId = 2;
+        
+        HallReservation reservation = new ConcreteHallReservation(hallOptions.get(hallId), hall);
+        HallReservation hallOption1 = new HallReservationOption(reservation, hallOptions.get(wifiId));
+        HallReservation hallOption2 = new HallReservationOption(hallOption1, hallOptions.get(djId));
 
         hall.addReservation(hallOption2);
         hallRepository.save(hall);
@@ -164,24 +195,25 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         // will save everything that is reachable by cascading
         // even if it is linked to the restaurant after the save
         // operation
-        Restaurant SavedRestaurand = restaurantRepository.save(restaurant);
+        Restaurant savedRestaurand = restaurantRepository.save(restaurant);
 
         // every restaurant has its own dining tables
-        createDiningTables(5, SavedRestaurand);
+        int numberOfTables = 5;
+        createDiningTables(numberOfTables, savedRestaurand);
 
         // for the moment every restaurant has all available food categories
         for (FoodCategory foodCat : foodCats) {
-            SavedRestaurand.getMenu().getFoodCategories().add(foodCat);
+            savedRestaurand.getMenu().getFoodCategories().add(foodCat);
         }
 
         // for the moment every restaurant has the same menu
         for (Meal meal : meals) {
-            SavedRestaurand.getMenu().getMeals().add(meal);
+            savedRestaurand.getMenu().getMeals().add(meal);
         }
 
         // for the moment every restaurant has the same menu
         for (Drink drink : drinks) {
-            SavedRestaurand.getMenu().getDrinks().add(drink);
+            savedRestaurand.getMenu().getDrinks().add(drink);
         }
 
         // for the moment, every customer has dined in every restaurant
@@ -189,11 +221,11 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         // restaurant and customer
         // must have been saved before linking them one to another
         for (Customer customer : customers) {
-            customer.getRestaurants().add(SavedRestaurand);
-            SavedRestaurand.getCustomers().add(customer);
+            customer.getRestaurants().add(savedRestaurand);
+            savedRestaurand.getCustomers().add(customer);
         }
 
-        return SavedRestaurand;
+        return savedRestaurand;
     }
 
     @Override
