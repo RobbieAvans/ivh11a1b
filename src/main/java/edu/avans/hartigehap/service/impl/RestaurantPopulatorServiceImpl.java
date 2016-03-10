@@ -46,7 +46,7 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
     private HallOptionRepository hallOptionRepository;
     @Autowired
     private HallRepository hallRepository;
-    
+
     private List<Meal> meals = new ArrayList<>();
     private List<FoodCategory> foodCats = new ArrayList<>();
     private List<Drink> drinks = new ArrayList<>();
@@ -97,11 +97,11 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         createHallOptions("Hall", 0.0);
         createHallOptions("Wifi", 5.00);
         createHallOptions("DJ", 50.00);
-        
+
         // Create Hall
         Hall hall = new Hall("Grote zaal", 180, 100);
         hallRepository.save(hall);
-        
+
         // Decorate reservation
         HallReservation reservation = new ConcreteHallReservation(hallOptions.get(0), hall);
         HallReservation hallOption1 = new HallReservationOption(reservation, hallOptions.get(1));
@@ -116,7 +116,7 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         hallOption = hallOptionRepository.save(hallOption);
         hallOptions.add(hallOption);
     }
-    
+
     private void createFoodCategory(String tag) {
         FoodCategory foodCategory = new FoodCategory(tag);
         foodCategory = foodCategoryRepository.save(foodCategory);
@@ -164,24 +164,24 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         // will save everything that is reachable by cascading
         // even if it is linked to the restaurant after the save
         // operation
-        restaurant = restaurantRepository.save(restaurant);
+        Restaurant SavedRestaurand = restaurantRepository.save(restaurant);
 
         // every restaurant has its own dining tables
-        createDiningTables(5, restaurant);
+        createDiningTables(5, SavedRestaurand);
 
         // for the moment every restaurant has all available food categories
         for (FoodCategory foodCat : foodCats) {
-            restaurant.getMenu().getFoodCategories().add(foodCat);
+            SavedRestaurand.getMenu().getFoodCategories().add(foodCat);
         }
 
         // for the moment every restaurant has the same menu
         for (Meal meal : meals) {
-            restaurant.getMenu().getMeals().add(meal);
+            SavedRestaurand.getMenu().getMeals().add(meal);
         }
 
         // for the moment every restaurant has the same menu
         for (Drink drink : drinks) {
-            restaurant.getMenu().getDrinks().add(drink);
+            SavedRestaurand.getMenu().getDrinks().add(drink);
         }
 
         // for the moment, every customer has dined in every restaurant
@@ -189,11 +189,11 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         // restaurant and customer
         // must have been saved before linking them one to another
         for (Customer customer : customers) {
-            customer.getRestaurants().add(restaurant);
-            restaurant.getCustomers().add(customer);
+            customer.getRestaurants().add(SavedRestaurand);
+            SavedRestaurand.getCustomers().add(customer);
         }
 
-        return restaurant;
+        return SavedRestaurand;
     }
 
     @Override

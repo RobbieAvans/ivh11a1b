@@ -33,7 +33,8 @@ public class HallRS extends BaseRS {
      * Response:
      * 
      * { "success": { true }, "data": {
-     * "@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test" } }
+     * "@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test" }
+     * }
      * 
      * 
      * @param hall
@@ -52,7 +53,7 @@ public class HallRS extends BaseRS {
 
             return createSuccessResponse(savedHall);
         } catch (Exception e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
             return createErrorResponse("Error when creating a new hall");
         }
     }
@@ -66,7 +67,8 @@ public class HallRS extends BaseRS {
      * Response:
      * 
      * { "success": { true }, "data": {
-     * "@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test" } }
+     * "@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test" }
+     * }
      * 
      * @return
      */
@@ -86,7 +88,8 @@ public class HallRS extends BaseRS {
      * Response:
      * 
      * { "success": { true }, "data": {
-     * "@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test" } }
+     * "@id":1,"id":1,"version":0,"numberOfSeats":20,"description":"api_test" }
+     * }
      * 
      * Test with not existing hall
      * 

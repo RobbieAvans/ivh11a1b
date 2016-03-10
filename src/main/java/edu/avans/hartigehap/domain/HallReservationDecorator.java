@@ -44,7 +44,7 @@ public abstract class HallReservationDecorator extends HallReservation {
     public Double getPrice() {
         return getHallOption().getPrice() + hallReservation.getPrice();
     }
-    
+
     @Override
     @Transient
     public List<HallOption> getHallOptions() {

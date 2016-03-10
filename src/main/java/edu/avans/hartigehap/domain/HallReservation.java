@@ -19,7 +19,7 @@ import lombok.ToString;
  * 
  * @author Tom GIesbergen
  */
- 
+
 @Entity
 @Getter
 @Setter
@@ -29,13 +29,13 @@ public abstract class HallReservation extends DomainObject {
 
     private static final long serialVersionUID = 1L;
     private String description;
-    
+
     @Transient
     private HallReservationState cancelledState = new CancelledState(this);
-    
+
     @Transient
     private HallReservationState paidState = new PaidState(this);
-    
+
     @Transient
     private HallReservationState submittedState = new SubmittedState(this);
 
@@ -59,11 +59,11 @@ public abstract class HallReservation extends DomainObject {
 
     public HallReservation(HallOption hallOption) {
         this.hallOption = hallOption;
-        
+
         // Default is submittedState ??
         this.state = submittedState;
     }
-    
+
     public void addObserver(Observer observer) {
         observers.add(observer);
     }
@@ -77,23 +77,23 @@ public abstract class HallReservation extends DomainObject {
             observer.notifyAllObservers(this);
         }
     }
-    
-    public void setState(HallReservationState state){
-    	this.state = state;
+
+    public void setState(HallReservationState state) {
+        this.state = state;
     }
-  
-	public void submitReservation() {
-		state.submitReservation();
-	}
 
-	public void payReservation() {
-		state.payReservation();
-	}
+    public void submitReservation() {
+        state.submitReservation();
+    }
 
-	public void cancelReservation() {
-		state.cancelReservation();
-	}
-    
+    public void payReservation() {
+        state.payReservation();
+    }
+
+    public void cancelReservation() {
+        state.cancelReservation();
+    }
+
     @Transient
     public Double getPrice() {
         return this.hallOption.getPrice() + this.hall.getPrice();
@@ -101,11 +101,11 @@ public abstract class HallReservation extends DomainObject {
 
     @Transient
     public List<HallOption> getHallOptions() {
-        ArrayList<HallOption> hallOptions = new ArrayList<>();
+        List<HallOption> hallOptions = new ArrayList<>();
         hallOptions.add(hallOption);
         return hallOptions;
     }
-    
+
     /**
      * TODO: Should return whether the reservation is active or not. e.g. is in
      * the future and has not the CancelledState

@@ -54,7 +54,7 @@ public class HallReservationRS extends BaseRS {
             while (hallOptionsIterator.hasNext()) {
                 reservation = new HallReservationOption(reservation, hallOptionsIterator.next());
             }
-            
+
             reservation.setDescription(hallReservationWrapper.getDescription());
             hall.addReservation(reservation);
             hallService.save(hall);
@@ -100,23 +100,16 @@ public class HallReservationRS extends BaseRS {
             + "/hallReservation/{hallReservationId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ModelAndView updateHallReservation(@RequestBody HallReservationAPIWrapper hallReservationWrapper,
-            @PathVariable long hallReservationId, HttpServletResponse httpResponse) {
+            @PathVariable long hallReservationId) {
 
         HallReservation hallReservationOption = hallReservationService.findById(hallReservationId);
-        
+
         if (hallReservationOption != null) {
             hallReservationOption.setPartOfDays(hallReservationWrapper.getPartOfDays());
             hallReservationOption.setDescription(hallReservationWrapper.getDescription());
             hallReservationOption.setState(hallReservationWrapper.getState());
             hallReservationOption.setCustomer(hallReservationWrapper.getCustomer());
-            hallReservationOption.setHall(hallReservationWrapper.getHall());          
-            
-//            hallReservation.setId(hallReservationId);
-//            hallReservationService.save(hallReservation);
-//
-//            httpResponse.setStatus(HttpStatus.OK.value());
-//
-//            return createSuccessResponse(hallReservation);
+            hallReservationOption.setHall(hallReservationWrapper.getHall());
         }
 
         return createErrorResponse("HallReservation doesn't exists");

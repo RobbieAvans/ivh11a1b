@@ -112,14 +112,16 @@ public class CustomerController {
 
         processUploadedFile(customer, file);
 
+        Customer existingCustomer;
+        
         if (isCreate) {
             // relate customer to current restaurant
             Restaurant restaurant = warmupRestaurant(restaurantName, uiModel);
             customer.setRestaurants(Arrays.asList(new Restaurant[] { restaurant }));
             // to get the auto generated id
-            customer = customerService.save(customer);
+            existingCustomer = customerService.save(customer);
         } else { // update
-            Customer existingCustomer = customerService.findById(customer.getId());
+            existingCustomer = customerService.findById(customer.getId());
             assert existingCustomer != null : "customer should exist";
 
             // update user-editable fields
@@ -128,7 +130,7 @@ public class CustomerController {
         }
 
         return "redirect:/restaurants/" + restaurantName + "/customers/"
-                + UrlUtil.encodeUrlPathSegment(customer.getId().toString(), httpServletRequest);
+                + UrlUtil.encodeUrlPathSegment(existingCustomer.getId().toString(), httpServletRequest);
     }
 
     @RequestMapping(value = "/restaurants/{restaurantName}/customers/{id}", params = "form", method = RequestMethod.PUT)

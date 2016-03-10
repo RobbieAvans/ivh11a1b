@@ -26,7 +26,8 @@ public abstract class Mail {
 
     abstract void sent();
 
-    void hook() {
+    void hook(){
+        
     };
 
 }

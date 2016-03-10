@@ -18,7 +18,7 @@ import edu.avans.hartigehap.service.BillService;
 @Repository
 @Transactional(rollbackFor = StateException.class)
 public class BillServiceImpl implements BillService {
-    
+
     @Autowired
     private BillRepository billRepository;
 
