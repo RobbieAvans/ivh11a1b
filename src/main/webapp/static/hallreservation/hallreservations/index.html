@@ -1,21 +1,21 @@
 
-<h1>Overzicht van hall reservaties</h1>
+<h1>Overzicht van zaal reserveringen</h1>
 <table datatable="ng" class="row-border hover">
     <thead>
     <tr>
-        <th>Omschrijving</th>
+        <th>Reservering (ID)</th>
         <th>Totaal prijs</th>
         <th>Acties</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="hallReservation in hallReservations">
-  		<td>{{hallReservation.description}}</td>
+  		<td>{{hallReservation.id}}</td>
   		<td>&#8364;{{hallReservation.totalPrice}}</td>
           <td>
-          <a class="btn btn-primary" style="color:rgb(68, 157, 68);" ui-sref="viewHallOption({id:hallOption.id})">Bekijken</a>
-    		<a class="btn btn-danger"  style="color:rgb(68, 157, 68);" ng-click="deleteHallOption(hallOption)">Verwijderen</a></td>
+          <a class="btn btn-primary" style="color:rgb(68, 157, 68);" ui-sref="viewHallReservation({id:hallReservation.id})">Bekijken</a>
+    		<a class="btn btn-danger"  style="color:rgb(68, 157, 68);" ng-click="deleteHallReservation(hallReservation)">Verwijderen</a></td>
     </tr>
     </tbody>
 </table>
- <a ui-sref="newHallReservation" class="btn new">Nieuwe Hallreservation aanmaken</a>
+ <a ui-sref="newHallReservation" class="btn new">Nieuwe reservering aanmaken</a>

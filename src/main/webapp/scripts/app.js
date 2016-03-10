@@ -40,6 +40,10 @@ angular.module('bestellenApp').config(function($stateProvider) {
 	    url: '/hallreservation/:id',
 	    templateUrl: 'hallreservation/toevoegen/index.html',
 	    controller: 'HallReservationCreateController'
+  }).state('viewHallReservation', { 
+	    url: '/hallreservation/:id',
+	    templateUrl: 'hallreservation/index.html',
+	    controller: 'HallReservationViewController'
   });
 }).run(function($state) {
  // $state.go('halls');

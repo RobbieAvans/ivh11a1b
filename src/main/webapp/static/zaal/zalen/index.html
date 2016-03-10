@@ -6,6 +6,7 @@
           <th>Omschrijving</th>
           <th>Restaurant</th>
           <th>Aantal stoelen</th>
+          <th>Basisprijs</th>
           <th>Acties</th>
       </tr>
       </thead>
@@ -14,10 +15,11 @@
     		<td>{{hall.description}}</td>
     		<td>{{hall.id}}</td>
     		<td>{{hall.numberOfSeats}}</td>
+    		<td>&#8364;{{hall.price}}</td>
             <td>
-            <a class="btn btn-primary" ui-sref="viewHall({id:hall.id})">Bekijken</a>
-      		<a class="btn btn-danger"  ng-click="deleteHall(hall)">Verwijderen</a></td>
+            <a class="btn btn-primary" style="color:rgb(68, 157, 68);" ui-sref="viewHall({id:hall.id})">Bekijken</a>
+      		<a class="btn btn-danger" style="color:rgb(68, 157, 68);"  ng-click="deleteHall(hall)">Verwijderen</a></td>
       </tr>
       </tbody>
   </table>
-  <a ui-sref="newHall" class="btn new">Nieuwe Zaal aanmaken</a>
+  <a ui-sref="newHall" class="btn new">Nieuwe zaal aanmaken</a>

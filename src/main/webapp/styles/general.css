@@ -132,6 +132,7 @@ aside.small ul li a.item.active{background-color:rgba(255,255,255,0.20) !importa
 #content aside .btn.save{padding:15px; font-size:14px; font-family:arial; background-color:#333 !Important; border:1px solid #333 !important; color:#fff !important; float:right; margin-top:15px;}
 #content aside .btn.new{background-color:#333; font-family:arial; font-size:14px; float:right !Important; color:#fff; margin-top:15px; border:1px solid #333; padding:16px 16px;}
 #content aside .btn.back{background-color:#fff; font-family:arial; font-size:14px; float:right !Important; color:#333; margin-top:15px; border:1px solid #333; padding:16px 16px;}
+#content aside .btn:hover{opacity:0.8; cursor:pointer;}
 
 .cntrNewsItem{float:left; width:100%; border-bottom:1px dashed #eee; padding-bottom:15px; padding-top:15px;}
 .cntrNewsItem h2{float:left; width:100%; clear:both;}
