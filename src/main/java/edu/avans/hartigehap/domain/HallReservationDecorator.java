@@ -35,14 +35,24 @@ public abstract class HallReservationDecorator extends HallReservation {
     private HallReservation hallReservation;
 
     public HallReservationDecorator(HallReservation hallReservation, HallOption hallOption) {
-        super(hallOption);
+        super(hallReservation.getHall(), hallOption);
+        
+        // Make sure the hall is only set on the last hallReservationOption
+        hallReservation.setHall(null);
+        
         this.hallReservation = hallReservation;
     }
 
     @Override
     @Transient
     public Double getPrice() {
-        return getHallOption().getPrice() + hallReservation.getPrice();
+        Double price = getHallOption().getPrice() + hallReservation.getPrice();
+  
+        if (getHall() != null) {
+            price += getHall().getPrice();
+        }
+        
+        return price;
     }
 
     @Override

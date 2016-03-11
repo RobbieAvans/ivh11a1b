@@ -79,9 +79,8 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
     
     private static final int HALLSEATS = 180;
     
-    private static final int HALLID = 0;
-    private static final int WIFIID = 1;
-    private static final int DJID = 2;
+    private static final int WIFIID = 0;
+    private static final int DJID = 1;
     
     private static final int NUMBEROFSEATS = 5;
     /**
@@ -130,8 +129,6 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         createCustomer("piet", "bakker", "pietbakker@hotmail.com", new DateTime(), 1, "description", photo);
         createCustomer("piet", "bakker", "pietbakker@live.nl", new DateTime(), 1, "description", photo);
 
-        
-        createHallOptions("Hall", 0.0);
         createHallOptions("Wifi", WIFIPRICE);
         createHallOptions("DJ", DJPRICE);
 
@@ -141,13 +138,11 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         hallRepository.save(hall);
 
         // Decorate reservation
-        
-        
-        HallReservation reservation = new ConcreteHallReservation(hallOptions.get(HALLID), hall);
-        HallReservation hallOption1 = new HallReservationOption(reservation, hallOptions.get(WIFIID));
-        HallReservation hallOption2 = new HallReservationOption(hallOption1, hallOptions.get(DJID));
+        HallReservation reservation = new ConcreteHallReservation(hall);
+        reservation = new HallReservationOption(reservation, hallOptions.get(WIFIID));
+        reservation = new HallReservationOption(reservation, hallOptions.get(DJID));
 
-        hall.addReservation(hallOption2);
+        hall.addReservation(reservation);
         hallRepository.save(hall);
     }
 

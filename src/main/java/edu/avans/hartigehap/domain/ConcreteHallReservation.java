@@ -1,6 +1,7 @@
 package edu.avans.hartigehap.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.PostLoad;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -24,9 +25,18 @@ import lombok.ToString;
 public class ConcreteHallReservation extends HallReservation {
     private static final long serialVersionUID = 1L;
 
-    public ConcreteHallReservation(HallOption hallOption, Hall hall) {
-        super(hallOption);
-        super.setHall(hall);
+    public ConcreteHallReservation(Hall hall, HallOption hallOption) {
+        super(hall, hallOption);
+        addObservers();
+    }
+    
+    public ConcreteHallReservation(Hall hall) {
+        super(hall);
+        addObservers();
+    }
+    
+    @PostLoad
+    public void addObservers() {
         addObserver(Mailer.getInstance());
     }
 }

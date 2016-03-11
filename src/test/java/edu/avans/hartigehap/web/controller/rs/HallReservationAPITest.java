@@ -75,7 +75,7 @@ public class HallReservationAPITest {
         HallOption hallOption2 = new HallOption("DJ", 50.00);
 
         // Create reservation
-        HallReservation reservation = new ConcreteHallReservation(hallOption1, hall);
+        HallReservation reservation = new ConcreteHallReservation(hall, hallOption1);
         reservation = new HallReservationOption(reservation, hallOption2);
         reservation.setId(id);
 

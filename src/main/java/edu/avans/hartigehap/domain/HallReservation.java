@@ -57,13 +57,17 @@ public abstract class HallReservation extends DomainObject {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hallReservation")
     private List<PartOfDay> partOfDays = new ArrayList<>();
 
-    public HallReservation(HallOption hallOption) {
+    public HallReservation(Hall hall, HallOption hallOption) {
+        this.hall = hall;
         this.hallOption = hallOption;
 
         // Default is submittedState ??
         this.state = submittedState;
     }
-
+    
+    public HallReservation(Hall hall) {
+        this(hall, null);
+    }
     public void addObserver(Observer observer) {
         observers.add(observer);
     }
@@ -96,13 +100,28 @@ public abstract class HallReservation extends DomainObject {
 
     @Transient
     public Double getPrice() {
-        return this.hallOption.getPrice() + this.hall.getPrice();
+        Double price = 0.0;
+        
+        if (hallOption != null) {
+            price += hallOption.getPrice(); 
+        }
+        
+        if (hall != null) {
+            price += hall.getPrice();
+        }
+        
+        return price;
     }
 
     @Transient
     public List<HallOption> getHallOptions() {
         List<HallOption> hallOptions = new ArrayList<>();
-        hallOptions.add(hallOption);
+        
+        // Only add the hallOption when it is set
+        if (hallOption != null) {
+            hallOptions.add(hallOption); 
+        }
+        
         return hallOptions;
     }
 

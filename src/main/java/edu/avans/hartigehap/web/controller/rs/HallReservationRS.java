@@ -47,26 +47,23 @@ public class HallReservationRS extends BaseRS {
         List<HallOption> hallOptions = hallReservationWrapper.getHallOptions();
         Iterator<HallOption> hallOptionsIterator = hallOptions.iterator();
 
-        if (hallOptionsIterator.hasNext()) {
-            // Create the HallReservation
-            HallReservation reservation = new ConcreteHallReservation(hallOptionsIterator.next(), hall);
-
-            while (hallOptionsIterator.hasNext()) {
-                reservation = new HallReservationOption(reservation, hallOptionsIterator.next());
-            }
-
-            reservation.setDescription(hallReservationWrapper.getDescription());
-            hall.addReservation(reservation);
-            hallService.save(hall);
-
-            httpResponse.setStatus(HttpStatus.CREATED.value());
-            httpResponse.setHeader("Location",
-                    httpRequest.getContextPath() + "/hallReservation/" + reservation.getId());
-
-            return createSuccessResponse(new HallReservationAPIWrapper(reservation));
+        // Create the HallReservation
+        HallReservation reservation = new ConcreteHallReservation(hall);
+        
+        // Decorate it with hallOptions
+        while (hallOptionsIterator.hasNext()) {
+            reservation = new HallReservationOption(reservation, hallOptionsIterator.next());
         }
 
-        return createErrorResponse("Atleast one hallOption should be added");
+        reservation.setDescription(hallReservationWrapper.getDescription());
+        hall.addReservation(reservation);
+        hallService.save(hall);
+
+        httpResponse.setStatus(HttpStatus.CREATED.value());
+        httpResponse.setHeader("Location",
+                httpRequest.getContextPath() + "/hallReservation/" + reservation.getId());
+
+        return createSuccessResponse(new HallReservationAPIWrapper(reservation));
     }
 
     @RequestMapping(value = RSConstants.URL_PREFIX
