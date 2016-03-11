@@ -63,6 +63,7 @@
                                     <spring:url var="customerSubsystem" value="/restaurants/${restaurant.id}/customers" />
                                     <li><a href="static/#/hall/">Overzicht zalen</a></li>
                                     <li><a href="static/#/halloption/">Overzicht zaalopties</a></li>
+                                    <li><a href="static/#/hallreservation/">Overzicht reserveringen</a></li>
                                 </ul>
                             </li>
                         <li class="dropdown">
