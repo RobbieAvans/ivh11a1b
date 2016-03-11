@@ -35,12 +35,10 @@ public abstract class HallReservationState extends DomainObject {
 
     public void payReservation() {
         getCurrentHallReservation().setState(getCurrentHallReservation().getPaidState());
-        getCurrentHallReservation().notifyAllObservers();
     }
 
     public void cancelReservation() {
         getCurrentHallReservation().setState(getCurrentHallReservation().getCancelledState());
-        getCurrentHallReservation().notifyAllObservers();
     }
 
     public String getState() {

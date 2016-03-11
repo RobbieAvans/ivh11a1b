@@ -84,6 +84,7 @@ public abstract class HallReservation extends DomainObject {
 
     public void setState(HallReservationState state) {
         this.state = state;
+        notifyAllObservers();
     }
 
     public void submitReservation() {
