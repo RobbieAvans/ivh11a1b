@@ -108,7 +108,9 @@ public abstract class HallReservation extends DomainObject {
         }
         
         if (hall != null) {
-            price += hall.getPrice();
+            for(PartOfDay partOfDay : partOfDays){
+                price += (getHall().getPrice()*partOfDay.getPriceFactor());
+            }
         }
         
         return price;

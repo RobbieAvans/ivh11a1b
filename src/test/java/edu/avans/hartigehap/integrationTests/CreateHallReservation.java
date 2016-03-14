@@ -7,6 +7,7 @@ import java.util.Date;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 
 import edu.avans.hartigehap.domain.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.Customer;
@@ -58,7 +59,8 @@ public class CreateHallReservation extends AbstractTransactionRollbackTest {
         PartOfDay part2 = factory.makePartOfDay("Evening", date);
         
         // Decorate reservation
-        HallReservation reservation = new ConcreteHallReservation(hall, hallOption1);
+        HallReservation reservation = new ConcreteHallReservation(hall);
+        reservation = new HallReservationOption(reservation, hallOption1);
         reservation = new HallReservationOption(reservation, hallOption2);
         
         // Add info
@@ -68,7 +70,7 @@ public class CreateHallReservation extends AbstractTransactionRollbackTest {
         reservation.addPartOfDay(part2);
         
         // Asserts for domain
-        assertEquals("155.0", reservation.getPrice().toString());
+        assertEquals("305.0", reservation.getPrice().toString());
         assertEquals(description, reservation.getDescription());
         assertEquals(2, reservation.getHallOptions().size());
         assertEquals("FirstName", reservation.getCustomer().getFirstName());
@@ -87,7 +89,7 @@ public class CreateHallReservation extends AbstractTransactionRollbackTest {
         assertEquals(1, hallFromDb.getReservations().size());
         
         HallReservation foundHallReservation = hallFromDb.getReservations().iterator().next();
-        assertEquals("155.0", foundHallReservation.getPrice().toString());
+        assertEquals("305.0", foundHallReservation.getPrice().toString());
         assertEquals(description, foundHallReservation.getDescription());
         assertEquals(2, foundHallReservation.getHallOptions().size());
         assertEquals("FirstName", foundHallReservation.getCustomer().getFirstName());
