@@ -49,7 +49,7 @@ public abstract class HallReservationDecorator extends HallReservation {
         Double price = getHallOption().getPrice() + hallReservation.getPrice();
   
         if (getHall() != null) {
-            for(PartOfDay partOfDay : getConcreteHallReservation(this).getPartOfDays()){
+            for(PartOfDay partOfDay : getPartOfDays()){
                 price += (getHall().getPrice()*partOfDay.getPriceFactor());
             }
             
@@ -63,42 +63,5 @@ public abstract class HallReservationDecorator extends HallReservation {
         List<HallOption> hallOptions = hallReservation.getHallOptions();
         hallOptions.add(getHallOption());
         return hallOptions;
-    }
-    
-    private HallReservation getConcreteHallReservation(HallReservationDecorator hallReservationDecorator){
-        if (hallReservationDecorator.getHallReservation() instanceof ConcreteHallReservation){
-            return hallReservationDecorator.getHallReservation();
-        }
-        return getConcreteHallReservation((HallReservationDecorator) hallReservationDecorator.getHallReservation());
-    }
-    
-    @Override
-    public void addPartOfDay(PartOfDay partOfDay) {
-        getConcreteHallReservation(this).addPartOfDay(partOfDay);
-    }
-    
-    @Override
-    public List<PartOfDay> getPartOfDays() {
-       return getConcreteHallReservation(this).getPartOfDays();
-    }
-    
-    @Override
-    public void setDescription(String description) {
-        getConcreteHallReservation(this).setDescription(description);
-    }
-    
-    @Override
-    public String getDescription() {
-        return getConcreteHallReservation(this).getDescription();
-    }
-    
-    @Override
-    public void setCustomer(Customer customer) {
-        getConcreteHallReservation(this).setCustomer(customer);
-    }
-    
-    @Override
-    public Customer getCustomer() {
-        return getConcreteHallReservation(this).getCustomer();
     }
 }
