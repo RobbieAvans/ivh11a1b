@@ -46,9 +46,6 @@ public abstract class HallReservation extends DomainObject {
     private Customer customer;
 
     @ManyToOne
-    private HallOption hallOption;
-
-    @ManyToOne
     private Hall hall;
 
     @Transient
@@ -57,17 +54,13 @@ public abstract class HallReservation extends DomainObject {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hallReservation")
     private List<PartOfDay> partOfDays = new ArrayList<>();
 
-    public HallReservation(Hall hall, HallOption hallOption) {
+    public HallReservation(Hall hall) {
         this.hall = hall;
-        this.hallOption = hallOption;
 
         // Default is submittedState ??
         this.state = submittedState;
     }
-    
-    public HallReservation(Hall hall) {
-        this(hall, null);
-    }
+
     public void addObserver(Observer observer) {
         observers.add(observer);
     }
@@ -103,10 +96,6 @@ public abstract class HallReservation extends DomainObject {
     public Double getPrice() {
         Double price = 0.0;
         
-        if (hallOption != null) {
-            price += hallOption.getPrice(); 
-        }
-        
         if (hall != null) {
             for(PartOfDay partOfDay : partOfDays){
                 price += (getHall().getPrice()*partOfDay.getPriceFactor());
@@ -117,17 +106,10 @@ public abstract class HallReservation extends DomainObject {
     }
 
     @Transient
-    public List<HallOption> getHallOptions() {
-        List<HallOption> hallOptions = new ArrayList<>();
-        
-        // Only add the hallOption when it is set
-        if (hallOption != null) {
-            hallOptions.add(hallOption); 
-        }
-        
-        return hallOptions;
+    public List<HallOption> getHallOptions() {        
+        return new ArrayList<>();
     }
-
+    
     /**
      * TODO: Should return whether the reservation is active or not. e.g. is in
      * the future and has not the CancelledState

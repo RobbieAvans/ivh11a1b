@@ -1,7 +1,7 @@
 package edu.avans.hartigehap.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -20,7 +20,7 @@ import lombok.Setter;
 public abstract class HallReservationState extends DomainObject {
     private static final long serialVersionUID = 1L;
 
-    @OneToOne
+    @Transient
     private HallReservation currentHallReservation;
 
     public HallReservationState(HallReservation hallReservation) {

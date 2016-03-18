@@ -99,14 +99,12 @@ public class HallReservationRS extends BaseRS {
     public ModelAndView updateHallReservation(@RequestBody HallReservationAPIWrapper hallReservationWrapper,
             @PathVariable long hallReservationId) {
 
-        HallReservation hallReservationOption = hallReservationService.findById(hallReservationId);
+        HallReservation hallReservation = hallReservationService.findById(hallReservationId);
 
-        if (hallReservationOption != null) {
-            hallReservationOption.setPartOfDays(hallReservationWrapper.getPartOfDays());
-            hallReservationOption.setDescription(hallReservationWrapper.getDescription());
-            hallReservationOption.setState(hallReservationWrapper.getState());
-            hallReservationOption.setCustomer(hallReservationWrapper.getCustomer());
-            hallReservationOption.setHall(hallReservationWrapper.getHall());
+        if (hallReservation != null) {
+            hallReservation = hallReservationService.update(hallReservation, hallReservationWrapper);
+            
+            return createSuccessResponse(new HallReservationAPIWrapper(hallReservation));
         }
 
         return createErrorResponse("HallReservation doesn't exists");

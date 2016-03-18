@@ -25,11 +25,6 @@ import lombok.ToString;
 public class ConcreteHallReservation extends HallReservation {
     private static final long serialVersionUID = 1L;
 
-    public ConcreteHallReservation(Hall hall, HallOption hallOption) {
-        super(hall, hallOption);
-        addObservers();
-    }
-    
     public ConcreteHallReservation(Hall hall) {
         super(hall);
         addObservers();

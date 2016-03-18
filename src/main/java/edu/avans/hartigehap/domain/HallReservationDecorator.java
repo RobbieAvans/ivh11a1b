@@ -3,6 +3,7 @@ package edu.avans.hartigehap.domain;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
@@ -33,26 +34,30 @@ public abstract class HallReservationDecorator extends HallReservation {
     @OneToOne
     @Cascade({ CascadeType.ALL })
     private HallReservation hallReservation;
+    
+    @ManyToOne
+    private HallOption hallOption;
 
     public HallReservationDecorator(HallReservation hallReservation, HallOption hallOption) {
-        super(hallReservation.getHall(), hallOption);
-        
+        super(hallReservation.getHall());
+
         // Make sure the hall is only set on the last hallReservationOption
         hallReservation.setHall(null);
-        
+
         this.hallReservation = hallReservation;
+        this.hallOption = hallOption;
     }
 
     @Override
     @Transient
     public Double getPrice() {
         Double price = getHallOption().getPrice() + hallReservation.getPrice();
-  
+
         if (getHall() != null) {
-            for(PartOfDay partOfDay : getPartOfDays()){
-                price += (getHall().getPrice()*partOfDay.getPriceFactor());
+            for (PartOfDay partOfDay : getPartOfDays()) {
+                price += (getHall().getPrice() * partOfDay.getPriceFactor());
             }
-            
+
         }
         return price;
     }
