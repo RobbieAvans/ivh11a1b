@@ -18,4 +18,6 @@ public interface CustomerRepository extends PagingAndSortingRepository<Customer,
     List<Customer> findByRestaurants(Collection<Restaurant> restaurants, Sort sort);
 
     Page<Customer> findByRestaurants(Collection<Restaurant> restaurants, Pageable pageable);
+    
+    Customer findByEmail(String email);
 }
