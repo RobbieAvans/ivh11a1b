@@ -91,10 +91,10 @@ public class HallReservationSeviceImpl implements HallReservationService {
                 // Check if the option should be deleted
                 if (removeHallOptions.contains(hallOption)) {
                     System.out.println("Delete it on me " + hallReservationOption.getId());
-                    if (previous != null && previous.getHallReservation().equals(this)) {
+                    if (previous != null && previous.getHallReservation().equals(hallReservationOption)) {
                         // Change the pointer of the previous option
-                        System.out.println("Set previous");
-                        previous.setHallReservation(hallReservationOption);
+                        System.out.println("Set previous pointer");
+                        previous.setHallReservation(hallReservationOption.getHallReservation());
                     }
 
                     if (hallReservationOption.equals(hallReservationPointer)) {
@@ -102,13 +102,14 @@ public class HallReservationSeviceImpl implements HallReservationService {
                         // next option
                         hallReservationPointer = hallReservationOption.getHallReservation();
                     }
+                    
                     hallReservationCursor = hallReservationOption.getHallReservation();
                     // Set to null -> otherwise the whole reservation will be
-                    // deleted because
-                    // of the cascade.all option
+                    // deleted because of the cascade.all option
                     hallReservationOption.setHallReservation(null);
                     hallReservationOptionsToRemove.add(hallReservationOption.getId());
                 } else {
+                    System.out.println("Set previous pointer");
                     // No delete, keep this option
                     hallReservationCursor = hallReservationOption.getHallReservation();
                     previous = hallReservationOption;
