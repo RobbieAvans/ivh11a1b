@@ -150,6 +150,63 @@ angular.module('bestellenApp.controllers', [])
 
             console.log($scope.selection);
         };
+    }).controller('HallReservationEditController', function($scope, $stateParams, $state, $window, HallReservation, HallOption, Hall) {
+        var responseHallOption = HallOption.get();
+        responseHallOption.$promise.then(function(data) {
+            $scope.hallOptions = data.data;
+        });
+        
+        var responseHall = Hall.get();
+        responseHall.$promise.then(function(data) {
+            $scope.halls = data.data;
+            // Remove @id
+            angular.forEach($scope.halls, function(hall) {
+                delete hall["@id"];
+            });
+        });
+
+    	
+    	 $scope.updateHallReservation = function() {
+             HallReservation.update({
+                 id: $scope.hallReservation.id
+             }, $scope.hallReservation, function() {
+                 $state.go('hallReservations');
+             });
+         };
+
+         $scope.loadHallReservation = function() {
+             var response = HallReservation.get({
+                 id: $stateParams.id
+             });
+             response.$promise.then(function(data) {
+                 $scope.hallReservation = data.data;
+                 
+                 // Set selected hallOptions
+                 $scope.checkedHallOptions = function(option){
+                	 var returnValue = false;
+                	 angular.forEach($scope.hallReservation.hallOptions, function(hallOption) {
+                		 if(hallOption.description == option.description){
+                			 returnValue = true;
+                		 }
+                     });
+                	 return returnValue;
+                 }
+                 
+                 // Set selected hall
+                 $scope.checkedHall = function(hall){
+                	 var returnValue = false;
+                	 if($scope.hallReservation.hall.description == hall.description){
+            			 returnValue = true;
+            		 }
+                	 return returnValue;
+                 }
+                
+             });
+             
+         };
+
+         $scope.loadHallReservation();
+         
     }).controller('HallReservationCreateController', function($scope, $state, $stateParams, HallReservation, HallOption, Hall) {
         var responseHallOption = HallOption.get();
         responseHallOption.$promise.then(function(data) {

@@ -45,6 +45,10 @@ angular.module('bestellenApp').config(function($stateProvider) {
 	    url: '/hallreservation/:id',
 	    templateUrl: 'hallreservation/index.html',
 	    controller: 'HallReservationViewController'
+  }).state('editHallReservation', { 
+	    url: '/hallreservation/:id',
+	    templateUrl: 'hallreservation/wijzigen/index.html',
+	    controller: 'HallReservationEditController'
   }).state('registerCustomer', { 
 	    url: '/customer/registrer',
 	    templateUrl: 'customer/toevoegen/index.html',
