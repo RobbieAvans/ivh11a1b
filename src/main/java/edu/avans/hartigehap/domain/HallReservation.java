@@ -5,9 +5,10 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import lombok.Getter;
@@ -30,16 +31,7 @@ public abstract class HallReservation extends DomainObject {
     private static final long serialVersionUID = 1L;
     private String description;
 
-    @Transient
-    private HallReservationState cancelledState = new CancelledState(this);
-
-    @Transient
-    private HallReservationState paidState = new PaidState(this);
-
-    @Transient
-    private HallReservationState submittedState = new SubmittedState(this);
-
-    @OneToOne(cascade = CascadeType.ALL)
+    @Enumerated(EnumType.STRING)
     private HallReservationState state;
 
     @ManyToOne
@@ -58,7 +50,7 @@ public abstract class HallReservation extends DomainObject {
         this.hall = hall;
 
         // Default is submittedState ??
-        this.state = submittedState;
+        this.state = HallReservationState.SUBMITTED;
     }
 
     public void addObserver(Observer observer) {
@@ -81,35 +73,35 @@ public abstract class HallReservation extends DomainObject {
     }
 
     public void submitReservation() {
-        state.submitReservation();
+        state.submit(this);
     }
 
     public void payReservation() {
-        state.payReservation();
+        state.pay(this);
     }
 
     public void cancelReservation() {
-        state.cancelReservation();
+        state.cancel(this);
     }
 
     @Transient
     public Double getPrice() {
         Double price = 0.0;
-        
+
         if (hall != null) {
-            for(PartOfDay partOfDay : partOfDays){
-                price += (getHall().getPrice()*partOfDay.getPriceFactor());
+            for (PartOfDay partOfDay : partOfDays) {
+                price += (getHall().getPrice() * partOfDay.getPriceFactor());
             }
         }
-        
+
         return price;
     }
 
     @Transient
-    public List<HallOption> getHallOptions() {        
+    public List<HallOption> getHallOptions() {
         return new ArrayList<>();
     }
-    
+
     /**
      * TODO: Should return whether the reservation is active or not. e.g. is in
      * the future and has not the CancelledState

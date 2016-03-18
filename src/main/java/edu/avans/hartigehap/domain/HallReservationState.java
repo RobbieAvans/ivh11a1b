@@ -1,47 +1,37 @@
 package edu.avans.hartigehap.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+/**
+ * http://www.nurkiewicz.com/2009/09/state-pattern-introducing-domain-driven.html
+ * 
+ * @author robbie
+ *
+ */
+public enum HallReservationState implements HallReservationStateOperations {
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+    SUBMITTED(new SubmittedState()),
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+    PAID(new PaidState()),
 
-@Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
-@JsonIgnoreProperties({ "currentHallReservation" })
-@Getter
-@Setter
-@NoArgsConstructor
-public abstract class HallReservationState extends DomainObject {
-    private static final long serialVersionUID = 1L;
-
-    @Transient
-    private HallReservation currentHallReservation;
-
-    public HallReservationState(HallReservation hallReservation) {
-        currentHallReservation = hallReservation;
+    CANCELLED(new CancelledState());
+    
+    private final HallReservationStateOperations operations;
+    
+    HallReservationState(HallReservationStateOperations operations) {
+       this.operations = operations;
     }
 
-    public abstract String strMailBody();
-
-    public abstract String strMailSubject();
-
-    public abstract void submitReservation();
-
-    public void payReservation() {
-        getCurrentHallReservation().setState(getCurrentHallReservation().getPaidState());
+    @Override
+    public void submit(HallReservation hallReservation) {
+        operations.submit(hallReservation);
     }
 
-    public void cancelReservation() {
-        getCurrentHallReservation().setState(getCurrentHallReservation().getCancelledState());
+    @Override
+    public void pay(HallReservation hallReservation) {
+        operations.pay(hallReservation);
     }
 
-    public String getState() {
-        return this.getClass().getSimpleName();
+    @Override
+    public void cancel(HallReservation hallReservation) {
+        operations.cancel(hallReservation);
     }
 }

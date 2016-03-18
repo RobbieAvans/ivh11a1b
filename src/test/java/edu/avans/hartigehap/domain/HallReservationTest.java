@@ -19,14 +19,14 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         hallReservation.setCustomer(customer);
         
         // Default state is SubmittedState
-        assertEquals("SubmittedState", hallReservation.getState().getState());
+        assertEquals(HallReservationState.SUBMITTED, hallReservation.getState());
         
         // Pay the reservation
         hallReservation.payReservation();
-        assertEquals("PaidState", hallReservation.getState().getState());
+        assertEquals(HallReservationState.PAID, hallReservation.getState());
 
         // Cancel the reservation -- not possible after paying
         hallReservation.cancelReservation();
-        assertEquals("PaidState", hallReservation.getState().getState());
+        assertEquals(HallReservationState.PAID, hallReservation.getState());
     }
 }
