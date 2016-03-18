@@ -19,8 +19,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Getter;
@@ -35,6 +37,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "CUSTOMERS")
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
+@JsonIgnoreProperties({ "password" })
 @Getter
 @Setter
 @ToString(callSuper = true, includeFieldNames = true, of = { "firstName", "lastName", "bills" })
@@ -131,6 +134,11 @@ public class Customer extends DomainObject {
         return birthDateString;
     }
 
+    public void setPassword(String plainPassword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        password = passwordEncoder.encode(plainPassword);
+    }
+    
     // business logic
 
 }

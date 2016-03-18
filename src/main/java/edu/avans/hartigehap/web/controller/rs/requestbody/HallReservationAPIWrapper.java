@@ -1,4 +1,4 @@
-package edu.avans.hartigehap.domain;
+package edu.avans.hartigehap.web.controller.rs.requestbody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,12 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import edu.avans.hartigehap.domain.Customer;
+import edu.avans.hartigehap.domain.Hall;
+import edu.avans.hartigehap.domain.HallOption;
+import edu.avans.hartigehap.domain.HallReservation;
+import edu.avans.hartigehap.domain.HallReservationState;
+import edu.avans.hartigehap.domain.PartOfDay;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
