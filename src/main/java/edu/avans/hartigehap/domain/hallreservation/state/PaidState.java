@@ -1,5 +1,6 @@
-package edu.avans.hartigehap.domain;
+package edu.avans.hartigehap.domain.hallreservation.state;
 
+import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

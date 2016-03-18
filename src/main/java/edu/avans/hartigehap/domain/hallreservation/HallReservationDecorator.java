@@ -1,4 +1,4 @@
-package edu.avans.hartigehap.domain;
+package edu.avans.hartigehap.domain.hallreservation;
 
 import java.util.List;
 
@@ -13,6 +13,8 @@ import org.hibernate.annotations.CascadeType;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import edu.avans.hartigehap.domain.HallOption;
+import edu.avans.hartigehap.domain.PartOfDay;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,4 +1,6 @@
-package edu.avans.hartigehap.domain;
+package edu.avans.hartigehap.domain.hallreservation.state;
+
+import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 
 /**
  * http://www.nurkiewicz.com/2009/09/state-pattern-introducing-domain-driven.html

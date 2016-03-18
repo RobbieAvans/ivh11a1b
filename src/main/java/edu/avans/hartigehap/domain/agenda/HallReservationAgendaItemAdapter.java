@@ -2,7 +2,7 @@ package edu.avans.hartigehap.domain.agenda;
 
 import java.util.Date;
 
-import edu.avans.hartigehap.domain.HallReservation;
+import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 
 public class HallReservationAgendaItemAdapter implements AgendaItem {
 

@@ -1,4 +1,6 @@
-package edu.avans.hartigehap.domain;
+package edu.avans.hartigehap.domain.hallreservation.state;
+
+import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 
 public interface HallReservationStateOperations {
 

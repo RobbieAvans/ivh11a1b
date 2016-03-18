@@ -9,14 +9,14 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
-import edu.avans.hartigehap.domain.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.Customer;
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
-import edu.avans.hartigehap.domain.HallReservation;
-import edu.avans.hartigehap.domain.HallReservationOption;
 import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.PartOfDayFactory;
+import edu.avans.hartigehap.domain.hallreservation.ConcreteHallReservation;
+import edu.avans.hartigehap.domain.hallreservation.HallReservation;
+import edu.avans.hartigehap.domain.hallreservation.HallReservationOption;
 import edu.avans.hartigehap.service.HallOptionService;
 import edu.avans.hartigehap.service.HallService;
 import edu.avans.hartigehap.service.testutil.AbstractTransactionRollbackTest;

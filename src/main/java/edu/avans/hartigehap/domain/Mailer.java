@@ -1,5 +1,7 @@
 package edu.avans.hartigehap.domain;
 
+import edu.avans.hartigehap.domain.hallreservation.HallReservation;
+
 public class Mailer implements Observer {
     private static Mailer instance;
 

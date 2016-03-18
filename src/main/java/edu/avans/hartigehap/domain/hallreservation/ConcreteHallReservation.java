@@ -1,4 +1,4 @@
-package edu.avans.hartigehap.domain;
+package edu.avans.hartigehap.domain.hallreservation;
 
 import javax.persistence.Entity;
 import javax.persistence.PostLoad;
@@ -6,6 +6,8 @@ import javax.persistence.PostLoad;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import edu.avans.hartigehap.domain.Hall;
+import edu.avans.hartigehap.domain.Mailer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

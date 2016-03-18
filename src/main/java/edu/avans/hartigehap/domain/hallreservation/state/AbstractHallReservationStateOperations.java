@@ -1,4 +1,6 @@
-package edu.avans.hartigehap.domain;
+package edu.avans.hartigehap.domain.hallreservation.state;
+
+import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 
 public abstract class AbstractHallReservationStateOperations implements HallReservationStateOperations {
     public abstract String strMailBody();

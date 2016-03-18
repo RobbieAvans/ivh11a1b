@@ -5,6 +5,9 @@ import static org.junit.Assert.assertEquals;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import edu.avans.hartigehap.domain.hallreservation.ConcreteHallReservation;
+import edu.avans.hartigehap.domain.hallreservation.HallReservation;
+import edu.avans.hartigehap.domain.hallreservation.state.HallReservationState;
 import edu.avans.hartigehap.service.testutil.AbstractTransactionRollbackTest;
 
 public class HallReservationTest extends AbstractTransactionRollbackTest {

@@ -21,11 +21,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-import edu.avans.hartigehap.domain.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
-import edu.avans.hartigehap.domain.HallReservation;
-import edu.avans.hartigehap.domain.HallReservationOption;
+import edu.avans.hartigehap.domain.hallreservation.ConcreteHallReservation;
+import edu.avans.hartigehap.domain.hallreservation.HallReservation;
+import edu.avans.hartigehap.domain.hallreservation.HallReservationOption;
 import edu.avans.hartigehap.service.HallReservationService;
 import edu.avans.hartigehap.web.controller.rs.requestbody.HallReservationAPIWrapper;
 import edu.avans.hartigehap.web.controller.rs.testutil.RestTestUtil;

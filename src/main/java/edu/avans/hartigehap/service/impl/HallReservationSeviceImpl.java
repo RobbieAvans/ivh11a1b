@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
-import edu.avans.hartigehap.domain.HallReservation;
-import edu.avans.hartigehap.domain.HallReservationOption;
 import edu.avans.hartigehap.domain.StateException;
+import edu.avans.hartigehap.domain.hallreservation.HallReservation;
+import edu.avans.hartigehap.domain.hallreservation.HallReservationOption;
 import edu.avans.hartigehap.repository.HallReservationRepository;
 import edu.avans.hartigehap.service.HallReservationService;
 import edu.avans.hartigehap.service.HallService;

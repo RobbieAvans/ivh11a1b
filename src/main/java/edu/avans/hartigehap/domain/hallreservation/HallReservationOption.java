@@ -1,10 +1,11 @@
-package edu.avans.hartigehap.domain;
+package edu.avans.hartigehap.domain.hallreservation;
 
 import javax.persistence.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import edu.avans.hartigehap.domain.HallOption;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

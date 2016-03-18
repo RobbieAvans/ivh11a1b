@@ -2,7 +2,7 @@ package edu.avans.hartigehap.service;
 
 import java.util.List;
 
-import edu.avans.hartigehap.domain.HallReservation;
+import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 import edu.avans.hartigehap.web.controller.rs.requestbody.HallReservationAPIWrapper;
 
 public interface HallReservationService {

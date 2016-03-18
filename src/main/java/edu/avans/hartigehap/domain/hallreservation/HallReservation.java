@@ -1,4 +1,4 @@
-package edu.avans.hartigehap.domain;
+package edu.avans.hartigehap.domain.hallreservation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import edu.avans.hartigehap.domain.Customer;
+import edu.avans.hartigehap.domain.DomainObject;
+import edu.avans.hartigehap.domain.Hall;
+import edu.avans.hartigehap.domain.HallOption;
+import edu.avans.hartigehap.domain.Observer;
+import edu.avans.hartigehap.domain.PartOfDay;
+import edu.avans.hartigehap.domain.hallreservation.state.HallReservationState;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
