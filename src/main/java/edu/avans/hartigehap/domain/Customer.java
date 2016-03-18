@@ -63,6 +63,10 @@ public class Customer extends DomainObject {
     private String description;
 
     private String email;
+    
+    private String password;
+    
+    private String sessionID;
 
     @Basic(fetch = FetchType.LAZY)
     @Lob

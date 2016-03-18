@@ -14,6 +14,8 @@ public interface CustomerService {
     Customer findById(Long id);
 
     Customer findByFirstNameAndLastName(String firstName, String lastName);
+    
+    Customer findByEmail(String Email);
 
     List<Customer> findCustomersForRestaurant(Restaurant restaurant);
 

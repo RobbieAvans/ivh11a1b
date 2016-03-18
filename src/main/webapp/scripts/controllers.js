@@ -1,5 +1,5 @@
 angular.module('bestellenApp.controllers', [])
-	.controller('MainController', function($scope, $state, $window, Hall,i18n) {
+	.controller('MainController', function($scope, $state, $window, Hall,i18n, Customer) {
 	    
 	})
     .controller('HallListController', function($scope, $state, $window, Hall) {
@@ -204,6 +204,26 @@ angular.module('bestellenApp.controllers', [])
                 $scope.hallReservation.totalPrice = parseInt($scope.hallReservation.totalPrice) + parseInt(hallOption.price);
             })
 
+        });
+
+    }).controller('CustomerCreateController', function($scope,$state, $stateParams, Customer) {
+    	$scope.customer = new Customer();
+
+    	
+        $scope.addCustomer = function() {
+        	console.log($scope.customer);
+        	
+            $scope.customer.$save(function() {
+           //     $state.go('viewCustomer');
+            });
+        };
+
+    }).controller('CustomerViewController', function($scope,$state, $stateParams, Customer) {
+        var response = Customer.get({
+            id: $stateParams.id
+        });
+        response.$promise.then(function(data) {
+            $scope.customer = data.data;
         });
 
     });

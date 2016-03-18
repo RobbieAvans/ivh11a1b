@@ -1,4 +1,4 @@
-angular.module('bestellenApp', ['ui.router','datatables', 'ngResource', 'bestellenApp.controllers', 'services.hall','services.hallOption','services.hallReservation','autoActive']);
+angular.module('bestellenApp', ['ui.router','datatables', 'ngResource', 'bestellenApp.controllers', 'services.hall','services.hallOption','services.customer','services.hallReservation','autoActive']);
 
 angular.module('bestellenApp').config(function($stateProvider) {
   $stateProvider.state('halls', { 
@@ -45,9 +45,17 @@ angular.module('bestellenApp').config(function($stateProvider) {
 	    url: '/hallreservation/:id',
 	    templateUrl: 'hallreservation/index.html',
 	    controller: 'HallReservationViewController'
+  }).state('registerCustomer', { 
+	    url: '/customer/registrer',
+	    templateUrl: 'customer/toevoegen/index.html',
+	    controller: 'CustomerCreateController'
+  }).state('viewCustomer', { 
+	    url: '/customer/:id',
+	    templateUrl: 'customer/index.html',
+	    controller: 'CustomerViewController'
   });
 }).run(function($state) {
- // $state.go('halls');
+  $state.go('registerCustomer');
 });
 
 
