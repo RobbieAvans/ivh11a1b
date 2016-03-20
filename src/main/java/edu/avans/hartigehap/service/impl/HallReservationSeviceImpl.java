@@ -70,15 +70,12 @@ public class HallReservationSeviceImpl implements HallReservationService {
         hallReservationPointer.reset();
         
         List<HallOption> hallOptions = hallReservationRequest.getHallOptions();
-        System.out.println("Number of hallOptions: " + hallOptions.size());
         List<HallOption> removeHallOptions = new ArrayList<>();
 
         for (HallOption currentHallOption : hallReservationPointer.getHallOptions()) {
             if (!hallOptions.contains(currentHallOption)) {
-                System.out.println("Remove this hallOption: " + currentHallOption.getId());
                 removeHallOptions.add(currentHallOption);
             } else {
-                System.out.println("Stay hallOption: " + currentHallOption.getId());
                 // Remove from hallOptions so hallOptions will be a list
                 // with HallOptions that should be added to the reservation.
                 hallOptions.remove(currentHallOption);
@@ -87,7 +84,6 @@ public class HallReservationSeviceImpl implements HallReservationService {
 
         // Add addHallOptions
         for (HallOption hallOption : hallOptions) {
-            System.out.println("Decorate with hallOption: " + hallOption.getId());
             hallReservationPointer = new HallReservationOption(hallReservationPointer, hallOption);
         }
 
@@ -103,10 +99,8 @@ public class HallReservationSeviceImpl implements HallReservationService {
                 HallOption hallOption = hallReservationOption.getHallOption();
                 // Check if the option should be deleted
                 if (removeHallOptions.contains(hallOption)) {
-                    System.out.println("Delete it on me " + hallReservationOption.getId());
                     if (previous != null && previous.getHallReservation().equals(hallReservationOption)) {
                         // Change the pointer of the previous option
-                        System.out.println("Set previous pointer");
                         previous.setHallReservation(hallReservationOption.getHallReservation());
                     }
 
@@ -122,14 +116,12 @@ public class HallReservationSeviceImpl implements HallReservationService {
                     hallReservationOption.setHallReservation(null);
                     hallReservationOptionsToRemove.add(hallReservationOption.getId());
                 } else {
-                    System.out.println("Set previous pointer");
                     // No delete, keep this option
                     hallReservationCursor = hallReservationOption.getHallReservation();
                     previous = hallReservationOption;
                 }
             }
             
-            System.out.println("Remove these: " + hallReservationOptionsToRemove);
             hallReservationRepository.deleteByIdIn(hallReservationOptionsToRemove);
         }
 
