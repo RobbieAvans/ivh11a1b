@@ -156,6 +156,8 @@ angular.module('bestellenApp.controllers', [])
             $scope.hallOptions = data.data;
         });
         
+        $scope.selectedHallOptions = [];
+        
         var responseHall = Hall.get();
         responseHall.$promise.then(function(data) {
             $scope.halls = data.data;
@@ -167,8 +169,18 @@ angular.module('bestellenApp.controllers', [])
 
     	
     	 $scope.updateHallReservation = function() {
+        	 // Change object for API
+    		 $scope.hallReservation.hall 		= 1;
+    		 $scope.hallReservation.customer 	= 1;
+    		 
+             // Remove @id
+    		 delete $scope.hallReservation["@id"];
+   		     		 
+    		 $scope.hallReservation.hallOptions = $scope.selectedHallOptions;
+    		 console.log(JSON.stringify($scope.hallReservation));
+    		 
              HallReservation.update({
-                 id: $scope.hallReservation.id
+            	 id: $scope.hallReservation.id
              }, $scope.hallReservation, function() {
                  $state.go('hallReservations');
              });
@@ -179,13 +191,19 @@ angular.module('bestellenApp.controllers', [])
                  id: $stateParams.id
              });
              response.$promise.then(function(data) {
-                 $scope.hallReservation = data.data;
+                 $scope.hallReservation = data.data;               
                  
                  // Set selected hallOptions
                  $scope.checkedHallOptions = function(option){
                 	 var returnValue = false;
                 	 angular.forEach($scope.hallReservation.hallOptions, function(hallOption) {
                 		 if(hallOption.description == option.description){
+                			 var idx = $scope.selectedHallOptions.indexOf(hallOption.id);
+                             if (idx > -1) {
+                                 $scope.selectedHallOptions.splice(idx, 1);
+                             } else {
+                                 $scope.selectedHallOptions.push(hallOption.id);
+                             }
                 			 returnValue = true;
                 		 }
                      });
@@ -203,6 +221,16 @@ angular.module('bestellenApp.controllers', [])
                 
              });
              
+         };
+         
+      // toggle selection for a given fruit by name
+         $scope.toggleSelection = function toggleSelection(hallOption) {
+             var idx = $scope.selectedHallOptions.indexOf(hallOption);
+             if (idx > -1) {
+                 $scope.selectedHallOptions.splice(idx, 1);
+             } else {
+                 $scope.selectedHallOptions.push(hallOption);
+             }
          };
 
          $scope.loadHallReservation();
