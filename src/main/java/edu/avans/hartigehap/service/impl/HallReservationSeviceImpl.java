@@ -16,7 +16,7 @@ import edu.avans.hartigehap.domain.hallreservation.HallReservationOption;
 import edu.avans.hartigehap.repository.HallReservationRepository;
 import edu.avans.hartigehap.service.HallReservationService;
 import edu.avans.hartigehap.service.HallService;
-import edu.avans.hartigehap.web.controller.rs.requestbody.HallReservationAPIWrapper;
+import edu.avans.hartigehap.web.controller.rs.body.HallReservationRequest;
 
 @Service("hallReservationService")
 @Repository
@@ -54,11 +54,23 @@ public class HallReservationSeviceImpl implements HallReservationService {
 
     @Override
     public HallReservation update(HallReservation hallReservationPointer,
-            HallReservationAPIWrapper hallReservationWrapper) {
+            HallReservationRequest hallReservationRequest) throws Exception {
         // Get the hall where we will save it on
-        Hall hall = hallReservationWrapper.getHall();
+        Hall hall = hallReservationRequest.getHall();
 
-        List<HallOption> hallOptions = hallReservationWrapper.getHallOptions();
+        if (hallReservationPointer.getHall().equals(hall)) {
+            // The same hall, remove it for now we will add it later
+            hall.removeReservation(hallReservationPointer);
+        } else {
+            // This is weird... But it is necessary that the reservations are all loaded
+            hall.getReservations().size();
+        }
+        
+        // Reset hallReservationPointer
+        hallReservationPointer.reset();
+        
+        List<HallOption> hallOptions = hallReservationRequest.getHallOptions();
+        System.out.println("Number of hallOptions: " + hallOptions.size());
         List<HallOption> removeHallOptions = new ArrayList<>();
 
         for (HallOption currentHallOption : hallReservationPointer.getHallOptions()) {
@@ -75,13 +87,14 @@ public class HallReservationSeviceImpl implements HallReservationService {
 
         // Add addHallOptions
         for (HallOption hallOption : hallOptions) {
+            System.out.println("Decorate with hallOption: " + hallOption.getId());
             hallReservationPointer = new HallReservationOption(hallReservationPointer, hallOption);
         }
 
-        // Remove hallOptions
-        List<Long> hallReservationOptionsToRemove = new ArrayList<>();
-
         if (removeHallOptions.size() > 0) {
+            // Remove hallOptions
+            List<Long> hallReservationOptionsToRemove = new ArrayList<>();
+            
             // Loop through all reservation options
             HallReservation hallReservationCursor = hallReservationPointer;
             HallReservationOption previous = null;
@@ -115,21 +128,22 @@ public class HallReservationSeviceImpl implements HallReservationService {
                     previous = hallReservationOption;
                 }
             }
+            
+            System.out.println("Remove these: " + hallReservationOptionsToRemove);
+            hallReservationRepository.deleteByIdIn(hallReservationOptionsToRemove);
         }
 
-        hall.addReservation(hallReservationPointer);
-
         // Set other
-        hallReservationPointer.setDescription(hallReservationWrapper.getDescription());
-        hallReservationPointer.setCustomer(hallReservationWrapper.getCustomer());
-        hallReservationPointer.setPartOfDays(hallReservationWrapper.getPartOfDays());
-        hallReservationPointer.setState(hallReservationWrapper.getState());
+        hallReservationPointer.setDescription(hallReservationRequest.getDescription());
+        hallReservationPointer.setCustomer(hallReservationRequest.getCustomer());
+        hallReservationPointer.setPartOfDays(hallReservationRequest.getPartOfDays());
+        hallReservationPointer.setState(hallReservationRequest.getState());
+        
+        // Add to hall
+        hall.addReservation(hallReservationPointer);
         
         // Save it
         hallService.save(hall);
-
-        System.out.println("Remove these: " + hallReservationOptionsToRemove);
-        hallReservationRepository.deleteByIdIn(hallReservationOptionsToRemove);
 
         return hallReservationPointer;
     }

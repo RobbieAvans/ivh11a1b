@@ -6,10 +6,8 @@ import javax.persistence.PostLoad;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.Mailer;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -23,12 +21,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true, includeFieldNames = true, of = {})
-@NoArgsConstructor
 public class ConcreteHallReservation extends HallReservation {
     private static final long serialVersionUID = 1L;
 
-    public ConcreteHallReservation(Hall hall) {
-        super(hall);
+    public ConcreteHallReservation() {
         addObservers();
     }
     

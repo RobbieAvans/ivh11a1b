@@ -1,4 +1,4 @@
-package edu.avans.hartigehap.web.controller.rs.requestbody;
+package edu.avans.hartigehap.web.controller.rs.body;
 
 import lombok.Getter;
 

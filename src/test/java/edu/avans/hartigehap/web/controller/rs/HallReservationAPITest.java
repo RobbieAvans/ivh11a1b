@@ -2,7 +2,6 @@ package edu.avans.hartigehap.web.controller.rs;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,8 +26,7 @@ import edu.avans.hartigehap.domain.hallreservation.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservationOption;
 import edu.avans.hartigehap.service.HallReservationService;
-import edu.avans.hartigehap.web.controller.rs.requestbody.HallReservationAPIWrapper;
-import edu.avans.hartigehap.web.controller.rs.testutil.RestTestUtil;
+import edu.avans.hartigehap.web.controller.rs.body.HallReservationResponse;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { HallReservationAPITest.class })
@@ -78,7 +76,7 @@ public class HallReservationAPITest {
         HallReservation hallReservation = getHallReservation(id);
         Mockito.when(hallReservationServiceMock.findById(id)).thenReturn(hallReservation);
 
-        HallReservationAPIWrapper wrapper = new HallReservationAPIWrapper(hallReservation);
+        HallReservationResponse wrapper = new HallReservationResponse(hallReservation);
         
 //        mockMvc.perform(put("/rest/v1/hallReservation/1").contentType(RestTestUtil.APPLICATION_JSON_UTF8)
 //                .content(RestTestUtil.convertObjectToJSONContent(wrapper)))
@@ -93,12 +91,11 @@ public class HallReservationAPITest {
     }
 
     private HallReservation getHallReservation(Long id) {
-        Hall hall = new Hall();
         HallOption hallOption1 = new HallOption("Wifi", 5.00);
         HallOption hallOption2 = new HallOption("DJ", 50.00);
 
         // Create reservation
-        HallReservation reservation = new ConcreteHallReservation(hall);
+        HallReservation reservation = new ConcreteHallReservation();
         reservation = new HallReservationOption(reservation, hallOption1);
         reservation = new HallReservationOption(reservation, hallOption2);
         reservation.setId(id);

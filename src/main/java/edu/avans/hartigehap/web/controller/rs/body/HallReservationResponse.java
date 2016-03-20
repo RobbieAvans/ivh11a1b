@@ -1,4 +1,4 @@
-package edu.avans.hartigehap.web.controller.rs.requestbody;
+package edu.avans.hartigehap.web.controller.rs.body;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,24 +13,22 @@ import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 import edu.avans.hartigehap.domain.hallreservation.state.HallReservationState;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
-@NoArgsConstructor
-public class HallReservationAPIWrapper {
-
-    private Long id = null;
+public class HallReservationResponse {
+    
+    private Long id;
     private String description;
-    private HallReservationState state = null;
-    private Customer customer = null;
+    private HallReservationState state;
+    private Customer customer;
     private List<HallOption> hallOptions = new ArrayList<>();
     private Hall hall;
     private List<PartOfDay> partOfDays = new ArrayList<>();
 
-    public HallReservationAPIWrapper(HallReservation hallReservation) {
+    public HallReservationResponse(HallReservation hallReservation) {
         id = hallReservation.getId();
         description = hallReservation.getDescription();
         state = hallReservation.getState();

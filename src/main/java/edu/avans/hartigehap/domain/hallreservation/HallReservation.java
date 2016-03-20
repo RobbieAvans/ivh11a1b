@@ -19,7 +19,6 @@ import edu.avans.hartigehap.domain.Observer;
 import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.hallreservation.state.HallReservationState;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -32,7 +31,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true, includeFieldNames = true, of = { "description" })
-@NoArgsConstructor
 public abstract class HallReservation extends DomainObject {
 
     private static final long serialVersionUID = 1L;
@@ -53,9 +51,7 @@ public abstract class HallReservation extends DomainObject {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hallReservation")
     private List<PartOfDay> partOfDays = new ArrayList<>();
 
-    public HallReservation(Hall hall) {
-        this.hall = hall;
-
+    public HallReservation() {
         // Default is submittedState ??
         this.state = HallReservationState.SUBMITTED;
     }
@@ -109,6 +105,12 @@ public abstract class HallReservation extends DomainObject {
         return new ArrayList<>();
     }
 
+    public void reset() {
+        description = null;
+        customer = null;
+        hall = null;
+    }
+    
     /**
      * TODO: Should return whether the reservation is active or not. e.g. is in
      * the future and has not the CancelledState

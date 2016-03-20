@@ -41,11 +41,6 @@ public abstract class HallReservationDecorator extends HallReservation {
     private HallOption hallOption;
 
     public HallReservationDecorator(HallReservation hallReservation, HallOption hallOption) {
-        super(hallReservation.getHall());
-
-        // Make sure the hall is only set on the last hallReservationOption
-        hallReservation.setHall(null);
-
         this.hallReservation = hallReservation;
         this.hallOption = hallOption;
     }

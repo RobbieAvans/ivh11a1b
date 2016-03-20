@@ -53,4 +53,9 @@ public class HallOptionServiceImpl implements HallOptionService {
     public void delete(HallOption hallOption) {
         hallOptionRepository.delete(hallOption);
     }
+
+    @Override
+    public List<HallOption> findByIds(List<Long> hallOptionIds) {
+        return hallOptionRepository.findByIdIn(hallOptionIds);
+    }
 }

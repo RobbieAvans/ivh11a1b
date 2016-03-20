@@ -12,13 +12,12 @@ import edu.avans.hartigehap.service.testutil.AbstractTransactionRollbackTest;
 
 public class HallReservationTest extends AbstractTransactionRollbackTest {
     
-    private Hall hall = new Hall("Grote zaal", 180, 100);
     private byte[] photo = new byte[] { 127, -128, 0 };
     private Customer customer = new Customer("FirstName", "LastName", "email", new DateTime(), 0, "description", photo);
 
     @Test
     public void stateTest() {
-        HallReservation hallReservation = new ConcreteHallReservation(hall);
+        HallReservation hallReservation = new ConcreteHallReservation();
         hallReservation.setCustomer(customer);
         
         // Default state is SubmittedState

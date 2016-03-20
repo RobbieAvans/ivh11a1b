@@ -133,12 +133,11 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         createHallOptions("DJ", DJPRICE);
 
         // Create Hall
-        
         Hall hall = new Hall("Grote zaal", HALLSEATS, HALLPRICE);
         hallRepository.save(hall);
 
         // Decorate reservation
-        HallReservation reservation = new ConcreteHallReservation(hall);
+        HallReservation reservation = new ConcreteHallReservation();
         reservation = new HallReservationOption(reservation, hallOptions.get(WIFIID));
         reservation = new HallReservationOption(reservation, hallOptions.get(DJID));
 

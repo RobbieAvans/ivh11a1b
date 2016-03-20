@@ -25,7 +25,8 @@ import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservationOption;
 import edu.avans.hartigehap.service.HallReservationService;
 import edu.avans.hartigehap.service.HallService;
-import edu.avans.hartigehap.web.controller.rs.requestbody.HallReservationAPIWrapper;
+import edu.avans.hartigehap.web.controller.rs.body.HallReservationRequest;
+import edu.avans.hartigehap.web.controller.rs.body.HallReservationResponse;
 
 @Controller
 public class HallReservationRS extends BaseRS {
@@ -38,46 +39,50 @@ public class HallReservationRS extends BaseRS {
     @RequestMapping(value = RSConstants.URL_PREFIX
             + "/hallReservation", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ModelAndView createHallReservation(@RequestBody HallReservationAPIWrapper hallReservationWrapper,
+    public ModelAndView createHallReservation(@RequestBody HallReservationRequest hallReservationRequest,
             HttpServletResponse httpResponse, WebRequest httpRequest) {
 
-        // Get the hall where we will save it on
-        Hall hall = hallReservationWrapper.getHall();
+        try {
+            // Get the hall where we will save it on
+            Hall hall = hallReservationRequest.getHall();
+            
+            List<HallOption> hallOptions = hallReservationRequest.getHallOptions();
+            Iterator<HallOption> hallOptionsIterator = hallOptions.iterator();
 
-        List<HallOption> hallOptions = hallReservationWrapper.getHallOptions();
-        Iterator<HallOption> hallOptionsIterator = hallOptions.iterator();
+            // Create the HallReservation
+            HallReservation reservation = new ConcreteHallReservation();
+            
+            // Decorate it with hallOptions
+            while (hallOptionsIterator.hasNext()) {
+                reservation = new HallReservationOption(reservation, hallOptionsIterator.next());
+            }
 
-        // Create the HallReservation
-        HallReservation reservation = new ConcreteHallReservation(hall);
-        
-        // Decorate it with hallOptions
-        while (hallOptionsIterator.hasNext()) {
-            reservation = new HallReservationOption(reservation, hallOptionsIterator.next());
+            reservation.setDescription(hallReservationRequest.getDescription());
+            hall.addReservation(reservation);
+            hallService.save(hall);
+
+            httpResponse.setStatus(HttpStatus.CREATED.value());
+            httpResponse.setHeader("Location",
+                    httpRequest.getContextPath() + "/hallReservation/" + reservation.getId());
+
+            return createSuccessResponse(new HallReservationResponse(reservation));
+        } catch (Exception e) {
+            return createErrorResponse("Unable to create the HallReservation");
         }
-
-        reservation.setDescription(hallReservationWrapper.getDescription());
-        hall.addReservation(reservation);
-        hallService.save(hall);
-
-        httpResponse.setStatus(HttpStatus.CREATED.value());
-        httpResponse.setHeader("Location",
-                httpRequest.getContextPath() + "/hallReservation/" + reservation.getId());
-
-        return createSuccessResponse(new HallReservationAPIWrapper(reservation));
     }
 
     @RequestMapping(value = RSConstants.URL_PREFIX
             + "/hallReservation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ModelAndView allHallReservations() {
-        List<HallReservationAPIWrapper> wrapper = new ArrayList<>();
+        List<HallReservationResponse> response = new ArrayList<>();
 
         // Fill wrapper
         for (HallReservation hallReservation : hallReservationService.findAll()) {
-            wrapper.add(new HallReservationAPIWrapper(hallReservation));
+            response.add(new HallReservationResponse(hallReservation));
         }
 
-        return createSuccessResponse(wrapper);
+        return createSuccessResponse(response);
     }
 
     @RequestMapping(value = RSConstants.URL_PREFIX
@@ -87,7 +92,7 @@ public class HallReservationRS extends BaseRS {
         HallReservation hallReservation = hallReservationService.findById(hallReservationId);
 
         if (hallReservation != null) {
-            return createSuccessResponse(new HallReservationAPIWrapper(hallReservation));
+            return createSuccessResponse(new HallReservationResponse(hallReservation));
         }
 
         return createErrorResponse("HallReservation with id " + hallReservationId + " was not found");
@@ -96,15 +101,20 @@ public class HallReservationRS extends BaseRS {
     @RequestMapping(value = RSConstants.URL_PREFIX
             + "/hallReservation/{hallReservationId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ModelAndView updateHallReservation(@RequestBody HallReservationAPIWrapper hallReservationWrapper,
+    public ModelAndView updateHallReservation(@RequestBody HallReservationRequest hallReservationRequest,
             @PathVariable long hallReservationId) {
 
         HallReservation hallReservation = hallReservationService.findById(hallReservationId);
 
         if (hallReservation != null) {
-            hallReservation = hallReservationService.update(hallReservation, hallReservationWrapper);
             
-            return createSuccessResponse(new HallReservationAPIWrapper(hallReservation));
+            try {
+                hallReservation = hallReservationService.update(hallReservation, hallReservationRequest);
+
+                return createSuccessResponse(new HallReservationResponse(hallReservation));
+            } catch (Exception e) {
+                return createErrorResponse("Unable to update the HallReservation");
+            }
         }
 
         return createErrorResponse("HallReservation doesn't exists");

@@ -45,6 +45,12 @@ public class Hall extends DomainObject {
         return this;
     }
 
+    public Hall removeReservation(HallReservation hallReservation) {
+        reservations.remove(hallReservation);
+        
+        return this;
+    }
+    
     /**
      * Check if the hall has activeReservations at the moment
      * 

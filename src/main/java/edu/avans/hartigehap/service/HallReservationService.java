@@ -3,7 +3,7 @@ package edu.avans.hartigehap.service;
 import java.util.List;
 
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
-import edu.avans.hartigehap.web.controller.rs.requestbody.HallReservationAPIWrapper;
+import edu.avans.hartigehap.web.controller.rs.body.HallReservationRequest;
 
 public interface HallReservationService {
     List<HallReservation> findAll();
@@ -12,5 +12,5 @@ public interface HallReservationService {
 
     void delete(HallReservation hallReservation);
 
-    HallReservation update(HallReservation hallReservation, HallReservationAPIWrapper hallReservationAPIWrapper);
+    HallReservation update(HallReservation hallReservation, HallReservationRequest hallReservationRequest) throws Exception;
 }

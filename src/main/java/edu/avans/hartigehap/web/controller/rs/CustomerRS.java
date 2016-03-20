@@ -16,8 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import edu.avans.hartigehap.domain.Customer;
 import edu.avans.hartigehap.service.CustomerService;
-import edu.avans.hartigehap.web.controller.rs.requestbody.CreateCustomerRequest;
-import edu.avans.hartigehap.web.controller.rs.requestbody.LoginRequest;
+import edu.avans.hartigehap.web.controller.rs.body.CreateCustomerRequest;
+import edu.avans.hartigehap.web.controller.rs.body.LoginRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

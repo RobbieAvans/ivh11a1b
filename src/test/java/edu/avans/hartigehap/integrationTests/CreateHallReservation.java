@@ -59,7 +59,7 @@ public class CreateHallReservation extends AbstractTransactionRollbackTest {
         PartOfDay part2 = factory.makePartOfDay("Evening", date);
         
         // Decorate reservation
-        HallReservation reservation = new ConcreteHallReservation(hall);
+        HallReservation reservation = new ConcreteHallReservation();
         reservation = new HallReservationOption(reservation, hallOption1);
         reservation = new HallReservationOption(reservation, hallOption2);
         
