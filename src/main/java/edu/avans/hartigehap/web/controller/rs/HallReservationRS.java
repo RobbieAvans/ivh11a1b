@@ -44,9 +44,9 @@ public class HallReservationRS extends BaseRS {
 
         try {
             // Get the hall where we will save it on
-            Hall hall = hallReservationRequest.getHall();
+            Hall hall = hallReservationRequest.getHallObject();
             
-            List<HallOption> hallOptions = hallReservationRequest.getHallOptions();
+            List<HallOption> hallOptions = hallReservationRequest.getHallOptionObjects();
             Iterator<HallOption> hallOptionsIterator = hallOptions.iterator();
 
             // Create the HallReservation
@@ -102,19 +102,31 @@ public class HallReservationRS extends BaseRS {
             + "/hallReservation/{hallReservationId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ModelAndView updateHallReservation(@RequestBody HallReservationRequest hallReservationRequest,
-            @PathVariable long hallReservationId) {
+            @PathVariable long hallReservationId, HttpServletResponse httpResponse) {
 
         HallReservation hallReservation = hallReservationService.findById(hallReservationId);
 
         if (hallReservation != null) {
             
-            try {
-                hallReservation = hallReservationService.update(hallReservation, hallReservationRequest);
-
+           // try {
+                System.out.println("test1");
+                try {
+                    hallReservation = hallReservationService.update(hallReservation, hallReservationRequest);
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                System.out.println(hallReservation);
+                System.out.println(hallReservation.getId());
+                httpResponse.setStatus(HttpStatus.OK.value());
+                
                 return createSuccessResponse(new HallReservationResponse(hallReservation));
-            } catch (Exception e) {
-                return createErrorResponse("Unable to update the HallReservation");
-            }
+//            } catch (Exception e) {
+//                System.out.println("test4");
+//
+//                System.out.println(e.getMessage());
+//                return createErrorResponse("Unable to update the HallReservation");
+//            }
         }
 
         return createErrorResponse("HallReservation doesn't exists");

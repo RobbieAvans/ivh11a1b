@@ -39,7 +39,7 @@ public abstract class HallReservation extends DomainObject {
     @Enumerated(EnumType.STRING)
     private HallReservationState state;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Customer customer;
 
     @ManyToOne

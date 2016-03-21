@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import edu.avans.hartigehap.domain.Customer;
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
@@ -38,7 +40,8 @@ public class HallReservationRequest {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this); 
     }
     
-    public Hall getHall() throws Exception {
+    @JsonIgnore
+    public Hall getHallObject() throws Exception {
         Hall foundHall = hallService.findById(hall);
         
         if (foundHall == null) throw new Exception("Not an existing hall");
@@ -46,11 +49,13 @@ public class HallReservationRequest {
         return foundHall;
     }
 
-    public List<HallOption> getHallOptions() {
+    @JsonIgnore
+    public List<HallOption> getHallOptionObjects() {
         return hallOptionService.findByIds(hallOptions);
     }
 
-    public Customer getCustomer() throws Exception {
+    @JsonIgnore
+    public Customer getCustomerObject() throws Exception {
         Customer foundCustomer = customerService.findById(customer);
         
         if (foundCustomer == null) throw new Exception("Not an existing customer");

@@ -56,7 +56,7 @@ public class HallReservationSeviceImpl implements HallReservationService {
     public HallReservation update(HallReservation hallReservationPointer,
             HallReservationRequest hallReservationRequest) throws Exception {
         // Get the hall where we will save it on
-        Hall hall = hallReservationRequest.getHall();
+        Hall hall = hallReservationRequest.getHallObject();
 
         if (hallReservationPointer.getHall().equals(hall)) {
             // The same hall, remove it for now we will add it later
@@ -69,7 +69,7 @@ public class HallReservationSeviceImpl implements HallReservationService {
         // Reset hallReservationPointer
         hallReservationPointer.reset();
         
-        List<HallOption> hallOptions = hallReservationRequest.getHallOptions();
+        List<HallOption> hallOptions = hallReservationRequest.getHallOptionObjects();
         List<HallOption> removeHallOptions = new ArrayList<>();
 
         for (HallOption currentHallOption : hallReservationPointer.getHallOptions()) {
@@ -127,7 +127,7 @@ public class HallReservationSeviceImpl implements HallReservationService {
 
         // Set other
         hallReservationPointer.setDescription(hallReservationRequest.getDescription());
-        hallReservationPointer.setCustomer(hallReservationRequest.getCustomer());
+        hallReservationPointer.setCustomer(hallReservationRequest.getCustomerObject());
         hallReservationPointer.setPartOfDays(hallReservationRequest.getPartOfDays());
         hallReservationPointer.setState(hallReservationRequest.getState());
         
