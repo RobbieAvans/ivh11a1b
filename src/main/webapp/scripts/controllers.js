@@ -198,17 +198,22 @@ angular.module('bestellenApp.controllers', [])
                 	 var returnValue = false;
                 	 angular.forEach($scope.hallReservation.hallOptions, function(hallOption) {
                 		 if(hallOption.description == option.description){
-                			 var idx = $scope.selectedHallOptions.indexOf(hallOption.id);
-                             if (idx > -1) {
-                                 $scope.selectedHallOptions.splice(idx, 1);
-                             } else {
-                                 $scope.selectedHallOptions.push(hallOption.id);
-                             }
                 			 returnValue = true;
                 		 }
                      });
                 	 return returnValue;
                  }
+                 
+                 // Set $scope.selectedHallOption
+                 angular.forEach($scope.hallReservation.hallOptions, function(hallOption) {
+        			 var idx = $scope.selectedHallOptions.indexOf(hallOption.id);
+                     if (idx > -1) {
+                         $scope.selectedHallOptions.splice(idx, 1);
+                     } else {
+                        $scope.selectedHallOptions.push(hallOption.id);
+                     }
+                     console.log($scope.selectedHallOptions);
+                 });
                  
                  // Set selected hall
                  $scope.checkedHall = function(hall){
@@ -231,6 +236,7 @@ angular.module('bestellenApp.controllers', [])
              } else {
                  $scope.selectedHallOptions.push(hallOption);
              }
+             console.log($scope.selectedHallOptions);
          };
 
          $scope.loadHallReservation();
