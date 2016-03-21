@@ -156,7 +156,8 @@ angular.module('bestellenApp.controllers', [])
             $scope.hallOptions = data.data;
         });
         
-        $scope.selectedHallOptions = [];
+        $scope.selectedHallOptions 	= [];
+        $scope.selectedHall			= 0;
         
         var responseHall = Hall.get();
         responseHall.$promise.then(function(data) {
@@ -170,7 +171,7 @@ angular.module('bestellenApp.controllers', [])
     	
     	 $scope.updateHallReservation = function() {
         	 // Change object for API
-    		 $scope.hallReservation.hall 		= 1;
+    		 $scope.hallReservation.hall 		= $scope.selectedHall;
     		 $scope.hallReservation.customer 	= 1;
     		 
              // Remove @id
@@ -212,7 +213,6 @@ angular.module('bestellenApp.controllers', [])
                      } else {
                         $scope.selectedHallOptions.push(hallOption.id);
                      }
-                     console.log($scope.selectedHallOptions);
                  });
                  
                  // Set selected hall
@@ -223,13 +223,15 @@ angular.module('bestellenApp.controllers', [])
             		 }
                 	 return returnValue;
                  }
+                 
+	              // Set $scope.selectedHall
+	        	 $scope.selectedHall = $scope.hallReservation.hall.id;
                 
              });
              
          };
          
-      // toggle selection for a given fruit by name
-         $scope.toggleSelection = function toggleSelection(hallOption) {
+         $scope.toggleHallOption = function toggleHallOption(hallOption) {
              var idx = $scope.selectedHallOptions.indexOf(hallOption);
              if (idx > -1) {
                  $scope.selectedHallOptions.splice(idx, 1);
@@ -237,6 +239,11 @@ angular.module('bestellenApp.controllers', [])
                  $scope.selectedHallOptions.push(hallOption);
              }
              console.log($scope.selectedHallOptions);
+         };
+         
+         $scope.toggleHall = function toggleHall() {
+        	 var response = JSON.parse($scope.hallReservation.hall);
+        	 $scope.selectedHall = response.id ;
          };
 
          $scope.loadHallReservation();
@@ -305,7 +312,7 @@ angular.module('bestellenApp.controllers', [])
         	console.log($scope.customer);
         	
             $scope.customer.$save(function() {
-           //     $state.go('viewCustomer');
+                $state.go('viewCustomer');
             });
         };
 

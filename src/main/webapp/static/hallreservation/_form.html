@@ -1,7 +1,7 @@
 <div class="form-group col-sm-12" style="height:auto; float:left; width:100%;" >
   <label>Zaal</label>
   <div class="col-sm-10">
-	  <select ng-model="hallReservation.hall" style='float:left; width: auto;' required>
+	  <select ng-model="hallReservation.hall" ng-change="toggleHall()" style='float:left; width: auto;' required>
 	    <option ng-repeat="hall in halls"
 	    		ng-selected="checkedHall(hall)"
 	            value="{{hall}}">
@@ -20,7 +20,7 @@
 		    name="selectedHallOptions[]"
 		    value="{{hallOption}}"
 		    ng-checked="checkedHallOptions(hallOption)"
-		    ng-click="toggleSelection(hallOption.id)"
+		    ng-click="toggleHallOption(hallOption.id)"
 		  > {{hallOption.description}} <small>(+&#8364;{{hallOption.price}})</small>
 		</span>
 	</div>
