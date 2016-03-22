@@ -1,4 +1,4 @@
-angular.module('bestellenApp', ['ui.router','datatables', 'ngResource', 'bestellenApp.controllers', 'services.hall','services.hallOption','services.customer','services.hallReservation','autoActive']);
+angular.module('bestellenApp', ['ui.router','datatables', 'ngResource', 'bestellenApp.controllers', 'services.hall','services.hallOption','services.customer','services.hallReservation','autoActive','ui.calendar','services.agenda']);
 
 angular.module('bestellenApp').config(function($stateProvider) {
   $stateProvider.state('halls', { 
@@ -57,6 +57,10 @@ angular.module('bestellenApp').config(function($stateProvider) {
 	    url: '/customer/:id',
 	    templateUrl: 'customer/index.html',
 	    controller: 'CustomerViewController'
+  }).state('agenda', {
+	  url: '/agenda',
+	  templateUrl: 'agenda/agenda.html',
+	  controller: 'AgendaController'
   });
 }).run(function($state) {
   $state.go('registerCustomer');

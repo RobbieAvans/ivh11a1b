@@ -1,6 +1,6 @@
 package edu.avans.hartigehap.domain.agenda;
 
-public class AgendaIterator implements Iterator {
+public class AgendaIterator implements Iterator<AgendaItem> {
 
     private AgendaItem[] items;
     private int position;

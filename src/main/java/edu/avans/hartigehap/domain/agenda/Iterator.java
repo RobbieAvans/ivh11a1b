@@ -1,6 +1,6 @@
 package edu.avans.hartigehap.domain.agenda;
 
-public interface Iterator {
+public interface Iterator<T> {
 
     /**
      * Check if there is a next item
@@ -12,7 +12,7 @@ public interface Iterator {
     /**
      * Get the next item
      * 
-     * @return Object
+     * @return T
      */
-    public Object next();
+    public T next();
 }

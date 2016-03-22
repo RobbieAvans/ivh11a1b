@@ -13,6 +13,7 @@
 <link
 	href="https://cdn.datatables.net/responsive/2.0.2/css/responsive.dataTables.min.css"
 	rel="stylesheet" />
+<link href="../resources/fullcalendar.min.css" rel="stylesheet" />
 </head>
 <body ng-controller="MainController">
 	<!-- jQuery via CDN, fallback via eigen script -->
@@ -27,6 +28,7 @@
 		src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript"
 		src="https://cdn.datatables.net/responsive/2.0.2/js/dataTables.responsive.min.js"></script>
+	<script src="../scripts/moment.min.js"></script>	
 	<script src="../scripts/angular.js"></script>
 	<script src="../scripts/angular-datatables.instances.js"></script>
 	<script src="../scripts/angular-datatables.util.js"></script>
@@ -36,6 +38,9 @@
 	<script src="../scripts/angular-datatables.directive.js"></script>
 	<script src="../scripts/angular-resource.min.js"></script>
 	<script src="../scripts/angular-datatables.js"></script>
+	<script src="../scripts/calendar.js"></script>
+	<script src="../scripts/fullcalendar.min.js"></script>
+	<script src="../scripts/lang-all.js"></script>
 
 	<section id="cntrTopPush" class="show-for-medium-up"></section>
 	<section id="cntrHeader">
@@ -62,6 +67,10 @@
 								<a ui-sref="hallReservations()"><msg key="label_hallreservation"></msg></a>
 							</aside>
 							<span></span>
+							<aside class="item" style="position: relative;">
+								<a ui-sref="agenda()"><msg key="label_agenda"></msg></a>
+							</aside>
+							<span></span>
 							<aside  class="item" style="position: relative;">
 								<a href="../../hh"><msg key="label_management_subsystem"></msg></a>
 							</aside>
@@ -82,6 +91,9 @@
 									</li>
 									<li>
 										<a class="toggleMenuSmallExtra item" ui-sref="hallReservations()"><msg key="label_hallreservation"></msg></a>
+									</li>
+									<li>
+										<a class="toggleMenuSmallExtra item" ui-sref="agenda()"><msg key="label_agenda"></msg></a>
 									</li>
 									<li>
 										<a class="toggleMenuSmallExtra item" href="../../hh"><msg key="label_management_subsystem"></msg></a>
@@ -111,7 +123,8 @@
 	<script src="../scripts/hallReservation_service.js"></script>
 	<script src="../scripts/auto-active.js"></script>
 	<script src="../scripts/hallOption_service.js"></script>
-		<script src="../scripts/angular-i18n-properties.min.js"></script>
+	<script src="../scripts/agenda_service.js"></script>
+	<script src="../scripts/angular-i18n-properties.min.js"></script>
 	<script src="../scripts/angular-i18n.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
 </body>

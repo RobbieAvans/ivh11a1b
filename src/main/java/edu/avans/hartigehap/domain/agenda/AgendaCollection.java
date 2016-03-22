@@ -34,7 +34,7 @@ public class AgendaCollection {
      * 
      * @return Iterator
      */
-    public Iterator createIterator() {
+    public Iterator<AgendaItem> createIterator() {
         return new AgendaIterator(items.toArray(new AgendaItem[items.size()]));
     }
 }

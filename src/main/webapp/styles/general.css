@@ -230,3 +230,54 @@ table tr ul, table tr li{width:100% !important;}
         .dataTables_filter label input {width:300px !important;}
         #cntr #content {min-height:initial !important;}
   } 
+  
+/* =================== */
+/* ==== Calendar ==== */
+/* =================== */
+.calendar table tr td {
+	padding-left: 0px !important;
+}
+
+.calendar table thead tr th, .calendar table tfoot tr th, 
+.calendar table tbody tr td, .calendar table tr td, .calendar table tfoot tr td {
+	line-height: 32px;
+}
+
+.calendar button:hover, .calendar button:focus, .calendar .button:hover, .calendar .button:focus {
+    background-color: #f5f5f5;
+}
+
+.calendar button.disabled, .calendar button[disabled], .calendar .button.disabled, .calendar .button[disabled] {
+    border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+    border-color: rgba(0,0,0,.1) rgba(0,0,0,.1) rgba(0,0,0,.25);
+    color: #333;
+    background-color: #e6e6e6;
+    cursor: not-allowed;
+}
+
+.calendar .fc-state-hover {
+	color:#333;
+	background-color:#e6e6e6 !important;
+}
+.calendar .fc-state-hover {
+	color:#333;
+	text-decoration:none;
+	background-position:0 -15px;
+	-webkit-transition:none;
+	-moz-transition:none;
+	-o-transition:none;
+	transition:none;
+}
+
+.calendar button:hover, .calendar button:focus, .calendar .button:hover, .calendar .button:focus {
+    color:#333;
+}
+
+.fc-unthemed .fc-today {
+    background: #fcf8e3 !important;
+}
+
+#content aside .calendar h2 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}

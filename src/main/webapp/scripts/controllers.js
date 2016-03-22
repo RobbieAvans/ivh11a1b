@@ -324,4 +324,65 @@ angular.module('bestellenApp.controllers', [])
             $scope.customer = data.data;
         });
 
+    }).controller('AgendaController', function($scope, $compile, uiCalendarConfig, Agenda) {
+        $scope.events = [];
+        
+        /* event source that calls a function on every view switch */
+        $scope.eventsF = function (start, end, timezone, callback) {
+        	console.log('called');
+        	var momentStart = moment(start);
+        	var momentEnd = moment(end);
+        	
+        	// Get the agendaItems
+    	    var response = Agenda.get({
+	            start: momentStart.format('YYYY-MM-DD'),
+	            end: momentEnd.format('YYYY-MM-DD')
+	        });
+	        
+	        response.$promise.then(function(data) {
+	        	if (data.success) {
+	        		angular.forEach(data.data, function(item) {
+	        			$scope.events.push({
+				            title: item.description,
+				            start: moment(item.startDate).toDate(),
+				            end: moment(item.endDate).toDate(),
+				            className: []
+				        });	
+	        		});
+	        		console.log($scope.events);
+	        	}
+	        });
+        };
+        
+        /* Change View */
+        $scope.changeView = function(view,calendar) {
+          uiCalendarConfig.calendars[calendar].fullCalendar('changeView',view);
+        };
+        /* Change View */
+        $scope.renderCalender = function(calendar) {
+          if(uiCalendarConfig.calendars[calendar]){
+            uiCalendarConfig.calendars[calendar].fullCalendar('render');
+          }
+        };
+        /* config object */
+        $scope.uiConfig = {
+          calendar:{
+            height: 450,
+            editable: false,
+            firstDay: 1,
+            lang: 'nl',
+            header:{
+              left: 'title',
+              center: '',
+              right: 'today prev,next'
+            },
+            eventClick: $scope.alertOnEventClick,
+            eventDrop: $scope.alertOnDrop,
+            eventResize: $scope.alertOnResize,
+            eventRender: $scope.eventRender
+          }
+        };
+
+        /* event sources array*/
+        $scope.eventSources = [$scope.events, $scope.eventsF];
     });
