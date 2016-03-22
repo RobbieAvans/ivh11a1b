@@ -62,6 +62,7 @@ public abstract class HallReservation extends DomainObject {
 
     public void addPartOfDay(PartOfDay partOfDay) {
         partOfDays.add(partOfDay);
+        partOfDay.setHallReservation(this);
     }
 
     public void notifyAllObservers() {

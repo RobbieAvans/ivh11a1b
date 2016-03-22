@@ -13,6 +13,8 @@ public class Afternoon extends PartOfDay {
     private static final int ENDTIMEHOUR = 23;
     private static final Double PRICEFACTORNORMAL = 1.0;
 
+    public Afternoon(){}
+    
     @SuppressWarnings("deprecation")
     public Afternoon(Date date) {
 

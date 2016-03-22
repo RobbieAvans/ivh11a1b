@@ -11,6 +11,8 @@ public class Morning extends PartOfDay {
     private static final int ENDTIMEHOUR = 13;
     private static final Double PRICEFACTOR = 1.0;
 
+    public Morning(){}
+    
     @SuppressWarnings("deprecation")
     public Morning(Date date) {
 

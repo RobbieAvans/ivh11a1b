@@ -2,6 +2,7 @@ package edu.avans.hartigehap.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -17,6 +18,8 @@ import edu.avans.hartigehap.domain.FoodCategory;
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
 import edu.avans.hartigehap.domain.Meal;
+import edu.avans.hartigehap.domain.PartOfDay;
+import edu.avans.hartigehap.domain.PartOfDayFactory;
 import edu.avans.hartigehap.domain.Restaurant;
 import edu.avans.hartigehap.domain.hallreservation.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
@@ -123,7 +126,7 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         // create Customers
         
         byte[] photo = new byte[] { PHOTO1, PHOTO2, 0 };
-        createCustomer("peter", "limonade", "peterlimonade@gmail.com", new DateTime(), 1, "description", photo);
+        Customer customer = createCustomer("peter", "limonade", "peterlimonade@gmail.com", new DateTime(), 1, "description", photo);
         createCustomer("barry", "batsbak", "barrybatsbak@hotmail.com", new DateTime(), 1, "description", photo);
         createCustomer("piet", "bakker", "pietbakker@gmail.com", new DateTime(), 1, "description", photo);
         createCustomer("piet", "bakker", "pietbakker@hotmail.com", new DateTime(), 1, "description", photo);
@@ -136,13 +139,20 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         Hall hall = new Hall("Grote zaal", HALLSEATS, HALLPRICE);
         hallRepository.save(hall);
 
+        
         // Decorate reservation
+        PartOfDayFactory factory = new PartOfDayFactory();
         HallReservation reservation = new ConcreteHallReservation();
         reservation = new HallReservationOption(reservation, hallOptions.get(WIFIID));
         reservation = new HallReservationOption(reservation, hallOptions.get(DJID));
+        reservation.setDescription("This is a nice hall");
+        reservation.setCustomer(customer);
+        reservation.addPartOfDay(factory.makePartOfDay("morning", new Date()));
+        reservation.addPartOfDay(factory.makePartOfDay("afternoon", new Date()));
+        reservation.addPartOfDay(factory.makePartOfDay("evening", new Date()));
 
         hall.addReservation(reservation);
-        hallRepository.save(hall);
+        //hallRepository.save(hall);
     }
 
     private void createHallOptions(String description, Double price) {
@@ -158,7 +168,6 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
     }
 
     private void createMeal(String name, String image, int price, String recipe, List<FoodCategory> foodCats) {
-
         Meal meal = new Meal(name, image, price, recipe);
         // as there is no cascading between FoodCategory and MenuItem (both
         // ways), it is important to first
@@ -178,11 +187,11 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         drinks.add(drink);
     }
 
-    private void createCustomer(String firstName, String lastName, String email, DateTime birthDate, int partySize,
+    private Customer createCustomer(String firstName, String lastName, String email, DateTime birthDate, int partySize,
             String description, byte[] photo) {
         Customer customer = new Customer(firstName, lastName, email, birthDate, partySize, description, photo);
         customers.add(customer);
-        customerRepository.save(customer);
+        return customerRepository.save(customer);
     }
 
     private void createDiningTables(int numberOfTables, Restaurant restaurant) {
