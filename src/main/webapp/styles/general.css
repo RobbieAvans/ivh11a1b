@@ -328,7 +328,6 @@ table tr ul, table tr li{width:100% !important;}
 	padding-left:4px !Important;
 }
 .calendar .fc-agendaWeek-view .fc-widget-header thead th:not(.fc-axis){
-	/* Why? Because header is inside the tabel with border 1px  */
 	width:calc(100% - 3px) !Important;
 }
 
