@@ -248,7 +248,7 @@ angular.module('bestellenApp.controllers', [])
 
          $scope.loadHallReservation();
          
-    }).controller('HallReservationCreateController', function($scope, $state, $stateParams, HallReservation, HallOption, Hall) {
+    }).controller('HallReservationCreateController', function($scope, $state, $stateParams, HallReservation, HallOption, Hall, PartOfDays) {
         var responseHallOption = HallOption.get();
         responseHallOption.$promise.then(function(data) {
             $scope.hallOptions = data.data;
@@ -267,6 +267,54 @@ angular.module('bestellenApp.controllers', [])
                 delete hall["@id"];
             });
         });
+        
+        $scope.selectedHall = 0;
+        $scope.currentDate = moment(new Date()).add(-1,'weeks');
+        $scope.currentWeek = moment($scope.currentDate).week();
+        $scope.days = [];
+        
+        $scope.toggleHall = function toggleHall() {
+       	 	var hall = JSON.parse($scope.hallReservation.hall);
+       	 	$scope.selectedHall = hall.id;
+       	 	
+       	 	$scope.getPartOfDays();
+        };
+        
+        
+        
+        $scope.getNextWeek = function(){
+        	$scope.currentDate = moment($scope.currentDate).add(1,'weeks');
+        	$scope.getPartOfDays();
+        };
+        
+        $scope.getPreviousWeek = function(){
+        	$scope.currentDate = moment($scope.currentDate).add(-1,'weeks');
+        	$scope.getPartOfDays();
+        }
+        
+        $scope.getPartOfDays = function(){
+        	$scope.currentWeek = moment($scope.currentDate).week();
+        	
+        	// Get partOfDays for hall.id and week
+        	var response = PartOfDays.get({
+        		hallid: $scope.selectedHall,
+	            weeknmr: moment($scope.currentDate).week()
+	        });
+	        
+	        response.$promise.then(function(data) {
+	        	if (data.success) {
+	        		$scope.days = [];
+	        		angular.forEach(data.data, function(days) {
+	        			$scope.days.push(days);
+			        });	
+	        	}
+	        });
+	        
+	        jQuery("#cntrPartOfDay").fadeIn(200);
+        }
+        
+        
+        
 
         $scope.hallReservation = new HallReservation();
 

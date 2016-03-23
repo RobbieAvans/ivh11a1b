@@ -337,3 +337,18 @@ table tr ul, table tr li{width:100% !important;}
 .calendar .fc-agendaDay-view .fc-widget-header thead th:not(.fc-axis){
 	width:calc(100% - 3px) !Important;
 }
+		#cntrPartOfDay{display:none;}
+		.partOfDayBtn{float:right; margin-left:15px; font-family:arial !Important; width:auto; font-size:14px; padding:15px 30px; margin-bottom:15px; border:2px solid #ccc;}
+		.partOfDayBtn:hover{cursor:pointer; border-color:#000 !Important;}
+		.partOfDayWeek{float:right; margin-left:15px; width:auto; font-family:arial !Important;  font-size:14px; padding:15px 30px; margin-bottom:15px; text-decoration:none !Important;}
+		.partOfDays{table-layout:fixed !Important; border-bottom:1px solid #000 !Important;}
+		.partOfDays .header{height:50px; background-color:#333;}
+		.partOfDays .header tr{height:100%; backgound-color:rgba(0,0,0,0)!Important; padding:0px !Important;}
+		.partOfDays tr th{height:100%; backgound-color:#333 !Important; padding:0px !Important;}
+		.partOfDays tr th p{height:50px; backgound-color:rgba(0,0,0,0)!Important; line-height:50px !Important; color:#fff !Important; float:left; box-sizing:border-box; padding:0px !important; padding-left:15px !Important; margin:0px; }
+		.partOfDays div{width:100%; height:40px; float:left; margin-bottom:15px; line-height:40px !Important;}
+		.partOfDays .day .dayPart:last-of-type{margin-bottom:0px !Important;}
+		.partOfDays span{width:100%; text-align:center; float:left; height:40px; line-height:36px; border:2px solid #333; }
+		.partOfDays span.vrij{background-color:green; border-color:green;}
+		.partOfDays span.vrij:hover,.partOfDays span.selected{border-color:#000; cursor:pointer;}
+		.partOfDays span.bezet{background-color:red; border-color:red;}

@@ -25,7 +25,61 @@
 		</span>
 	</div>
 </div>
-<div class="form-group">
+<div id="hallReservationPartOfDays" class="form-group" style="height:auto; float:left; width:100%;">
+  
+  <div id='cntrPartOfDay'>
+  	<label>Welke data?</label>
+  	<div class='partOfDayBtn' ng-click="getNextWeek()">Volgende week</div>
+  	<del class='partOfDayWeek'>week nummer {{currentWeek }}</del>
+  	<div class='partOfDayBtn' ng-click="getPreviousWeek()">Vorige week</div>
+	<table class='partOfDays'>
+  		<thead>
+  			<tr class='header'>
+  				<th>
+					<p>Dagdeel</p>
+				</th>
+  				<th>
+					<p>Maandag</p>
+				</th>
+  				<th>
+					<p>Dinsdag</p>
+				</th>
+  				<th>
+					<p>Woensdag</p>
+				</th>
+  				<th>
+					<p>Donderdag</p>
+				</th>
+  				<th>
+					<p>Vrijdag</p>
+				</th>
+  				<th>
+					<p>Zaterdag</p>
+				</th>
+  				<th>
+					<p>Zondag</p>
+				</th>
+  			</tr>
+  		</thead>
+  		<tbody>
+  			<tr>
+  				<td>
+  					<div>Ochtend</div>
+  					<div>Middag</div>
+  					<div>Avond</div>
+  				</td>
+	  			<td class='day' ng:repeat="day in days">
+	  				<div class='dayPart' ng:repeat="daypart in day.dayParts">
+	  					<span ng-if="daypart.available == true" class='vrij'>Vrij</span>
+	  					<span ng-if="daypart.available == false" class='bezet'>Bezet</span>
+	  				</div>
+	  			</td>
+  			</tr>
+  		</tbody>
+  	</table>
+  	</div>
+</div>
+<div class="form-group" style="height:auto; float:left; width:100%;">
   <div class="col-sm-offset-2 col-sm-10">
     <input type="submit" class="btn save" value="Opslaan"/>
     <a class="btn back" ui-sref="hallReservations()">Terug naar begin</a>
