@@ -64,11 +64,13 @@
   		<tbody>
   			<tr>
   				<td>
+  					<div>Datum</div>
   					<div>Ochtend</div>
   					<div>Middag</div>
   					<div>Avond</div>
   				</td>
 	  			<td class='day' ng:repeat="day in days">
+	  				<div class='date'>{{day.date}}</div>
 	  				<div class='dayPart' ng:repeat="daypart in day.dayParts">
 	  					<span ng-if="daypart.available == true" class='vrij'>Vrij</span>
 	  					<span ng-if="daypart.available == false" class='bezet'>Bezet</span>

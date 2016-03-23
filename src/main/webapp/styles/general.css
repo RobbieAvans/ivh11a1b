@@ -347,8 +347,9 @@ table tr ul, table tr li{width:100% !important;}
 		.partOfDays tr th{height:100%; backgound-color:#333 !Important; padding:0px !Important;}
 		.partOfDays tr th p{height:50px; backgound-color:rgba(0,0,0,0)!Important; line-height:50px !Important; color:#fff !Important; float:left; box-sizing:border-box; padding:0px !important; padding-left:15px !Important; margin:0px; }
 		.partOfDays div{width:100%; height:40px; float:left; margin-bottom:15px; line-height:40px !Important;}
+		.partOfDays div.date{width:100%; height:40px; float:left; margin-bottom:15px; margin-top:-15px !Important; line-height:40px !Important; font-style:italic;}
 		.partOfDays .day .dayPart:last-of-type{margin-bottom:0px !Important;}
-		.partOfDays span{width:100%; text-align:center; float:left; height:40px; line-height:36px; border:2px solid #333; }
+		.partOfDays span{width:100%; text-align:center; float:left; height:40px; line-height:36px; border:2px solid rgba(255,255,255,0); }
 		.partOfDays span.vrij{background-color:green; border-color:green;}
 		.partOfDays span.vrij:hover,.partOfDays span.selected{border-color:#000; cursor:pointer;}
 		.partOfDays span.bezet{background-color:red; border-color:red;}
