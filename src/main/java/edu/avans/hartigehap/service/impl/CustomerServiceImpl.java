@@ -111,4 +111,9 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findByEmail(email);
     }
 
+    @Override
+    public Customer findBySessionID(String sessionID) {
+        return customerRepository.findBySessionID(sessionID);
+    }
+
 }
