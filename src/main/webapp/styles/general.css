@@ -239,6 +239,7 @@ table tr ul, table tr li{width:100% !important;}
 	height: auto;
 }
 
+
 .calendar table thead tr th, .calendar table tfoot tr th, 
 .calendar table tbody tr td, .calendar table tr td, .calendar table tfoot tr td {
 	line-height: 32px;
@@ -310,4 +311,16 @@ table tr ul, table tr li{width:100% !important;}
 
 .fc .fc-axis {
     padding-left: 0px !important;
+}
+
+.calendar .fc-widget-header{
+	height:38px !Important;
+	line-height:32px !Important;
+	padding-right:0px !Important;
+}
+
+.calendar .fc-month-view .fc-widget-header thead th{
+	padding:0px !important;
+	/* Why? Because header is inside the tabel with border 1px  */
+	width:calc(100% - 2px) !Important;
 }
