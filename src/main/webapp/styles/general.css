@@ -236,6 +236,7 @@ table tr ul, table tr li{width:100% !important;}
 /* =================== */
 .calendar table tr td {
 	padding-left: 0px !important;
+	height: auto;
 }
 
 .calendar table thead tr th, .calendar table tfoot tr th, 
@@ -280,4 +281,33 @@ table tr ul, table tr li{width:100% !important;}
 #content aside .calendar h2 {
     margin-top: 0px;
     margin-bottom: 0px;
+}
+
+.calendar a {
+	float: none !important;
+}
+
+.calendar .fc-row .fc-content-skeleton td, .calendar .fc-row .fc-helper-skeleton td {
+    border-color: #ddd;
+}
+
+.calendar .fc-day-number {
+	background-color: initial !important;
+}
+
+.calendar .fc-event {
+    border-radius: 0px;
+}
+
+.calendar .fc-day-grid-event {
+    margin: 0;
+}
+
+.calendar .fc-row .fc-content-skeleton tbody td, .calendar .fc-row .fc-helper-skeleton tbody td {
+   	border-top-width: 1px;
+    border-top-style: solid;
+}
+
+.fc .fc-axis {
+    padding-left: 0px !important;
 }

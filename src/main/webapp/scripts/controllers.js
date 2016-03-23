@@ -349,7 +349,6 @@ angular.module('bestellenApp.controllers', [])
 				            className: []
 				        });	
 	        		});
-	        		console.log($scope.events);
 	        	}
 	        });
         };
@@ -371,11 +370,11 @@ angular.module('bestellenApp.controllers', [])
             editable: false,
             firstDay: 1,
             lang: 'nl',
-            header:{
-              left: 'title',
-              center: '',
-              right: 'today prev,next'
-            },
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay'
+			},
             eventClick: $scope.alertOnEventClick,
             eventDrop: $scope.alertOnDrop,
             eventResize: $scope.alertOnResize,
