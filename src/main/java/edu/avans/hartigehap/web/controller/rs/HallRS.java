@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
+@RequestMapping (value = RSConstants.URL_PREFIX + "/hall", produces = MediaType.APPLICATION_JSON_VALUE)
 public class HallRS extends BaseRS {
 
     @Autowired
@@ -42,8 +43,7 @@ public class HallRS extends BaseRS {
      * @param httpRequest
      * @return
      */
-    @RequestMapping(value = RSConstants.URL_PREFIX
-            + "/hall", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView createHall(@RequestBody Hall hall, HttpServletResponse httpResponse, WebRequest httpRequest) {
         try {
@@ -72,8 +72,7 @@ public class HallRS extends BaseRS {
      * 
      * @return
      */
-    @RequestMapping(value = RSConstants.URL_PREFIX
-            + "/hall", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView allHalls() {
         return createSuccessResponse(hallService.findAll());
@@ -103,8 +102,7 @@ public class HallRS extends BaseRS {
      * @param hallId
      * @return
      */
-    @RequestMapping(value = RSConstants.URL_PREFIX
-            + "/hall/{hallId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{hallId}", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView getHall(@PathVariable long hallId) {
         Hall hall = hallService.findById(hallId);
@@ -144,8 +142,7 @@ public class HallRS extends BaseRS {
      * @param httpResponse
      * @return
      */
-    @RequestMapping(value = RSConstants.URL_PREFIX
-            + "/hall/{hallId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{hallId}", method = RequestMethod.PUT)
     @ResponseBody
     public ModelAndView updateHall(@RequestBody Hall hall, @PathVariable long hallId,
             HttpServletResponse httpResponse) {
@@ -186,8 +183,7 @@ public class HallRS extends BaseRS {
      * @param httpResponse
      * @return
      */
-    @RequestMapping(value = RSConstants.URL_PREFIX
-            + "/hall/{hallId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{hallId}", method = RequestMethod.DELETE)
     @ResponseBody
     public ModelAndView removeHall(@PathVariable long hallId, HttpServletResponse httpResponse) {
         boolean result = hallService.deleteById(hallId);

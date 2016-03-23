@@ -29,6 +29,7 @@ import edu.avans.hartigehap.web.controller.rs.body.HallReservationRequest;
 import edu.avans.hartigehap.web.controller.rs.body.HallReservationResponse;
 
 @Controller
+@RequestMapping (value = RSConstants.URL_PREFIX + "/hallReservation", produces = MediaType.APPLICATION_JSON_VALUE)
 public class HallReservationRS extends BaseRS {
 
     @Autowired
@@ -36,8 +37,7 @@ public class HallReservationRS extends BaseRS {
     @Autowired
     private HallService hallService;
 
-    @RequestMapping(value = RSConstants.URL_PREFIX
-            + "/hallReservation", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView createHallReservation(@RequestBody HallReservationRequest hallReservationRequest,
             HttpServletResponse httpResponse, WebRequest httpRequest) {
@@ -73,8 +73,7 @@ public class HallReservationRS extends BaseRS {
         }
     }
 
-    @RequestMapping(value = RSConstants.URL_PREFIX
-            + "/hallReservation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView allHallReservations() {
         List<HallReservationResponse> response = new ArrayList<>();
@@ -87,8 +86,7 @@ public class HallReservationRS extends BaseRS {
         return createSuccessResponse(response);
     }
 
-    @RequestMapping(value = RSConstants.URL_PREFIX
-            + "/hallReservation/{hallReservationId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{hallReservationId}", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView getHallReservation(@PathVariable long hallReservationId) {
         HallReservation hallReservation = hallReservationService.findById(hallReservationId);
@@ -100,8 +98,7 @@ public class HallReservationRS extends BaseRS {
         return createErrorResponse("HallReservation with id " + hallReservationId + " was not found");
     }
 
-    @RequestMapping(value = RSConstants.URL_PREFIX
-            + "/hallReservation/{hallReservationId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{hallReservationId}", method = RequestMethod.PUT)
     @ResponseBody
     public ModelAndView updateHallReservation(@RequestBody HallReservationRequest hallReservationRequest,
             @PathVariable long hallReservationId, HttpServletResponse httpResponse) {
@@ -124,8 +121,7 @@ public class HallReservationRS extends BaseRS {
         return createErrorResponse("HallReservation doesn't exists");
     }
 
-    @RequestMapping(value = RSConstants.URL_PREFIX
-            + "/hallReservation/{hallReservationId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{hallReservationId}", method = RequestMethod.DELETE)
     @ResponseBody
     public ModelAndView removeHallReservation(@PathVariable long hallReservationId, HttpServletResponse httpResponse) {
         HallReservation hallReservation = hallReservationService.findById(hallReservationId);

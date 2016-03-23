@@ -26,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
+@RequestMapping(value = RSConstants.URL_PREFIX + "/partofday", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PartOfDayRS extends BaseRS{
     
     @Autowired
@@ -33,8 +34,7 @@ public class PartOfDayRS extends BaseRS{
     
     PartOfDayFactory factory = new PartOfDayFactory();
     
-    @RequestMapping(value = RSConstants.URL_PREFIX
-            + "/partofday/{hallId}/{weekNr}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{hallId}/{weekNr}", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView getAvailability(@PathVariable int hallId, @PathVariable int weekNr){
         String[] days = {"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
@@ -71,8 +71,7 @@ public class PartOfDayRS extends BaseRS{
         return createSuccessResponse(response);
     }
     
-    @RequestMapping(value = RSConstants.URL_PREFIX
-            + "/partofday", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView CreatePartOfDay(Date date, String part){
         try {
@@ -83,8 +82,7 @@ public class PartOfDayRS extends BaseRS{
         }
     }
     
-    @RequestMapping(value = RSConstants.URL_PREFIX
-            + "/partofday/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public void DeletePartOfDay(@PathVariable Long id){
         partOfDayService.delete(id);

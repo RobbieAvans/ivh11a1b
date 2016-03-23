@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 // http://briansjavablog.blogspot.nl/2012/08/rest-services-with-spring.html
 @Slf4j
 @Controller
+@RequestMapping (value = RSConstants.URL_PREFIX + "/halloption", produces = MediaType.APPLICATION_JSON_VALUE)
 public class HallOptionRS extends BaseRS {
 
     @Autowired
@@ -42,8 +43,7 @@ public class HallOptionRS extends BaseRS {
      * @param httpRequest
      * @return
      */
-    @RequestMapping(value = RSConstants.URL_PREFIX
-            + "/halloption", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView createHallOption(@RequestBody HallOption hallOption, HttpServletResponse httpResponse,
             WebRequest httpRequest) {
@@ -67,8 +67,7 @@ public class HallOptionRS extends BaseRS {
      * 
      * @return
      */
-    @RequestMapping(value = RSConstants.URL_PREFIX
-            + "/halloption", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView allHallOptions() {
         return createSuccessResponse(hallOptionService.findAll());
@@ -83,8 +82,7 @@ public class HallOptionRS extends BaseRS {
      * @param hallOptionId
      * @return
      */
-    @RequestMapping(value = RSConstants.URL_PREFIX
-            + "/halloption/{hallOptionId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{hallOptionId}", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView getHallOption(@PathVariable long hallOptionId) {
         HallOption hallOption = hallOptionService.findById(hallOptionId);
@@ -108,8 +106,7 @@ public class HallOptionRS extends BaseRS {
      * @param httpResponse
      * @return
      */
-    @RequestMapping(value = RSConstants.URL_PREFIX
-            + "/halloption/{hallOptionId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{hallOptionId}", method = RequestMethod.PUT)
     @ResponseBody
     public ModelAndView updateHallOption(@RequestBody HallOption hallOption, @PathVariable long hallOptionId,
             HttpServletResponse httpResponse) {
@@ -136,8 +133,7 @@ public class HallOptionRS extends BaseRS {
      * @param httpResponse
      * @return
      */
-    @RequestMapping(value = RSConstants.URL_PREFIX
-            + "/halloption/{hallOptionId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{hallOptionId}", method = RequestMethod.DELETE)
     @ResponseBody
     public ModelAndView removeHallOption(@PathVariable long hallOptionId, HttpServletResponse httpResponse) {
         hallOptionService.deleteById(hallOptionId);
