@@ -271,13 +271,22 @@ angular.module('bestellenApp.controllers', [])
         $scope.hallReservation = new HallReservation();
 
         $scope.addHallReservation = function() {
-            $scope.hallReservation.hall = JSON.parse($scope.hallReservation.hall);
-            $scope.hallReservation.hallOptions = []
+            $scope.hallReservation.hall = 1;
+            $scope.hallReservation.hallOptions = [];
             jQuery("#hallReservationOptions input:checked").each(function() {
-                $scope.hallReservation.hallOptions.push(JSON.parse(jQuery(this).val()));
+                $scope.hallReservation.hallOptions.push(JSON.parse(jQuery(this).val()).id);
+                //console.log("HallOPTION id "+JSON.parse(jQuery(this).val()).id);
             });
+            
+            console.log($scope.hallReservation);
 
             $scope.hallReservation.$save(function() {
+            	 // Change object for API
+	       		 //$scope.hallReservation.hall 		= $scope.selectedHall.id;
+	       		 $scope.hallReservation.customer 	= 1;
+            	
+	       		 console.log($scope.hallReservation);
+	       		 
                 $state.go('hallReservations');
             });
         };
