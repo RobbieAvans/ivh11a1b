@@ -45,6 +45,7 @@ public class HallReservationRS extends BaseRS {
         try {
             // Get the hall where we will save it on
             Hall hall = hallReservationRequest.getHallObject();
+            hall.touchHallReservations();
             
             List<HallOption> hallOptions = hallReservationRequest.getHallOptionObjects();
             Iterator<HallOption> hallOptionsIterator = hallOptions.iterator();
@@ -59,6 +60,7 @@ public class HallReservationRS extends BaseRS {
 
             reservation.setDescription(hallReservationRequest.getDescription());
             hall.addReservation(reservation);
+                     
             hallService.save(hall);
 
             httpResponse.setStatus(HttpStatus.CREATED.value());
@@ -91,7 +93,7 @@ public class HallReservationRS extends BaseRS {
     public ModelAndView getHallReservation(@PathVariable long hallReservationId) {
         HallReservation hallReservation = hallReservationService.findById(hallReservationId);
 
-        if (hallReservation != null) {
+        if (hallReservation != null) {            
             return createSuccessResponse(new HallReservationResponse(hallReservation));
         }
 
@@ -108,25 +110,15 @@ public class HallReservationRS extends BaseRS {
 
         if (hallReservation != null) {
             
-           // try {
-                System.out.println("test1");
-                try {
-                    hallReservation = hallReservationService.update(hallReservation, hallReservationRequest);
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                System.out.println(hallReservation);
-                System.out.println(hallReservation.getId());
+           try {
+                hallReservation = hallReservationService.update(hallReservation, hallReservationRequest);
+                
                 httpResponse.setStatus(HttpStatus.OK.value());
                 
                 return createSuccessResponse(new HallReservationResponse(hallReservation));
-//            } catch (Exception e) {
-//                System.out.println("test4");
-//
-//                System.out.println(e.getMessage());
-//                return createErrorResponse("Unable to update the HallReservation");
-//            }
+            } catch (Exception e) {
+                return createErrorResponse("Unable to update the HallReservation");
+            }
         }
 
         return createErrorResponse("HallReservation doesn't exists");

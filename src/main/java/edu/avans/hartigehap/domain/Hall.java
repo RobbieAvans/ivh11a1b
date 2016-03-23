@@ -76,4 +76,11 @@ public class Hall extends DomainObject {
     public boolean canBeDeleted() {
         return !hasActiveReservations();
     }
+    
+    /**
+     * Touch the hallReservations so they will be loaded
+     */
+    public void touchHallReservations() {
+        reservations.size();
+    }
 }

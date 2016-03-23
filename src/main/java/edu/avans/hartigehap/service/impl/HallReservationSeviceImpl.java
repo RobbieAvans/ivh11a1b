@@ -63,7 +63,7 @@ public class HallReservationSeviceImpl implements HallReservationService {
             hall.removeReservation(hallReservationPointer);
         } else {
             // This is weird... But it is necessary that the reservations are all loaded
-            hall.getReservations().size();
+            hall.touchHallReservations();
         }
         
         // Reset hallReservationPointer
