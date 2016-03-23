@@ -323,3 +323,18 @@ table tr ul, table tr li{width:100% !important;}
 	/* Why? Because header is inside the tabel with border 1px  */
 	width:calc(100% - 2px) !Important;
 }
+
+.calendar .fc-agendaWeek-view .fc-widget-header .fc-axis{
+	padding-left:4px !Important;
+}
+.calendar .fc-agendaWeek-view .fc-widget-header thead th:not(.fc-axis){
+	/* Why? Because header is inside the tabel with border 1px  */
+	width:calc(100% - 3px) !Important;
+}
+
+.calendar .fc-agendaDay-view .fc-widget-header .fc-axis{
+	padding-left:4px !Important;
+}
+.calendar .fc-agendaDay-view .fc-widget-header thead th:not(.fc-axis){
+	width:calc(100% - 3px) !Important;
+}
