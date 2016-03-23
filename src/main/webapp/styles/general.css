@@ -320,7 +320,6 @@ table tr ul, table tr li{width:100% !important;}
 }
 
 .calendar .fc-month-view .fc-widget-header thead th{
-	padding:0px !important;
 	/* Why? Because header is inside the tabel with border 1px  */
 	width:calc(100% - 2px) !Important;
 }
