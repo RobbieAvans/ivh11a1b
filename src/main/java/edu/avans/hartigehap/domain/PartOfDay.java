@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
@@ -17,9 +18,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class PartOfDay extends DomainObject {
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1L;
 
     private Date startTime;
@@ -28,5 +26,6 @@ public abstract class PartOfDay extends DomainObject {
     private Double priceFactor;
 
     @ManyToOne
+    @JsonIgnore
     private HallReservation hallReservation;
 }
