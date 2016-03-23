@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,20 +41,18 @@ public class PartOfDayRS extends BaseRS{
         List<Day> response = new ArrayList<>();
         List<PartOfDay> dayParts = partOfDayService.findByWeekAndHall(hallId, weekNr);
         
-        Calendar gregorianCalendar = new GregorianCalendar();
-        gregorianCalendar.setFirstDayOfWeek(Calendar.MONDAY);
-        gregorianCalendar.setMinimalDaysInFirstWeek(4);
-         
-        int numWeekofYear = weekNr;  //INPUT
-        int year = 2016;         //INPUT
-         
-        gregorianCalendar.set(Calendar.YEAR , year);
-        gregorianCalendar.set(Calendar.WEEK_OF_YEAR , numWeekofYear);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.WEEK_OF_YEAR, weekNr);        
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        System.out.println(sdf.format(cal.getTime())); 
         
         int i = 1;
         for (String dayName : days){
            Day day = new Day(dayName);
-           day.setDate((gregorianCalendar.get(Calendar.DAY_OF_MONTH)+i -2)+ "-" + (gregorianCalendar.get(Calendar.MONTH)+ 1 ) + "-" + gregorianCalendar.get(Calendar.YEAR));
+           //day.setDate((gregorianCalendar.get(Calendar.DAY_OF_MONTH))+ "-" + (gregorianCalendar.get(Calendar.MONTH)+ 1 ) + "-" + gregorianCalendar.get(Calendar.YEAR));
+           day.setDate(sdf.format(cal.getTime()));
+           cal.add(Calendar.DAY_OF_WEEK, 1);
            for (String partName : parts){
                DayPart part = new DayPart(partName);
                for(PartOfDay x : dayParts){
