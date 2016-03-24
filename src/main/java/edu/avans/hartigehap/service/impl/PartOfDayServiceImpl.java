@@ -2,16 +2,12 @@ package edu.avans.hartigehap.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.collect.Lists;
 
 import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.StateException;
@@ -42,7 +38,6 @@ public class PartOfDayServiceImpl implements PartOfDayService{
         return (List<PartOfDay>) partOfDayRepository.findAll();
     }
     
-
     @Override
     public PartOfDay save(PartOfDay partOfDay) {
         return partOfDayRepository.save(partOfDay);
@@ -51,7 +46,6 @@ public class PartOfDayServiceImpl implements PartOfDayService{
     @Override
     public void delete(Long id) {
         partOfDayRepository.delete(id);
-        
     }
 
 }

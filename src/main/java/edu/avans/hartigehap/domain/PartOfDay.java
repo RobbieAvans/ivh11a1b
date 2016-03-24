@@ -28,4 +28,12 @@ public abstract class PartOfDay extends DomainObject {
     @ManyToOne
     @JsonIgnore
     private HallReservation hallReservation;
+    
+    /**
+     * Method that should check if another ParyOfDay can be added after this
+     * 
+     * @param after
+     * @return
+     */
+    public abstract boolean canAddAfter(PartOfDay after);
 }

@@ -12,7 +12,7 @@ public class PartOfDayFactory {
             return new Morning(date);
         } else if ("AFTERNOON".equalsIgnoreCase(part)) {
             return new Afternoon(date);
-        } else if ("Evening".equalsIgnoreCase(part)) {
+        } else if ("EVENING".equalsIgnoreCase(part)) {
             return new Evening(date);
         }
         return null;

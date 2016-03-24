@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
+import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.hallreservation.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservationOption;
@@ -59,6 +60,12 @@ public class HallReservationRS extends BaseRS {
             }
 
             reservation.setDescription(hallReservationRequest.getDescription());
+            
+            // Add PartOfDays
+            for (PartOfDay partOfDay : hallReservationRequest.getPartOfDaysObjects()) {
+                reservation.addPartOfDay(partOfDay);
+            }
+            
             hall.addReservation(reservation);
                      
             hallService.save(hall);

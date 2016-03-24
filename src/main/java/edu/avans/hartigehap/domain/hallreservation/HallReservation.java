@@ -124,6 +124,7 @@ public abstract class HallReservation extends DomainObject {
         description = null;
         customer = null;
         hall = null;
+        partOfDays.clear();
     }
     
     /**

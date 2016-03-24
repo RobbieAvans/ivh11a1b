@@ -128,7 +128,7 @@ public class HallReservationSeviceImpl implements HallReservationService {
         // Set other
         hallReservationPointer.setDescription(hallReservationRequest.getDescription());
         hallReservationPointer.setCustomer(hallReservationRequest.getCustomerObject());
-        hallReservationPointer.setPartOfDays(hallReservationRequest.getPartOfDays());
+        hallReservationPointer.setPartOfDays(hallReservationRequest.getPartOfDaysObjects());
         hallReservationPointer.setState(hallReservationRequest.getState());
         
         // Add to hall

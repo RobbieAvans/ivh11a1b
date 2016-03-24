@@ -9,8 +9,8 @@ public class Afternoon extends PartOfDay {
 
     private static final long serialVersionUID = 1L;
 
-    private static final int STARTTIMEHOUR = 18;
-    private static final int ENDTIMEHOUR = 23;
+    private static final int STARTTIMEHOUR = 13;
+    private static final int ENDTIMEHOUR = 18;
     private static final Double PRICEFACTORNORMAL = 1.0;
 
     public Afternoon(){}
@@ -33,4 +33,8 @@ public class Afternoon extends PartOfDay {
         setDescription("Afternoon");
     }
 
+    @Override
+    public boolean canAddAfter(PartOfDay after) {
+        return getEndTime().equals(after.getStartTime());
+    }
 }

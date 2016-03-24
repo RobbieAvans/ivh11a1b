@@ -31,4 +31,8 @@ public class Morning extends PartOfDay {
         setDescription("Morning");
     }
 
+    @Override
+    public boolean canAddAfter(PartOfDay after) {
+        return getEndTime().equals(after.getStartTime());
+    }
 }

@@ -70,7 +70,7 @@ public class PartOfDayRS extends BaseRS{
     
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView CreatePartOfDay(Date date, String part){
+    public ModelAndView createPartOfDay(Date date, String part){
         try {
             return createSuccessResponse(partOfDayService.save(factory.makePartOfDay(part, date)));
         } catch (Exception e) {
@@ -81,7 +81,7 @@ public class PartOfDayRS extends BaseRS{
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public void DeletePartOfDay(@PathVariable Long id){
+    public void deletePartOfDay(@PathVariable Long id){
         partOfDayService.delete(id);
     }
     

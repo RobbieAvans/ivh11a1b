@@ -1,6 +1,7 @@
 package edu.avans.hartigehap.web.controller.rs.body;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class HallReservationRequest {
     private Long customer;
     private List<Long> hallOptions = new ArrayList<>();
     private Long hall;
-    private List<PartOfDay> partOfDays = new ArrayList<>();
+    private List<PartOfDayRequest> partOfDays = new ArrayList<>();
 
     public HallReservationRequest() {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this); 
@@ -61,5 +62,23 @@ public class HallReservationRequest {
         if (foundCustomer == null) throw new Exception("Not an existing customer");
         
         return foundCustomer;
+    }
+    
+    @JsonIgnore
+    public List<PartOfDay> getPartOfDaysObjects() throws Exception {
+        LinkedList<PartOfDay> partOfDaysObjects = new LinkedList<>();
+        for (PartOfDayRequest partOfDayRequest : partOfDays) {
+            PartOfDay newPartOfDay = partOfDayRequest.getPartOfDay();
+            if (partOfDaysObjects.size() > 0) {
+                // Check if it is possible to add it
+                if (!partOfDaysObjects.getLast().canAddAfter(newPartOfDay)) {
+                    throw new Exception("PartOfDays array is invalid");
+                }
+            }
+            
+            partOfDaysObjects.add(newPartOfDay);
+        }   
+        
+        return partOfDaysObjects;
     }
 }

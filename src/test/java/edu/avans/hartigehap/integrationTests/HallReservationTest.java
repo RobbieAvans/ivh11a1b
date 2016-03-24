@@ -2,7 +2,11 @@ package edu.avans.hartigehap.integrationTests;
 
 import static org.junit.Assert.assertEquals;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -23,6 +27,7 @@ import edu.avans.hartigehap.service.HallReservationService;
 import edu.avans.hartigehap.service.HallService;
 import edu.avans.hartigehap.service.testutil.AbstractTransactionRollbackTest;
 import edu.avans.hartigehap.web.controller.rs.body.HallReservationRequest;
+import edu.avans.hartigehap.web.controller.rs.body.PartOfDayRequest;
 
 public class HallReservationTest extends AbstractTransactionRollbackTest {
 
@@ -113,8 +118,8 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         assertEquals(13, foundHallReservation.getPartOfDays().get(0).getEndTime().getHours());
 
         assertEquals("Evening", foundHallReservation.getPartOfDays().get(1).getDescription());
-        assertEquals(13, foundHallReservation.getPartOfDays().get(1).getStartTime().getHours());
-        assertEquals(18, foundHallReservation.getPartOfDays().get(1).getEndTime().getHours());
+        assertEquals(18, foundHallReservation.getPartOfDays().get(1).getStartTime().getHours());
+        assertEquals(23, foundHallReservation.getPartOfDays().get(1).getEndTime().getHours());
         assertEquals(month, foundHallReservation.getPartOfDays().get(1).getStartTime().getMonth());
         assertEquals(day, foundHallReservation.getPartOfDays().get(1).getStartTime().getDate());
         
@@ -140,14 +145,37 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         
         // Don't set the hallOptions, so this will be an empty list
  
+        // Set new partOfDays
+        List<PartOfDayRequest> partOfDaysRequest = new ArrayList<>();
+        
+        PartOfDayRequest partOfDayRequest1, partOfDayRequest2;
+        
+        Date updatedDate = new Date();
+        
+        int updatedMonth = 0;
+        int updatedDay = 1;
+        updatedDate.setMonth(updatedMonth);
+        updatedDate.setDate(updatedDay);
+        
+        DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        String updatedDateString = format.format(updatedDate);
+
+        partOfDayRequest1 = new PartOfDayRequest();
+        partOfDayRequest1.setDate(updatedDateString);
+        partOfDayRequest1.setPartOfDay("morning");
+        
+        partOfDayRequest2 = new PartOfDayRequest();
+        partOfDayRequest2.setDate(updatedDateString);
+        partOfDayRequest2.setPartOfDay("afternoon");
+        
+        partOfDaysRequest.add(partOfDayRequest1);
+        partOfDaysRequest.add(partOfDayRequest2);
+        
+        request.setPartOfDays(partOfDaysRequest);
+        
         HallReservation updatedHallReservation = hallReservationService.update(foundHallReservation, request);
         
-        /**
-         * TODO: partOfDays update
-         */
-        updatedHallReservation.addPartOfDay(part1);
-        
-        assertEquals("50.0", updatedHallReservation.getPrice().toString());
+        assertEquals("100.0", updatedHallReservation.getPrice().toString());
         assertEquals(hall2, updatedHallReservation.getHall());
         assertEquals(updatedDescription, updatedHallReservation.getDescription());
         // HallOptions should be removed:
