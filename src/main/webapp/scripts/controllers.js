@@ -248,7 +248,7 @@ angular.module('bestellenApp.controllers', [])
 
          $scope.loadHallReservation();
          
-    }).controller('HallReservationCreateController', function($scope, $state, $stateParams, HallReservation, HallOption, Hall, PartOfDays) {
+    }).controller('HallReservationCreateController', function($scope, $state, $stateParams, HallReservation, HallOption, Hall, PartOfDays, CustomPartOfDay) {
         var responseHallOption = HallOption.get();
         responseHallOption.$promise.then(function(data) {
             $scope.hallOptions = data.data;
@@ -272,6 +272,7 @@ angular.module('bestellenApp.controllers', [])
         $scope.currentDate = moment(new Date()).add(-1,'weeks');
         $scope.currentWeek = moment($scope.currentDate).week();
         $scope.days = [];
+        $scope.selectedPartOfDays = [];
         
         $scope.toggleHall = function toggleHall() {
        	 	var hall = JSON.parse($scope.hallReservation.hall);
@@ -280,6 +281,26 @@ angular.module('bestellenApp.controllers', [])
        	 	$scope.getPartOfDays();
         };
         
+        $scope.partOfDayClick = function(datum,partOfDay,$event){
+        	$scope.partOfDay 			= new CustomPartOfDay();
+        	$scope.partOfDay.date 		= datum;
+        	$scope.partOfDay.partOfDay 	= partOfDay;
+        	
+        	if($scope.selectedPartOfDays.length == 0){
+        		$scope.selectedPartOfDays.push($scope.partOfDay);
+            	jQuery($event.target).addClass("selected");
+        	}else{
+	        	angular.forEach($scope.selectedPartOfDays, function(selectedPartOfDay) {
+	    			if(selectedPartOfDay.date == $scope.partOfDay.date && selectedPartOfDay.partOfDay == $scope.partOfDay.partOfDay ){
+	    				$scope.selectedPartOfDays.splice(selectedPartOfDay,1);
+	    				jQuery($event.target).removeClass("selected");
+	    			}else{
+	    				$scope.selectedPartOfDays.push($scope.partOfDay);
+	                	jQuery($event.target).addClass("selected");
+	    			}
+		        });	
+        	}
+        };
         
         
         $scope.getNextWeek = function(){
@@ -320,13 +341,14 @@ angular.module('bestellenApp.controllers', [])
 
         $scope.addHallReservation = function() {
             $scope.hallReservation.hall = 1;
+            $scope.hallReservation.partOfDays = $scope.selectedPartOfDays;
             $scope.hallReservation.hallOptions = [];
             jQuery("#hallReservationOptions input:checked").each(function() {
                 $scope.hallReservation.hallOptions.push(JSON.parse(jQuery(this).val()).id);
                 //console.log("HallOPTION id "+JSON.parse(jQuery(this).val()).id);
             });
             
-            console.log($scope.hallReservation);
+            alert(JSON.stringify($scope.hallReservation));
 
             $scope.hallReservation.$save(function() {
             	 // Change object for API

@@ -72,7 +72,7 @@
 	  			<td class='day' ng:repeat="day in days">
 	  				<div class='date'>{{day.date}}</div>
 	  				<div class='dayPart' ng:repeat="daypart in day.dayParts">
-	  					<span ng-if="daypart.available == true" class='vrij'>Vrij</span>
+	  					<span ng-if="daypart.available == true" ng-click='partOfDayClick(day.date, daypart.description,$event)' class='vrij'>Vrij</span>
 	  					<span ng-if="daypart.available == false" class='bezet'>Bezet</span>
 	  				</div>
 	  			</td>
