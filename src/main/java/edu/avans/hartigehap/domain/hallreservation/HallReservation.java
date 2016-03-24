@@ -11,13 +11,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+
 import edu.avans.hartigehap.domain.Customer;
 import edu.avans.hartigehap.domain.DomainObject;
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
 import edu.avans.hartigehap.domain.Observer;
 import edu.avans.hartigehap.domain.PartOfDay;
+import edu.avans.hartigehap.domain.StateException;
 import edu.avans.hartigehap.domain.hallreservation.state.HallReservationState;
+import edu.avans.hartigehap.service.HallReservationService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -27,6 +32,7 @@ import lombok.ToString;
  * @author Tom GIesbergen
  */
 
+@Configurable // Needed to autowire hallReservationService
 @Entity
 @Getter
 @Setter
@@ -34,12 +40,17 @@ import lombok.ToString;
 public abstract class HallReservation extends DomainObject {
 
     private static final long serialVersionUID = 1L;
+    
+    @Transient
+    @Autowired
+    private HallReservationService hallReservationService;
+    
     private String description;
 
     @Enumerated(EnumType.STRING)
     private HallReservationState state;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Customer customer;
 
     @ManyToOne
@@ -52,8 +63,7 @@ public abstract class HallReservation extends DomainObject {
     private List<PartOfDay> partOfDays = new ArrayList<>();
 
     public HallReservation() {
-        // Default is submittedState ??
-        this.state = HallReservationState.SUBMITTED;
+        this.state = HallReservationState.CONCEPT;
     }
 
     public void addObserver(Observer<HallReservation> observer) {
@@ -76,18 +86,22 @@ public abstract class HallReservation extends DomainObject {
         notifyAllObservers();
     }
 
-    public void submitReservation() {
-        state.submit(this);
-    }
+    public void confirmReservation() throws StateException {
+        state.confirm(this);
+     }
 
-    public void payReservation() {
+    public void payReservation() throws StateException {
         state.pay(this);
     }
 
-    public void cancelReservation() {
+    public void cancelReservation() throws StateException {
         state.cancel(this);
     }
 
+    public void undoReservation() throws StateException {
+        state.undo(this);
+    }
+    
     @Transient
     public Double getPrice() {
         Double price = 0.0;
@@ -110,6 +124,20 @@ public abstract class HallReservation extends DomainObject {
         description = null;
         customer = null;
         hall = null;
+    }
+    
+    /**
+     * This method is necessary because we want to be able to delete a reservation
+     * from a hallReservationState. And it is not possible to autowire the service
+     * into the state class because the state class is created with new. Also 
+     * aspectj weaving is not possible because the states are enum?
+     * 
+     * https://eclipse.org/aspectj/doc/released/adk15notebook/enums-in-aspectj5.html
+     * http://www.nurkiewicz.com/2009/10/ddd-in-spring-made-easy-with-aspectj.html
+     * 
+     */
+    public void delete() {
+        hallReservationService.delete(this);
     }
     
     /**

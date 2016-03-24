@@ -1,0 +1,9 @@
+<!DOCTYPE aspectj PUBLIC "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
+<aspectj>
+	<weaver options="-Xreweavable -showWeaveInfo  -XmessageHandlerClass:org.springframework.aop.aspectj.AspectJWeaverMessageHandler">
+		<include within="edu.avans.hartigehap.domain.hallreservation.*"/>
+	</weaver>
+	<aspects>
+		<aspect name="org.springframework.beans.factory.aspectj.AbstractInterfaceDrivenDependencyInjectionAspect"/>
+	</aspects>
+</aspectj>

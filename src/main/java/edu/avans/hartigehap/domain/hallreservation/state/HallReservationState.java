@@ -1,5 +1,6 @@
 package edu.avans.hartigehap.domain.hallreservation.state;
 
+import edu.avans.hartigehap.domain.StateException;
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 
 /**
@@ -8,9 +9,11 @@ import edu.avans.hartigehap.domain.hallreservation.HallReservation;
  * @author robbie
  *
  */
-public enum HallReservationState implements HallReservationStateOperations {
+public enum HallReservationState {
 
-    SUBMITTED(new SubmittedState()),
+    CONCEPT(new ConceptState()),
+
+    FINAL(new FinalState()),
 
     PAID(new PaidState()),
 
@@ -22,18 +25,19 @@ public enum HallReservationState implements HallReservationStateOperations {
        this.operations = operations;
     }
 
-    @Override
-    public void submit(HallReservation hallReservation) {
-        operations.submit(hallReservation);
+    public void confirm(HallReservation hallReservation) throws StateException {
+        operations.confirm(hallReservation);
     }
 
-    @Override
-    public void pay(HallReservation hallReservation) {
+    public void pay(HallReservation hallReservation) throws StateException {
         operations.pay(hallReservation);
     }
 
-    @Override
-    public void cancel(HallReservation hallReservation) {
+    public void cancel(HallReservation hallReservation) throws StateException {
         operations.cancel(hallReservation);
+    }
+    
+    public void undo(HallReservation hallReservation) throws StateException {
+        operations.undo(hallReservation);
     }
 }

@@ -1,11 +1,15 @@
 package edu.avans.hartigehap.domain.hallreservation.state;
 
-import edu.avans.hartigehap.domain.hallreservation.HallReservation;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-@Slf4j
+import edu.avans.hartigehap.domain.hallreservation.HallReservation;
+
 public class CancelledState extends AbstractHallReservationStateOperations {
 
+    public CancelledState() {
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this); 
+    }
+    
     public String strMailBody() {
         return "Beste %voornaam%, de reservering is geannuleerd";
     }
@@ -15,17 +19,12 @@ public class CancelledState extends AbstractHallReservationStateOperations {
     }
 
     @Override
-    public void submit(HallReservation hallReservation) {
-        log.debug("Je bent al gecancelled, submitten gaat niet meer.");
+    public void undo(HallReservation hallReservation) {
+        hallReservation.setState(HallReservationState.CONCEPT);
     }
-
+    
     @Override
-    public void cancel(HallReservation hallReservation) {
-        log.debug("Je bent al gecancelled, nogmaals cancellen gaat niet meer.");
-    }
-
-    @Override
-    public void pay(HallReservation hallReservation) {
-        log.debug("Je bent al gecancelled, betalen gaat niet meer.");
+    public void confirm(HallReservation hallReservation) {
+        hallReservation.delete();
     }
 }

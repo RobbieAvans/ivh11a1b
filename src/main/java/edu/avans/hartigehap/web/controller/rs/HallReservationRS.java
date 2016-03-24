@@ -77,7 +77,7 @@ public class HallReservationRS extends BaseRS {
     @ResponseBody
     public ModelAndView allHallReservations() {
         List<HallReservationResponse> response = new ArrayList<>();
-
+        
         // Fill wrapper
         for (HallReservation hallReservation : hallReservationService.findAll()) {
             response.add(new HallReservationResponse(hallReservation));
@@ -89,8 +89,9 @@ public class HallReservationRS extends BaseRS {
     @RequestMapping(value = "/{hallReservationId}", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView getHallReservation(@PathVariable long hallReservationId) {
+   
         HallReservation hallReservation = hallReservationService.findById(hallReservationId);
-
+        
         if (hallReservation != null) {            
             return createSuccessResponse(new HallReservationResponse(hallReservation));
         }
