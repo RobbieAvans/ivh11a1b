@@ -35,6 +35,7 @@ import edu.avans.hartigehap.web.controller.rs.body.InvalidJsonRequestException;
 public class HallReservationRS extends BaseRS {
 
     @Autowired
+    
     private HallReservationService hallReservationService;
     @Autowired
     private HallService hallService;
@@ -115,10 +116,10 @@ public class HallReservationRS extends BaseRS {
         HallReservation hallReservation = hallReservationService.findById(hallReservationId);
 
         if (hallReservation != null) {
-            
+                      
            try {
                 hallReservation = hallReservationService.update(hallReservation, hallReservationRequest);
-                
+
                 httpResponse.setStatus(HttpStatus.OK.value());
                 
                 return createSuccessResponse(new HallReservationResponse(hallReservation));

@@ -29,10 +29,7 @@ public class AgendaServiceImpl implements AgendaService {
     public Iterator<AgendaItem> getItemsBetween(Date start, Date end) {
         AgendaCollection collection = new AgendaCollection();
         
-        /**
-         * TODO: Get hallReservation from db between start and end date
-         */
-        List<HallReservation> hallReservations = hallReservationService.findAll();
+        List<HallReservation> hallReservations = hallReservationService.findBetween(start, end);
         
         for (HallReservation hallReservation : hallReservations) {
             collection.addItem(new HallReservationAgendaItemAdapter(hallReservation));

@@ -1,9 +1,7 @@
 package edu.avans.hartigehap.domain.agenda;
 
 import java.util.Date;
-import java.util.List;
 
-import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 
 public class HallReservationAgendaItemAdapter implements AgendaItem {
@@ -21,13 +19,12 @@ public class HallReservationAgendaItemAdapter implements AgendaItem {
 
     @Override
     public Date getStartDate() {
-        return reservation.getPartOfDays().get(0).getStartTime();
+        return reservation.getStartTime();
     }
 
     @Override
     public Date getEndDate() {
-        List<PartOfDay> partOfDays = reservation.getPartOfDays();
-        return partOfDays.get(partOfDays.size() - 1).getEndTime();
+        return reservation.getEndTime();
     }
 
     @Override

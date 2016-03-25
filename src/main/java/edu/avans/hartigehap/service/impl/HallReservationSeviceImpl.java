@@ -1,6 +1,7 @@
 package edu.avans.hartigehap.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
+import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.StateException;
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservationOption;
@@ -54,8 +56,10 @@ public class HallReservationSeviceImpl implements HallReservationService {
     }
 
     @Override
-    public HallReservation update(HallReservation hallReservationPointer,
-            HallReservationRequest hallReservationRequest) throws InvalidJsonRequestException {
+    @Transactional(rollbackFor = InvalidJsonRequestException.class)
+    public HallReservation update(HallReservation hallReservationPointer, HallReservationRequest hallReservationRequest)
+            throws InvalidJsonRequestException {
+
         // Get the hall where we will save it on
         Hall hall = hallReservationRequest.getHallObject();
 
@@ -63,13 +67,14 @@ public class HallReservationSeviceImpl implements HallReservationService {
             // The same hall, remove it for now we will add it later
             hall.removeReservation(hallReservationPointer);
         } else {
-            // This is weird... But it is necessary that the reservations are all loaded
+            // This is weird... But it is necessary that the reservations are
+            // all loaded
             hall.touchHallReservations();
         }
-        
+
         // Reset hallReservationPointer
         hallReservationPointer.reset();
-        
+
         List<HallOption> hallOptions = hallReservationRequest.getHallOptionObjects();
         List<HallOption> removeHallOptions = new ArrayList<>();
 
@@ -91,7 +96,7 @@ public class HallReservationSeviceImpl implements HallReservationService {
         if (removeHallOptions.size() > 0) {
             // Remove hallOptions
             List<Long> hallReservationOptionsToRemove = new ArrayList<>();
-            
+
             // Loop through all reservation options
             HallReservation hallReservationCursor = hallReservationPointer;
             HallReservationOption previous = null;
@@ -110,7 +115,7 @@ public class HallReservationSeviceImpl implements HallReservationService {
                         // next option
                         hallReservationPointer = hallReservationOption.getHallReservation();
                     }
-                    
+
                     hallReservationCursor = hallReservationOption.getHallReservation();
                     // Set to null -> otherwise the whole reservation will be
                     // deleted because of the cascade.all option
@@ -122,22 +127,41 @@ public class HallReservationSeviceImpl implements HallReservationService {
                     previous = hallReservationOption;
                 }
             }
-            
+
             hallReservationRepository.deleteByIdIn(hallReservationOptionsToRemove);
         }
 
         // Set other
         hallReservationPointer.setDescription(hallReservationRequest.getDescription());
         hallReservationPointer.setCustomer(hallReservationRequest.getCustomerObject());
-        hallReservationPointer.setPartOfDays(hallReservationRequest.getPartOfDaysObjects());
-        hallReservationPointer.setState(hallReservationRequest.getState());
         
+        // Add partOfDays
+        for (PartOfDay partOfDay : hallReservationRequest.getPartOfDaysObjects()) {
+            hallReservationPointer.addPartOfDay(partOfDay);
+        }
+        hallReservationPointer.setState(hallReservationRequest.getState());
+
         // Add to hall
         hall.addReservation(hallReservationPointer);
-        
+
         // Save it
         hallService.save(hall);
 
         return hallReservationPointer;
+    }
+
+    @Override
+    public List<HallReservation> findBetween(Date startDate, Date endDate) {
+        // It's not possible to get the reservation with a simple query
+        // So we will get them all and filter it
+        List<HallReservation> filteredHallReservations = new ArrayList<>();
+
+        for (HallReservation hallReservation : findAll()) {
+            if (!hallReservation.getEndTime().before(startDate) && !hallReservation.getStartTime().after(endDate)) {
+                filteredHallReservations.add(hallReservation);
+            }
+        }
+
+        return filteredHallReservations;
     }
 }

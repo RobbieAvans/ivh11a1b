@@ -60,7 +60,7 @@ public abstract class HallReservation extends DomainObject {
     @Transient
     private List<Observer<HallReservation>> observers = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hallReservation")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hallReservation", orphanRemoval = true)
     private List<PartOfDay> partOfDays = new ArrayList<>();
 
     public HallReservation() {
@@ -153,7 +153,17 @@ public abstract class HallReservation extends DomainObject {
      * @return
      */
     public boolean isActive() {
-        List<PartOfDay> partOfDays = getPartOfDays();
-        return !getState().equals(HallReservationState.CANCELLED) && (partOfDays.get(partOfDays.size() - 1).getEndTime().after(new Date()));
+        return !getState().equals(HallReservationState.CANCELLED) && (getEndTime().after(new Date()));
     }
+    
+    @Transient
+    public Date getStartTime() {
+        return getPartOfDays().get(0).getStartTime();
+    }
+    
+    @Transient
+    public Date getEndTime() {
+        List<PartOfDay> partOfDays = getPartOfDays();
+        return partOfDays.get(partOfDays.size() - 1).getEndTime();
+    }  
 }
