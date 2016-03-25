@@ -45,7 +45,8 @@
 	</bean>
 
 	<context:annotation-config />
-
+	<context:spring-configured />
+	
 	<jpa:repositories
 		base-package="edu.avans.hartigehap.repository"
 		entity-manager-factory-ref="emf"
