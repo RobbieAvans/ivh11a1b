@@ -47,7 +47,7 @@ public class AgendaRS extends BaseRS {
             
             return createSuccessResponse(items);
         } catch (ParseException e) {
-            return createErrorResponse("Cannot parse start and/or end date, should be yyyy-MM-dd");
+            return createErrorResponse("invalid_date_format");
         }
     }
 

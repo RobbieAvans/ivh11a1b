@@ -3,7 +3,6 @@ package edu.avans.hartigehap.web.controller.rs;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.avans.hartigehap.service.PartOfDayService;
-import edu.avans.hartigehap.domain.Day;
-import edu.avans.hartigehap.domain.DayPart;
 import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.PartOfDayFactory;
-import lombok.extern.slf4j.Slf4j;
+import edu.avans.hartigehap.service.PartOfDayService;
+import edu.avans.hartigehap.web.controller.rs.body.DayResponse;
+import edu.avans.hartigehap.web.controller.rs.body.DayPartResponse;
 
 
-@Slf4j
 @Controller
 @RequestMapping(value = RSConstants.URL_PREFIX + "/partofday", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PartOfDayRS extends BaseRS{
@@ -31,6 +28,7 @@ public class PartOfDayRS extends BaseRS{
     @Autowired
     private PartOfDayService partOfDayService;
     
+    // Dependency injection?
     PartOfDayFactory factory = new PartOfDayFactory();
     
     @RequestMapping(value = "/{hallId}/{weekNr}", method = RequestMethod.GET)
@@ -38,7 +36,7 @@ public class PartOfDayRS extends BaseRS{
     public ModelAndView getAvailability(@PathVariable int hallId, @PathVariable int weekNr){
         String[] days = {"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
         String[] parts = {"Morning","Afternoon","Evening"};
-        List<Day> response = new ArrayList<>();
+        List<DayResponse> response = new ArrayList<>();
         List<PartOfDay> dayParts = partOfDayService.findByWeekAndHall(hallId, weekNr);
         
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -49,14 +47,14 @@ public class PartOfDayRS extends BaseRS{
         
         int i = 1;
         for (String dayName : days){
-           Day day = new Day(dayName);
+           DayResponse day = new DayResponse(dayName);
            //day.setDate((gregorianCalendar.get(Calendar.DAY_OF_MONTH))+ "-" + (gregorianCalendar.get(Calendar.MONTH)+ 1 ) + "-" + gregorianCalendar.get(Calendar.YEAR));
            day.setDate(sdf.format(cal.getTime()));
            cal.add(Calendar.DAY_OF_WEEK, 1);
            for (String partName : parts){
-               DayPart part = new DayPart(partName);
+               DayPartResponse part = new DayPartResponse(partName);
                for(PartOfDay x : dayParts){
-                   if(x.getDescription().equals(part.getDescription()) &&Integer.parseInt(new SimpleDateFormat("u").format(x.getStartTime()))==i){
+                   if(x.getDescription().equals(part.getDescription()) && Integer.parseInt(new SimpleDateFormat("u").format(x.getStartTime()))==i){
                        part.setAvailable(false);
                    }
                }
@@ -65,9 +63,13 @@ public class PartOfDayRS extends BaseRS{
            i++;
            response.add(day);    
         }
+        
         return createSuccessResponse(response);
     }
     
+    /**
+     * Is handled by the HallReservationRS??
+     * 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView createPartOfDay(Date date, String part){
@@ -84,6 +86,6 @@ public class PartOfDayRS extends BaseRS{
     public void deletePartOfDay(@PathVariable Long id){
         partOfDayService.delete(id);
     }
-    
+    **/
     
 }

@@ -21,7 +21,7 @@ public class PartOfDayServiceImpl implements PartOfDayService{
 
     @Autowired
     private PartOfDayRepository partOfDayRepository;
-    
+  
     @Override
     public List<PartOfDay> findByWeekAndHall(int hallId, int weekNr) {
         List<PartOfDay> PartOfDays = new ArrayList<>();
@@ -47,5 +47,4 @@ public class PartOfDayServiceImpl implements PartOfDayService{
     public void delete(Long id) {
         partOfDayRepository.delete(id);
     }
-
 }

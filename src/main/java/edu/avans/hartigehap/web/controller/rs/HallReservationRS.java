@@ -28,6 +28,7 @@ import edu.avans.hartigehap.service.HallReservationService;
 import edu.avans.hartigehap.service.HallService;
 import edu.avans.hartigehap.web.controller.rs.body.HallReservationRequest;
 import edu.avans.hartigehap.web.controller.rs.body.HallReservationResponse;
+import edu.avans.hartigehap.web.controller.rs.body.InvalidJsonRequestException;
 
 @Controller
 @RequestMapping (value = RSConstants.URL_PREFIX + "/hallReservation", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -75,8 +76,8 @@ public class HallReservationRS extends BaseRS {
                     httpRequest.getContextPath() + "/hallReservation/" + reservation.getId());
 
             return createSuccessResponse(new HallReservationResponse(reservation));
-        } catch (Exception e) {
-            return createErrorResponse("Unable to create the HallReservation");
+        } catch (InvalidJsonRequestException e) {
+            return createErrorResponse(e.getMessage());
         }
     }
 
@@ -103,7 +104,7 @@ public class HallReservationRS extends BaseRS {
             return createSuccessResponse(new HallReservationResponse(hallReservation));
         }
 
-        return createErrorResponse("HallReservation with id " + hallReservationId + " was not found");
+        return createErrorResponse("hallreservation_not_exists");
     }
 
     @RequestMapping(value = "/{hallReservationId}", method = RequestMethod.PUT)
@@ -121,12 +122,12 @@ public class HallReservationRS extends BaseRS {
                 httpResponse.setStatus(HttpStatus.OK.value());
                 
                 return createSuccessResponse(new HallReservationResponse(hallReservation));
-            } catch (Exception e) {
-                return createErrorResponse("Unable to update the HallReservation");
+            } catch (InvalidJsonRequestException e) {
+                return createErrorResponse(e.getMessage());
             }
         }
 
-        return createErrorResponse("HallReservation doesn't exists");
+        return createErrorResponse("hallreservation_not_exists");
     }
 
     @RequestMapping(value = "/{hallReservationId}", method = RequestMethod.DELETE)
@@ -142,6 +143,6 @@ public class HallReservationRS extends BaseRS {
             return createSuccessResponse(hallReservationId);
         }
 
-        return createErrorResponse("HallReservation doesn't exists");
+        return createErrorResponse("hallreservation_not_exists");
     }
 }

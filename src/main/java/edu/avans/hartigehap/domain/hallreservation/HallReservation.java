@@ -32,7 +32,7 @@ import lombok.ToString;
  * @author Tom GIesbergen
  */
 
-@Configurable // Needed to autowire hallReservationService
+@Configurable // Needed to autowire HallReservationService
 @Entity
 @Getter
 @Setter
@@ -75,6 +75,10 @@ public abstract class HallReservation extends DomainObject {
         partOfDay.setHallReservation(this);
     }
 
+    public List<PartOfDay> getPartOfDays() {
+        return PartOfDay.orderListAsc(partOfDays);
+    }
+    
     public void notifyAllObservers() {
         for (Observer<HallReservation> observer : observers) {
             observer.notify(this);

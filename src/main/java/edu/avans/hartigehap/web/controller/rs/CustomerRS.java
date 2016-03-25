@@ -19,9 +19,7 @@ import edu.avans.hartigehap.domain.Customer;
 import edu.avans.hartigehap.service.CustomerService;
 import edu.avans.hartigehap.web.controller.rs.body.CreateCustomerRequest;
 import edu.avans.hartigehap.web.controller.rs.body.LoginRequest;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Controller
 @RequestMapping(value = RSConstants.URL_PREFIX, produces = MediaType.APPLICATION_JSON_VALUE)
 public class CustomerRS extends BaseRS {
@@ -33,29 +31,25 @@ public class CustomerRS extends BaseRS {
     @ResponseBody
     public ModelAndView createCustomer(@RequestBody CreateCustomerRequest customerRequest,
             HttpServletResponse httpResponse, WebRequest httpRequest) {
-        try {
-            Customer findCustomer = customerService.findByEmail(customerRequest.getEmail());
-            if (findCustomer == null) {
-                Customer customer = new Customer();
-                customer.setEmail(customerRequest.getEmail());
-                customer.setPassword(customerRequest.getPassword());
-                customer.setFirstName(customerRequest.getFirstName());
-                customer.setLastName(customerRequest.getLastName());
 
-                // If registred, set initial login sessionID
-                customer.setSessionID(java.util.UUID.randomUUID().toString());
+        Customer findCustomer = customerService.findByEmail(customerRequest.getEmail());
+        if (findCustomer == null) {
+            Customer customer = new Customer();
+            customer.setEmail(customerRequest.getEmail());
+            customer.setPassword(customerRequest.getPassword());
+            customer.setFirstName(customerRequest.getFirstName());
+            customer.setLastName(customerRequest.getLastName());
 
-                // Save
-                Customer savedCustomer = customerService.save(customer);
-                httpResponse.setStatus(HttpStatus.CREATED.value());
+            // If registred, set initial login sessionID
+            customer.setSessionID(java.util.UUID.randomUUID().toString());
 
-                return createSuccessResponse(savedCustomer);
-            } else {
-                return createErrorResponse("Customer already exists");
-            }
-        } catch (Exception e) {
-            log.debug(e.getMessage());
-            return createErrorResponse("Error when creating a new customer");
+            // Save
+            Customer savedCustomer = customerService.save(customer);
+            httpResponse.setStatus(HttpStatus.CREATED.value());
+
+            return createSuccessResponse(savedCustomer);
+        } else {
+            return createErrorResponse("customer_not_exists");
         }
     }
 
@@ -77,7 +71,7 @@ public class CustomerRS extends BaseRS {
             }
         }
             
-        return createErrorResponse("Wrong credentials");
+        return createErrorResponse("login_fail");
     }
     
     @RequestMapping(value = "/login/{sessionID}", method = RequestMethod.GET)

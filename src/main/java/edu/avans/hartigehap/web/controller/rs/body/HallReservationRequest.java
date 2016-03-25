@@ -1,7 +1,7 @@
 package edu.avans.hartigehap.web.controller.rs.body;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class HallReservationRequest {
     private CustomerService customerService;
     @Autowired
     private HallOptionService hallOptionService;
-
+    
     private String description;
     private HallReservationState state;
     private Long customer;
@@ -42,10 +42,10 @@ public class HallReservationRequest {
     }
     
     @JsonIgnore
-    public Hall getHallObject() throws Exception {
+    public Hall getHallObject() throws InvalidJsonRequestException {
         Hall foundHall = hallService.findById(hall);
         
-        if (foundHall == null) throw new Exception("Not an existing hall");
+        if (foundHall == null) throw new InvalidJsonRequestException("hall_not_exists");
         
         return foundHall;
     }
@@ -56,29 +56,50 @@ public class HallReservationRequest {
     }
 
     @JsonIgnore
-    public Customer getCustomerObject() throws Exception {
+    public Customer getCustomerObject() throws InvalidJsonRequestException {
         Customer foundCustomer = customerService.findById(customer);
         
-        if (foundCustomer == null) throw new Exception("Not an existing customer");
+        if (foundCustomer == null) throw new InvalidJsonRequestException("customer_not_exists");
         
         return foundCustomer;
     }
     
     @JsonIgnore
-    public List<PartOfDay> getPartOfDaysObjects() throws Exception {
-        LinkedList<PartOfDay> partOfDaysObjects = new LinkedList<>();
+    public List<PartOfDay> getPartOfDaysObjects() throws InvalidJsonRequestException {
+        // Create an ordered list for the partOfDays
+        List<PartOfDay> partOfDaysList = new ArrayList<>();
         for (PartOfDayRequest partOfDayRequest : partOfDays) {
-            PartOfDay newPartOfDay = partOfDayRequest.getPartOfDay();
-            if (partOfDaysObjects.size() > 0) {
+            partOfDaysList.add(partOfDayRequest.getPartOfDay());
+        }
+        
+        partOfDaysList = PartOfDay.orderListAsc(partOfDaysList);
+        
+        // Check if there is at least one partOfDay
+        if (partOfDaysList.size() == 0) {
+            throw new InvalidJsonRequestException("partofdays_is_required");
+        }
+        
+        // Check if the order for the partOfDays is correct
+        for (int i = 0; i < partOfDaysList.size(); i++) {
+            PartOfDay newPartOfDay = partOfDaysList.get(i);
+            if (i > 0) {
                 // Check if it is possible to add it
-                if (!partOfDaysObjects.getLast().canAddAfter(newPartOfDay)) {
-                    throw new Exception("PartOfDays array is invalid");
+                if (!partOfDaysList.get(i - 1).canAddAfter(newPartOfDay)) {
+                    throw new InvalidJsonRequestException("partofdays_invalid_order");
                 }
             }
-            
-            partOfDaysObjects.add(newPartOfDay);
-        }   
+        }
         
-        return partOfDaysObjects;
+        // Check if the partOfDays are in the future
+        if (!partOfDaysList.get(0).getStartTime().after(new Date())) {
+            throw new InvalidJsonRequestException("partofdays_in_past");
+        }
+        
+        // Check if the partOfDays are available
+        if (!hallService.isAvailableFor(getHallObject(), partOfDaysList)) {
+            throw new InvalidJsonRequestException("hall_not_available");
+        }
+        
+        return partOfDaysList;
     }
 }

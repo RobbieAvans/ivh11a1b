@@ -1,6 +1,8 @@
 package edu.avans.hartigehap.domain;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -36,4 +38,10 @@ public abstract class PartOfDay extends DomainObject {
      * @return
      */
     public abstract boolean canAddAfter(PartOfDay after);
+    
+    public static List<PartOfDay> orderListAsc(List<PartOfDay> partOfDays) {
+        Collections.sort(partOfDays, (o1, o2) -> o1.getStartTime().compareTo(o2.getStartTime()));
+        
+        return partOfDays;
+    }
 }

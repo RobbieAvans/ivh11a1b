@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 import edu.avans.hartigehap.web.controller.rs.body.HallReservationRequest;
+import edu.avans.hartigehap.web.controller.rs.body.InvalidJsonRequestException;
 
 public interface HallReservationService {
     List<HallReservation> findAll();
@@ -12,5 +13,5 @@ public interface HallReservationService {
 
     void delete(HallReservation hallReservation);
 
-    HallReservation update(HallReservation hallReservation, HallReservationRequest hallReservationRequest) throws Exception;
+    HallReservation update(HallReservation hallReservation, HallReservationRequest hallReservationRequest) throws InvalidJsonRequestException;
 }

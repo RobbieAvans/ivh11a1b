@@ -23,12 +23,16 @@ public class PartOfDayRequest {
         factory = new PartOfDayFactory();
     }
     
-    public PartOfDay getPartOfDay() {
+    public PartOfDay getPartOfDay() throws InvalidJsonRequestException {
         DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-        try {            
-            return factory.makePartOfDay(partOfDay, format.parse(date));
+        try {
+            PartOfDay partOfDayObject = factory.makePartOfDay(partOfDay, format.parse(date));
+            if (partOfDayObject != null) {
+                return partOfDayObject;
+            }
+            throw new InvalidJsonRequestException("partofday_invalid");
         } catch (ParseException e) {
-            return null;
+            throw new InvalidJsonRequestException("invalid_date_format");
         }
     }
 }

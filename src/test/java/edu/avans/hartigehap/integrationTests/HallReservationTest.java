@@ -42,7 +42,7 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
     
     @Autowired
     private CustomerService customerService;
-    
+
     /**
      * Create the objects we need
      */
@@ -59,19 +59,19 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         String description = "This is a nice hall";
         int month = 1;
         int day = 15;
-        
+          
         // Save the hallOptions
         hallOptionService.save(hallOption1);
         hallOptionService.save(hallOption2);
         
         // Get partOfDayObjects
-        PartOfDayFactory factory = new PartOfDayFactory();
-        PartOfDay part1 = factory.makePartOfDay("morning", new Date());
-        
         Date date = new Date();
         date.setMonth(month);
         date.setDate(day);
-        PartOfDay part2 = factory.makePartOfDay("Evening", date);
+        
+        PartOfDayFactory factory = new PartOfDayFactory();
+        PartOfDay part1 = factory.makePartOfDay("Evening", date);
+        PartOfDay part2 = factory.makePartOfDay("Afternoon", date);
         
         // Decorate reservation
         HallReservation reservation = new ConcreteHallReservation();
@@ -113,9 +113,10 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         
         // PartOfDays tests
         assertEquals(2, foundHallReservation.getPartOfDays().size());
-        assertEquals("Morning", foundHallReservation.getPartOfDays().get(0).getDescription());
-        assertEquals(8, foundHallReservation.getPartOfDays().get(0).getStartTime().getHours());
-        assertEquals(13, foundHallReservation.getPartOfDays().get(0).getEndTime().getHours());
+        // It should be ordered, so afternoon should be the first one
+        assertEquals("Afternoon", foundHallReservation.getPartOfDays().get(0).getDescription());
+        assertEquals(13, foundHallReservation.getPartOfDays().get(0).getStartTime().getHours());
+        assertEquals(18, foundHallReservation.getPartOfDays().get(0).getEndTime().getHours());
 
         assertEquals("Evening", foundHallReservation.getPartOfDays().get(1).getDescription());
         assertEquals(18, foundHallReservation.getPartOfDays().get(1).getStartTime().getHours());

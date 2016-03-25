@@ -16,9 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.service.HallService;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Controller
 @RequestMapping (value = RSConstants.URL_PREFIX + "/hall", produces = MediaType.APPLICATION_JSON_VALUE)
 public class HallRS extends BaseRS {
@@ -46,16 +44,11 @@ public class HallRS extends BaseRS {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView createHall(@RequestBody Hall hall, HttpServletResponse httpResponse, WebRequest httpRequest) {
-        try {
-            Hall savedHall = hallService.save(hall);
-            httpResponse.setStatus(HttpStatus.CREATED.value());
-            httpResponse.setHeader("Location", httpRequest.getContextPath() + "/hall/" + savedHall.getId());
+        Hall savedHall = hallService.save(hall);
+        httpResponse.setStatus(HttpStatus.CREATED.value());
+        httpResponse.setHeader("Location", httpRequest.getContextPath() + "/hall/" + savedHall.getId());
 
-            return createSuccessResponse(savedHall);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return createErrorResponse("Error when creating a new hall");
-        }
+        return createSuccessResponse(savedHall);
     }
 
     /**
@@ -111,7 +104,7 @@ public class HallRS extends BaseRS {
             return createSuccessResponse(hall);
         }
 
-        return createErrorResponse("Hall with id " + hallId + " was not found");
+        return createErrorResponse("hall_not_exists");
     }
 
     /**
@@ -156,7 +149,7 @@ public class HallRS extends BaseRS {
             return createSuccessResponse(hall);
         }
 
-        return createErrorResponse("Hall doesn't exists");
+        return createErrorResponse("hall_not_exists");
     }
 
     /**
@@ -194,6 +187,6 @@ public class HallRS extends BaseRS {
             return createSuccessResponse(hallId);
         }
 
-        return createErrorResponse("Hall cannot be deleted. Maybe it has active reservations");
+        return createErrorResponse("hall_has_active_reservation");
     }
 }

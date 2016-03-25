@@ -17,6 +17,7 @@ import edu.avans.hartigehap.repository.HallReservationRepository;
 import edu.avans.hartigehap.service.HallReservationService;
 import edu.avans.hartigehap.service.HallService;
 import edu.avans.hartigehap.web.controller.rs.body.HallReservationRequest;
+import edu.avans.hartigehap.web.controller.rs.body.InvalidJsonRequestException;
 
 @Service("hallReservationService")
 @Repository
@@ -54,7 +55,7 @@ public class HallReservationSeviceImpl implements HallReservationService {
 
     @Override
     public HallReservation update(HallReservation hallReservationPointer,
-            HallReservationRequest hallReservationRequest) throws Exception {
+            HallReservationRequest hallReservationRequest) throws InvalidJsonRequestException {
         // Get the hall where we will save it on
         Hall hall = hallReservationRequest.getHallObject();
 

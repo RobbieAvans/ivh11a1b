@@ -16,10 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import edu.avans.hartigehap.domain.HallOption;
 import edu.avans.hartigehap.service.HallOptionService;
-import lombok.extern.slf4j.Slf4j;
 
 // http://briansjavablog.blogspot.nl/2012/08/rest-services-with-spring.html
-@Slf4j
 @Controller
 @RequestMapping (value = RSConstants.URL_PREFIX + "/halloption", produces = MediaType.APPLICATION_JSON_VALUE)
 public class HallOptionRS extends BaseRS {
@@ -47,16 +45,12 @@ public class HallOptionRS extends BaseRS {
     @ResponseBody
     public ModelAndView createHallOption(@RequestBody HallOption hallOption, HttpServletResponse httpResponse,
             WebRequest httpRequest) {
-        try {
-            HallOption savedHallOption = hallOptionService.save(hallOption);
-            httpResponse.setStatus(HttpStatus.CREATED.value());
-            httpResponse.setHeader("Location", httpRequest.getContextPath() + "/hallOption/" + savedHallOption.getId());
 
-            return createSuccessResponse(savedHallOption);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return createErrorResponse("Error when creating a new hallOption");
-        }
+        HallOption savedHallOption = hallOptionService.save(hallOption);
+        httpResponse.setStatus(HttpStatus.CREATED.value());
+        httpResponse.setHeader("Location", httpRequest.getContextPath() + "/hallOption/" + savedHallOption.getId());
+
+        return createSuccessResponse(savedHallOption);
     }
 
     /**
@@ -91,7 +85,7 @@ public class HallOptionRS extends BaseRS {
             return createSuccessResponse(hallOption);
         }
 
-        return createErrorResponse("HallOption with id " + hallOptionId + " was not found");
+        return createErrorResponse("halloption_not_exists");
     }
 
     /**
@@ -120,7 +114,7 @@ public class HallOptionRS extends BaseRS {
             return createSuccessResponse(hallOption);
         }
 
-        return createErrorResponse("HallOption doesn't exists");
+        return createErrorResponse("halloption_not_exists");
     }
 
     /**

@@ -1,18 +1,15 @@
-package edu.avans.hartigehap.domain;
+package edu.avans.hartigehap.web.controller.rs.body;
 
-import java.util.Date;
-
-import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class DayPart{
+public class DayPartResponse{
     private String description;
     private boolean available;
     
-    public DayPart(String description){
+    public DayPartResponse(String description){
         this.description = description;
         available = true;
     }
