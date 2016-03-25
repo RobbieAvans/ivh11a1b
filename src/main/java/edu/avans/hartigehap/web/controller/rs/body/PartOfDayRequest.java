@@ -4,26 +4,36 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.PartOfDayFactory;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
+@NoArgsConstructor
 public class PartOfDayRequest {
     
-    private PartOfDayFactory factory;
+    @JsonIgnore
+    // Dependency injection?
+    private PartOfDayFactory factory = new PartOfDayFactory();
     
     private String date;
     private String partOfDay;
     
-    public PartOfDayRequest() {
-        // Dependency injection?
-        factory = new PartOfDayFactory();
+    public PartOfDayRequest(String date, String partOfDay) {
+        this.date = date;
+        this.partOfDay = partOfDay;
     }
     
-    public PartOfDay getPartOfDay() throws InvalidJsonRequestException {
+    @JsonIgnore
+    public PartOfDay getPartOfDayObject() throws InvalidJsonRequestException {
         DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         try {
             PartOfDay partOfDayObject = factory.makePartOfDay(partOfDay, format.parse(date));

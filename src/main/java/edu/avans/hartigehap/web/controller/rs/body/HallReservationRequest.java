@@ -69,7 +69,7 @@ public class HallReservationRequest {
         // Create an ordered list for the partOfDays
         List<PartOfDay> partOfDaysList = new ArrayList<>();
         for (PartOfDayRequest partOfDayRequest : partOfDays) {
-            partOfDaysList.add(partOfDayRequest.getPartOfDay());
+            partOfDaysList.add(partOfDayRequest.getPartOfDayObject());
         }
         
         partOfDaysList = PartOfDay.orderListAsc(partOfDaysList);

@@ -1,6 +1,7 @@
 package edu.avans.hartigehap.domain.hallreservation;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -146,12 +147,13 @@ public abstract class HallReservation extends DomainObject {
     }
     
     /**
-     * TODO: Should return whether the reservation is active or not. e.g. is in
+     * Should return whether the reservation is active or not. e.g. is in
      * the future and has not the CancelledState
      * 
      * @return
      */
     public boolean isActive() {
-        return true;
+        List<PartOfDay> partOfDays = getPartOfDays();
+        return !getState().equals(HallReservationState.CANCELLED) && (partOfDays.get(partOfDays.size() - 1).getEndTime().after(new Date()));
     }
 }

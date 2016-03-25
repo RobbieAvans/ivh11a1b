@@ -1,5 +1,7 @@
 package edu.avans.hartigehap.web.controller.rs.body;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,7 @@ public class HallReservationResponse {
     private Customer customer;
     private List<HallOption> hallOptions = new ArrayList<>();
     private Hall hall;
-    private List<PartOfDay> partOfDays = new ArrayList<>();
+    private List<PartOfDayRequest> partOfDays = new ArrayList<>();
 
     public HallReservationResponse(HallReservation hallReservation) {
         id = hallReservation.getId();
@@ -55,7 +57,10 @@ public class HallReservationResponse {
 
         this.hall = cloneHall;
 
-        partOfDays = hallReservation.getPartOfDays();
+        DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        for (PartOfDay partOfDay : hallReservation.getPartOfDays()) {
+            partOfDays.add(new PartOfDayRequest(partOfDay.getDescription(), format.format(partOfDay.getStartTime())));
+        }
 
         // Clone the hallOptions
         for (HallOption hallOption : hallReservation.getHallOptions()) {
