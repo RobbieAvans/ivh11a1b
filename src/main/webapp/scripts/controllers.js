@@ -150,7 +150,7 @@ angular.module('bestellenApp.controllers', [])
 
             console.log($scope.selection);
         };
-    }).controller('HallReservationEditController', function($scope, $stateParams, $state, $window, HallReservation, HallOption, Hall) {
+    }).controller('HallReservationEditController', function($scope, $stateParams, $state, $window, HallReservation, HallOption, Hall,PartOfDays, CustomPartOfDay) {
         var responseHallOption = HallOption.get();
         responseHallOption.$promise.then(function(data) {
             $scope.hallOptions = data.data;
@@ -178,12 +178,14 @@ angular.module('bestellenApp.controllers', [])
     		 delete $scope.hallReservation["@id"];
    		     		 
     		 $scope.hallReservation.hallOptions = $scope.selectedHallOptions;
-    		 console.log(JSON.stringify($scope.hallReservation));
+    		 $scope.hallReservation.partOfDays 	= $scope.selectedPartOfDays;
     		 
              HallReservation.update({
             	 id: $scope.hallReservation.id
-             }, $scope.hallReservation, function() {
-                 $state.go('hallReservations');
+             }, $scope.hallReservation, function(data) {
+	        	 if(data.success){
+	        		 $state.go('hallReservations');
+	        	 }
              });
          };
 
@@ -226,10 +228,94 @@ angular.module('bestellenApp.controllers', [])
                  
 	              // Set $scope.selectedHall
 	        	 $scope.selectedHall = $scope.hallReservation.hall.id;
+	        	 
+	        	 $scope.getPartOfDays();
                 
              });
              
          };
+         
+         $scope.selectedHall = 0;
+         $scope.currentDate = moment(new Date()).add(-1,'weeks');
+         $scope.currentWeek = moment($scope.currentDate).week();
+         $scope.days = [];
+         $scope.selectedPartOfDays = [];
+         
+         $scope.getPartOfDays = function(){
+        	 
+        	 // Set dummy PartOfDays
+        	 $scope.hallReservation.partOfDays = [{"date":"23-03-2016","partOfDay":"Morning"},{"date":"23-03-2016","partOfDay":"Afternoon"},{"date":"23-03-2016","partOfDay":"Evening"}];
+
+         	$scope.currentWeek = moment($scope.currentDate).week();
+         	
+         	// Get partOfDays for hall.id and week
+         	var response = PartOfDays.get({
+         		hallid: $scope.selectedHall,
+ 	            weeknmr: moment($scope.currentDate).week()
+ 	        });
+ 	        
+ 	        response.$promise.then(function(data) {
+ 	        	if (data.success) {
+ 	        		$scope.days = [];
+ 	        		angular.forEach(data.data, function(days) {
+ 	        			$scope.days.push(days);
+ 			        });	
+ 	        	}
+ 	        });
+ 	        
+	       	 
+	 	        
+ 	        jQuery("#cntrPartOfDay").fadeIn(200);
+ 	        setTimeout(function(){
+	 	        // Make each partOfDay in current HallReservatin selected
+ 	        	angular.forEach($scope.hallReservation.partOfDays, function(_partOfDay) {
+ 	        		$scope.partOfDay 			= new CustomPartOfDay();
+ 	            	$scope.partOfDay.date 		= _partOfDay.date;
+ 	            	$scope.partOfDay.partOfDay 	= _partOfDay.partOfDay;
+ 	        		
+ 	        		$scope.selectedPartOfDays.push($scope.partOfDay);
+ 	        		jQuery('*[data-day="'+_partOfDay.date+'"]').find('*[data-daypart="'+_partOfDay.partOfDay+'"] span').addClass("selected");
+		       	 });
+ 	        },500);
+         }
+         
+         $scope.partOfDayClick = function(datum,partOfDay,$event){
+         	$scope.partOfDay 			= new CustomPartOfDay();
+         	$scope.partOfDay.date 		= datum;
+         	$scope.partOfDay.partOfDay 	= partOfDay;
+         	
+         	var partOfDayAlreadyExists = false;
+         	// If already exists, remove it!
+         	angular.forEach($scope.selectedPartOfDays, function(selectedPartOfDay) {
+    			if(selectedPartOfDay.date == $scope.partOfDay.date && selectedPartOfDay.partOfDay == $scope.partOfDay.partOfDay ){
+    				console.log("VERWIJDEREN");
+    				$scope.selectedPartOfDays.splice($scope.partOfDay,1);
+    				jQuery($event.target).removeClass("selected");
+    				partOfDayAlreadyExists = true;
+    			}
+	        });	
+         	
+         	// Doesn't exists, add it to the selected list
+         	if(!partOfDayAlreadyExists){
+         		$scope.selectedPartOfDays.push($scope.partOfDay);
+             	jQuery($event.target).addClass("selected");
+         	}
+         	
+         	console.log($scope.selectedPartOfDays);
+         };
+         
+         
+         $scope.getNextWeek = function(){
+         	$scope.currentDate = moment($scope.currentDate).add(1,'weeks');
+         	$scope.getPartOfDays();
+         };
+         
+         $scope.getPreviousWeek = function(){
+         	$scope.currentDate = moment($scope.currentDate).add(-1,'weeks');
+         	$scope.getPartOfDays();
+         }
+         
+         
          
          $scope.toggleHallOption = function toggleHallOption(hallOption) {
              var idx = $scope.selectedHallOptions.indexOf(hallOption);
