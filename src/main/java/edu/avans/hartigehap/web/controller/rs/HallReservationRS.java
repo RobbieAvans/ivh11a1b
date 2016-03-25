@@ -31,11 +31,11 @@ import edu.avans.hartigehap.web.controller.rs.body.HallReservationResponse;
 import edu.avans.hartigehap.web.controller.rs.body.InvalidJsonRequestException;
 
 @Controller
-@RequestMapping (value = RSConstants.URL_PREFIX + "/hallReservation", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = RSConstants.URL_PREFIX + "/hallReservation", produces = MediaType.APPLICATION_JSON_VALUE)
 public class HallReservationRS extends BaseRS {
 
     @Autowired
-    
+
     private HallReservationService hallReservationService;
     @Autowired
     private HallService hallService;
@@ -49,27 +49,27 @@ public class HallReservationRS extends BaseRS {
             // Get the hall where we will save it on
             Hall hall = hallReservationRequest.getHallObject();
             hall.touchHallReservations();
-            
+
             List<HallOption> hallOptions = hallReservationRequest.getHallOptionObjects();
             Iterator<HallOption> hallOptionsIterator = hallOptions.iterator();
 
             // Create the HallReservation
             HallReservation reservation = new ConcreteHallReservation();
-            
+
             // Decorate it with hallOptions
             while (hallOptionsIterator.hasNext()) {
                 reservation = new HallReservationOption(reservation, hallOptionsIterator.next());
             }
 
             reservation.setDescription(hallReservationRequest.getDescription());
-            
+
             // Add PartOfDays
             for (PartOfDay partOfDay : hallReservationRequest.getPartOfDaysObjects()) {
                 reservation.addPartOfDay(partOfDay);
             }
-            
+
             hall.addReservation(reservation);
-                     
+
             hallService.save(hall);
 
             httpResponse.setStatus(HttpStatus.CREATED.value());
@@ -86,7 +86,7 @@ public class HallReservationRS extends BaseRS {
     @ResponseBody
     public ModelAndView allHallReservations() {
         List<HallReservationResponse> response = new ArrayList<>();
-        
+
         // Fill wrapper
         for (HallReservation hallReservation : hallReservationService.findAll()) {
             response.add(new HallReservationResponse(hallReservation));
@@ -98,10 +98,10 @@ public class HallReservationRS extends BaseRS {
     @RequestMapping(value = "/{hallReservationId}", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView getHallReservation(@PathVariable long hallReservationId) {
-   
+
         HallReservation hallReservation = hallReservationService.findById(hallReservationId);
-        
-        if (hallReservation != null) {            
+
+        if (hallReservation != null) {
             return createSuccessResponse(new HallReservationResponse(hallReservation));
         }
 
@@ -116,12 +116,11 @@ public class HallReservationRS extends BaseRS {
         HallReservation hallReservation = hallReservationService.findById(hallReservationId);
 
         if (hallReservation != null) {
-                      
-           try {
+            try {
                 hallReservation = hallReservationService.update(hallReservation, hallReservationRequest);
 
                 httpResponse.setStatus(HttpStatus.OK.value());
-                
+
                 return createSuccessResponse(new HallReservationResponse(hallReservation));
             } catch (InvalidJsonRequestException e) {
                 return createErrorResponse(e.getMessage());

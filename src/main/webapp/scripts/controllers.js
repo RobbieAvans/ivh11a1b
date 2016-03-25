@@ -494,7 +494,6 @@ angular.module('bestellenApp.controllers', [])
         
         /* event source that calls a function on every view switch */
         $scope.eventsF = function (start, end, timezone, callback) {
-        	console.log('called');
         	var momentStart = moment(start);
         	var momentEnd = moment(end);
         	
@@ -509,8 +508,8 @@ angular.module('bestellenApp.controllers', [])
 	        		angular.forEach(data.data, function(item) {
 	        			$scope.events.push({
 				            title: item.description,
-				            start: moment(item.startDate).toDate(),
-				            end: moment(item.endDate).toDate(),
+				            start: moment(item.startDate),
+				            end: moment(item.endDate),
 				            className: []
 				        });	
 	        		});
@@ -531,7 +530,8 @@ angular.module('bestellenApp.controllers', [])
         /* config object */
         $scope.uiConfig = {
           calendar:{
-            height: 450,
+            height: 300,
+            defaultView: 'agendaWeek',
             editable: false,
             firstDay: 1,
             lang: 'nl',

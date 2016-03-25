@@ -165,5 +165,9 @@ public abstract class HallReservation extends DomainObject {
     public Date getEndTime() {
         List<PartOfDay> partOfDays = getPartOfDays();
         return partOfDays.get(partOfDays.size() - 1).getEndTime();
-    }  
+    }
+    
+    public boolean canBeModified() {
+        return !getState().equals(HallReservationState.FINAL) && !getState().equals(HallReservationState.PAID);
+    }
 }

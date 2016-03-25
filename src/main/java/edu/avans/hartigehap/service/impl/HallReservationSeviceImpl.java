@@ -60,6 +60,11 @@ public class HallReservationSeviceImpl implements HallReservationService {
     public HallReservation update(HallReservation hallReservationPointer, HallReservationRequest hallReservationRequest)
             throws InvalidJsonRequestException {
 
+        // First check if we may change it
+        if (!hallReservationPointer.canBeModified()) {
+            throw new InvalidJsonRequestException("hallreservation_cannot_be_changed");
+        }
+        
         // Get the hall where we will save it on
         Hall hall = hallReservationRequest.getHallObject();
 

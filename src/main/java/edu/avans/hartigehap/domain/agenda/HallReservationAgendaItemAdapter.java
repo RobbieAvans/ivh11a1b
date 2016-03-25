@@ -29,6 +29,6 @@ public class HallReservationAgendaItemAdapter implements AgendaItem {
 
     @Override
     public String getDescription() {
-        return reservation.getDescription();
+        return "Reservering voor zaal: " + reservation.getHall().getDescription();
     }
 }
