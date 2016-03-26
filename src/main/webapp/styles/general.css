@@ -353,3 +353,6 @@ table tr ul, table tr li{width:100% !important;}
 		.partOfDays span.vrij{background-color:green; border-color:green;}
 		.partOfDays span.vrij:hover,.partOfDays span.selected{border-color:#000; cursor:pointer;}
 		.partOfDays span.bezet{background-color:red; border-color:red;}
+		.partOfDays span.bezet.selected{background-color:#fff !Important; border-color:purple;}
+		
+		.message{float:left; height:48px; display:none; font-size:arial; margin-top:15px; width:auto; float:left; padding:0px 15px; line-height:48px; font-size:13px; background-color:red; color:#000; border:1px solid #333;}
