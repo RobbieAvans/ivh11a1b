@@ -150,7 +150,7 @@ angular.module('bestellenApp.controllers', [])
 
             console.log($scope.selection);
         };
-    }).controller('HallReservationEditController', function($scope, $stateParams, $state, $window, HallReservation, HallOption, Hall,PartOfDays, CustomPartOfDay) {
+    }).controller('HallReservationEditController', function($scope, $stateParams, $state, $window, HallReservation, HallOption, Hall,PartOfDays, CustomPartOfDay,i18n) {
         var responseHallOption = HallOption.get();
         responseHallOption.$promise.then(function(data) {
             $scope.hallOptions = data.data;
@@ -167,7 +167,6 @@ angular.module('bestellenApp.controllers', [])
                 delete hall["@id"];
             });
         });
-
     	
     	 $scope.updateHallReservation = function() {
         	 // Change object for API
@@ -185,6 +184,9 @@ angular.module('bestellenApp.controllers', [])
              }, $scope.hallReservation, function(data) {
 	        	 if(data.success){
 	        		 $state.go('hallReservations');
+	        	 }else{
+	        		 var errorMessage = $.i18n.prop("label_"+data.data);
+	        		 jQuery(".message").text(errorMessage).fadeIn();
 	        	 }
              });
          };
@@ -194,7 +196,8 @@ angular.module('bestellenApp.controllers', [])
                  id: $stateParams.id
              });
              response.$promise.then(function(data) {
-                 $scope.hallReservation = data.data;               
+                 $scope.hallReservation = data.data;           
+                 console.log($scope.hallReservation);
                  
                  // Set selected hallOptions
                  $scope.checkedHallOptions = function(option){
@@ -244,8 +247,9 @@ angular.module('bestellenApp.controllers', [])
          $scope.getPartOfDays = function(){
         	 
         	 // Set dummy PartOfDays
-        	 $scope.hallReservation.partOfDays = [{"date":"23-03-2016","partOfDay":"Morning"},{"date":"23-03-2016","partOfDay":"Afternoon"},{"date":"23-03-2016","partOfDay":"Evening"}];
+        	 //$scope.hallReservation.partOfDays = [{"date":"23-03-2016","partOfDay":"Morning"},{"date":"23-03-2016","partOfDay":"Afternoon"},{"date":"23-03-2016","partOfDay":"Evening"}];
 
+        	 console.log("Check partOfDays "+ $scope.hallReservation.partOfDays);
          	$scope.currentWeek = moment($scope.currentDate).week();
          	
          	// Get partOfDays for hall.id and week
@@ -257,6 +261,7 @@ angular.module('bestellenApp.controllers', [])
  	        response.$promise.then(function(data) {
  	        	if (data.success) {
  	        		$scope.days = [];
+ 	        		console.log($scope.hallReservation.partOfDays);
  	        		angular.forEach(data.data, function(days) {
  	        			$scope.days.push(days);
  			        });	
@@ -273,13 +278,17 @@ angular.module('bestellenApp.controllers', [])
  	            	$scope.partOfDay.date 		= _partOfDay.date;
  	            	$scope.partOfDay.partOfDay 	= _partOfDay.partOfDay;
  	        		
+ 	            	console.log(_partOfDay.date + "    "+_partOfDay.partOfDay );
+ 	            	
  	        		$scope.selectedPartOfDays.push($scope.partOfDay);
- 	        		jQuery('*[data-day="'+_partOfDay.date+'"]').find('*[data-daypart="'+_partOfDay.partOfDay+'"] span').addClass("selected");
+ 	        		jQuery('*[data-day="'+_partOfDay.date+'"]').find('*[data-daypart="'+_partOfDay.partOfDay+'"] span').addClass("oldDate selected");
+ 	        		jQuery('*[data-day="'+_partOfDay.date+'"]').find('*[data-daypart="'+_partOfDay.partOfDay+'"] span').text("oude data");
 		       	 });
  	        },500);
          }
          
          $scope.partOfDayClick = function(datum,partOfDay,$event){
+        	if(jQuery($event.target).hasClass("vrij") || jQuery($event.target).hasClass("oldDate")){
          	$scope.partOfDay 			= new CustomPartOfDay();
          	$scope.partOfDay.date 		= datum;
          	$scope.partOfDay.partOfDay 	= partOfDay;
@@ -302,6 +311,7 @@ angular.module('bestellenApp.controllers', [])
          	}
          	
          	console.log($scope.selectedPartOfDays);
+        	}
          };
          
          
@@ -334,7 +344,7 @@ angular.module('bestellenApp.controllers', [])
 
          $scope.loadHallReservation();
          
-    }).controller('HallReservationCreateController', function($scope, $state, $stateParams, HallReservation, HallOption, Hall, PartOfDays, CustomPartOfDay) {
+    }).controller('HallReservationCreateController', function($scope, $state, $stateParams, HallReservation, HallOption, Hall, PartOfDays, CustomPartOfDay,i18n) {
         var responseHallOption = HallOption.get();
         responseHallOption.$promise.then(function(data) {
             $scope.hallOptions = data.data;
@@ -431,19 +441,19 @@ angular.module('bestellenApp.controllers', [])
             $scope.hallReservation.hallOptions = [];
             jQuery("#hallReservationOptions input:checked").each(function() {
                 $scope.hallReservation.hallOptions.push(JSON.parse(jQuery(this).val()).id);
-                //console.log("HallOPTION id "+JSON.parse(jQuery(this).val()).id);
             });
-            
-            alert(JSON.stringify($scope.hallReservation));
 
-            $scope.hallReservation.$save(function() {
+            $scope.hallReservation.$save(function(data) {
             	 // Change object for API
 	       		 //$scope.hallReservation.hall 		= $scope.selectedHall.id;
 	       		 $scope.hallReservation.customer 	= 1;
-            	
-	       		 console.log($scope.hallReservation);
-	       		 
-                $state.go('hallReservations');
+            	if(data.success){
+            		$state.go('hallReservations');
+            	}else{
+   	        		 var errorMessage = $.i18n.prop("label_"+data.data);
+   	        		 jQuery(".message").text(errorMessage).fadeIn();
+            	}
+
             });
         };
     }).controller('HallReservationViewController', function($scope, $stateParams, HallReservation, HallOption, Hall) {
