@@ -59,7 +59,7 @@ public class HallReservationResponse {
 
         DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         for (PartOfDay partOfDay : hallReservation.getPartOfDays()) {
-            partOfDays.add(new PartOfDayRequest(partOfDay.getDescription(), format.format(partOfDay.getStartTime())));
+            partOfDays.add(new PartOfDayRequest(format.format(partOfDay.getStartTime()),partOfDay.getDescription()));
         }
 
         // Clone the hallOptions

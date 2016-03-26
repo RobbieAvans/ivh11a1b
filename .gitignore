@@ -56,3 +56,4 @@ TMP
 
 src/main/resources/datasource-tx-jpa.xml
 src/main/resources/datasource-tx-jpa.xml
+src/main/resources/datasource-tx-jpa.xml
