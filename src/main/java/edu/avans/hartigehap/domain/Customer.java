@@ -17,12 +17,11 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Getter;
@@ -34,17 +33,19 @@ import lombok.ToString;
  * 
  * @author Erco
  */
+@Configurable
 @Entity
 @Table(name = "CUSTOMERS")
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
-@JsonIgnoreProperties({ "password" })
 @Getter
 @Setter
 @ToString(callSuper = true, includeFieldNames = true, of = { "firstName", "lastName", "bills" })
 @NoArgsConstructor
-public class Customer extends DomainObject {
+public class Customer extends AuthDomainObject {
     private static final long serialVersionUID = 1L;
-
+    
+    private static final String ROLE = "customer";
+    
     @NotEmpty(message = "{validation.firstname.NotEmpty.message}")
     @Size(min = 3, max = 60, message = "{validation.firstname.Size.message}")
     private String firstName;
@@ -64,12 +65,6 @@ public class Customer extends DomainObject {
     private int partySize;
 
     private String description;
-
-    private String email;
-    
-    private String password;
-    
-    private String sessionID;
 
     @Basic(fetch = FetchType.LAZY)
     @Lob
@@ -91,7 +86,7 @@ public class Customer extends DomainObject {
             String description, byte[] photo) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        setEmail(email);
         this.birthDate = birthDate;
         this.partySize = partySize;
         this.description = description;
@@ -105,7 +100,7 @@ public class Customer extends DomainObject {
         lastName = customer.lastName;
         birthDate = customer.birthDate;
         description = customer.description;
-        email = customer.email;
+        setEmail(customer.getEmail());
         // hack
         // the "if" is a hack
         // when you change a customer without changing the photo, the customer
@@ -133,10 +128,11 @@ public class Customer extends DomainObject {
         }
         return birthDateString;
     }
-
-    public void setPassword(String plainPassword) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        password = passwordEncoder.encode(plainPassword);
+    
+    @Transient
+    @Override
+    public String getRole() {
+        return ROLE;
     }
     
     // business logic

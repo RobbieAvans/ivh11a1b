@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +14,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.avans.hartigehap.domain.Authenticatable;
 import edu.avans.hartigehap.domain.Customer;
+import edu.avans.hartigehap.domain.handler.Handler;
+import edu.avans.hartigehap.domain.handler.login.CustomerLoginHandler;
+import edu.avans.hartigehap.domain.handler.login.CustomerSessionHandler;
+import edu.avans.hartigehap.domain.handler.login.ManagerLoginHandler;
+import edu.avans.hartigehap.domain.handler.login.ManagerSessionHandler;
 import edu.avans.hartigehap.service.CustomerService;
 import edu.avans.hartigehap.web.controller.rs.body.CreateCustomerRequest;
 import edu.avans.hartigehap.web.controller.rs.body.LoginRequest;
@@ -49,7 +54,7 @@ public class CustomerRS extends BaseRS {
 
             return createSuccessResponse(savedCustomer);
         } else {
-            return createErrorResponse("customer_not_exists");
+            return createErrorResponse("customer_already_exists");
         }
     }
 
@@ -58,17 +63,13 @@ public class CustomerRS extends BaseRS {
     public ModelAndView login(@RequestBody LoginRequest loginRequest, HttpServletResponse httpResponse,
             WebRequest httpRequest) {
 
-        Customer customer = customerService.findByEmail(loginRequest.getEmail());
-        if (customer != null) {
-            // Check for password
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            if (passwordEncoder.matches(loginRequest.getPassword(), customer.getPassword())) {
-                customer.setSessionID(java.util.UUID.randomUUID().toString());
-
-                Customer savedCustomer = customerService.save(customer);
-
-                return createSuccessResponse(savedCustomer);   
-            }
+        Handler<LoginRequest, Authenticatable> handler = new CustomerLoginHandler();
+        handler.setSuccessor(new ManagerLoginHandler());
+        
+        Authenticatable auth = handler.handleRequest(loginRequest);
+        
+        if (auth != null) {
+            return createSuccessResponse(auth);
         }
             
         return createErrorResponse("login_fail");
@@ -79,9 +80,10 @@ public class CustomerRS extends BaseRS {
     public ModelAndView checkLogin(@PathVariable String sessionID,
             HttpServletResponse httpResponse, WebRequest httpRequest) {
         
-        Customer findCustomer = customerService.findBySessionID(sessionID);
+        Handler<String, Authenticatable> handler = new CustomerSessionHandler();
+        handler.setSuccessor(new ManagerSessionHandler());
         
-        return createSuccessResponse(findCustomer != null);
+        return createSuccessResponse(handler.handleRequest(sessionID) != null);
     }
     
 }

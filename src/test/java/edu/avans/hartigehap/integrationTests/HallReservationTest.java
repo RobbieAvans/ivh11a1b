@@ -167,7 +167,7 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         partOfDaysRequest.add(partOfDayRequest1);
 
         request.setPartOfDays(partOfDaysRequest);
-
+        
         HallReservation updatedHallReservation = hallReservationService.update(foundHallReservation, request);
 
         assertEquals("50.0", updatedHallReservation.getPrice().toString());

@@ -168,6 +168,6 @@ public abstract class HallReservation extends DomainObject {
     }
     
     public boolean canBeModified() {
-        return !getState().equals(HallReservationState.FINAL) && !getState().equals(HallReservationState.PAID);
+        return !getState().equals(HallReservationState.FINAL) && !getState().equals(HallReservationState.PAID) && getStartTime().after(new Date());
     }
 }

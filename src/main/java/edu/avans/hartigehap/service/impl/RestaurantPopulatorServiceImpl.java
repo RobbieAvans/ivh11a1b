@@ -17,8 +17,8 @@ import edu.avans.hartigehap.domain.Drink;
 import edu.avans.hartigehap.domain.FoodCategory;
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
+import edu.avans.hartigehap.domain.Manager;
 import edu.avans.hartigehap.domain.Meal;
-import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.PartOfDayFactory;
 import edu.avans.hartigehap.domain.Restaurant;
 import edu.avans.hartigehap.domain.hallreservation.ConcreteHallReservation;
@@ -28,6 +28,7 @@ import edu.avans.hartigehap.repository.CustomerRepository;
 import edu.avans.hartigehap.repository.FoodCategoryRepository;
 import edu.avans.hartigehap.repository.HallOptionRepository;
 import edu.avans.hartigehap.repository.HallRepository;
+import edu.avans.hartigehap.repository.ManagerRepository;
 import edu.avans.hartigehap.repository.MenuItemRepository;
 import edu.avans.hartigehap.repository.RestaurantRepository;
 import edu.avans.hartigehap.service.RestaurantPopulatorService;
@@ -49,6 +50,8 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
     private HallOptionRepository hallOptionRepository;
     @Autowired
     private HallRepository hallRepository;
+    @Autowired
+    private ManagerRepository managerRepository;
 
     private List<Meal> meals = new ArrayList<>();
     private List<FoodCategory> foodCats = new ArrayList<>();
@@ -153,6 +156,13 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
 
         hall.addReservation(reservation);
         //hallRepository.save(hall);
+        
+        // Create manager
+        Manager manager = new Manager();
+        manager.setEmail("manager@hh.nl");
+        manager.setPassword("manager");
+        
+        managerRepository.save(manager);
     }
 
     private void createHallOptions(String description, Double price) {

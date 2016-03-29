@@ -33,7 +33,7 @@
 
 	
 	<context:component-scan base-package="edu.avans.hartigehap.web.controller" />
-	
+    
 	<interceptors>
 		<beans:bean	class="org.springframework.web.servlet.theme.ThemeChangeInterceptor" />
 		<beans:bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"

@@ -35,8 +35,8 @@ import edu.avans.hartigehap.web.controller.rs.body.InvalidJsonRequestException;
 public class HallReservationRS extends BaseRS {
 
     @Autowired
-
     private HallReservationService hallReservationService;
+    
     @Autowired
     private HallService hallService;
 

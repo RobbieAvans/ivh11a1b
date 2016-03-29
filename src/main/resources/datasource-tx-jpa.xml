@@ -16,6 +16,8 @@
 		<property name="entityManagerFactory" ref="emf" />
 	</bean>
 
+    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="*" rollback-for="edu.avans.hartigehap.domain.StateException"/>
@@ -57,7 +59,7 @@
 		id="dataSource"
 		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/ivh11a1b" />
+		<property name="url" value="jdbc:mysql://localhost:3306/ivh11a6" />
 		<property name="username" value="root" />
 		<property name="password" value="" />
 		<property name="maxActive" value="0" />
