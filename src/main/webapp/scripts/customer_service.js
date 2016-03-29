@@ -7,4 +7,13 @@ return $resource('http://localhost:8082/hh/rest/v1/customer/:id', { id: '@_id' }
 		      method: 'DELETE'
 		    }
 	  });
+}).factory('LoginRequest', function(){
+	function LoginRequest(email,password){
+		this.email = email;
+		this.password = password;
+	};
+	LoginRequest.build = function(data){
+		return new LoginRequest(data.email, data.password);
+	};
+	return LoginRequest;
 });

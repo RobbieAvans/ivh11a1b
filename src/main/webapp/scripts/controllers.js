@@ -1,6 +1,28 @@
 angular.module('bestellenApp.controllers', [])
-	.controller('MainController', function($scope, $state, $window, Hall,i18n, Customer) {
-	    
+	.controller('MainController', function($scope, $state, $window, Hall,i18n, Customer, LoginRequest) {
+		
+		// Get login request
+		// now dummy data
+		var loginRequest = '{"data":{"@id":1,"id":1,"version":1,"email":"manager@hh.nl","sessionID":"e199979e-120e-48a3-99ac-3a998c00f421","role":"customer"},"success":true}';
+		
+		// Create login cookie
+		setCookie("loginData",loginRequest,1);
+		
+	
+		
+
+		
+		
+		
+		function setCookie(cname, cvalue, exdays) {
+		    var d = new Date();
+		    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		    var expires = "expires="+d.toUTCString();
+		    document.cookie = cname + "=" + cvalue + "; " + expires;
+		}
+		
+		
+		
 	})
     .controller('HallListController', function($scope, $state, $window, Hall) {
         var response = Hall.get();
