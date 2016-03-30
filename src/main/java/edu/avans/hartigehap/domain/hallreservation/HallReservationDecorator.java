@@ -49,10 +49,13 @@ public abstract class HallReservationDecorator extends HallReservation {
     @Transient
     public Double getPrice() {
         Double price = 0.0;
+        Double optionsPrice = getHallOption().getPrice() + hallReservation.getPrice();
         if(getPartOfDays().size()> 0){
             for (PartOfDay partOfDay : getPartOfDays()) {
+                price += optionsPrice * partOfDay.getPriceFactor();
             }
         }else{
+            price = optionsPrice;
         }
         
         if (getHall() != null) {
