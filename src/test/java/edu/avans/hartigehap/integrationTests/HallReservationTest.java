@@ -85,7 +85,7 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         reservation.addPartOfDay(part2);
 
         // Asserts for domain
-        assertEquals("55.0", reservation.getPrice().toString()); // 55.0 because
+        assertEquals("137.5", reservation.getPrice().toString()); // 55.0 because
                                                                  // the hall is
                                                                  // not set
         assertEquals(description, reservation.getDescription());
@@ -107,7 +107,7 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 
         HallReservation foundHallReservation = hallFromDb.getReservations().iterator().next();
 
-        assertEquals("305.0", foundHallReservation.getPrice().toString());
+        assertEquals("387.5", foundHallReservation.getPrice().toString());
         assertEquals(description, foundHallReservation.getDescription());
         assertEquals(2, foundHallReservation.getHallOptions().size());
         assertEquals("FirstName", foundHallReservation.getCustomer().getFirstName());
