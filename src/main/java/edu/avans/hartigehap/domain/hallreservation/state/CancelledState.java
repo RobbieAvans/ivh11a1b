@@ -9,14 +9,6 @@ public class CancelledState extends AbstractHallReservationStateOperations {
     public CancelledState() {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this); 
     }
-    
-    public String strMailBody() {
-        return "Beste %voornaam%, de reservering is geannuleerd";
-    }
-
-    public String strMailSubject() {
-        return "Annulering van reservering";
-    }
 
     @Override
     public void undo(HallReservation hallReservation) {

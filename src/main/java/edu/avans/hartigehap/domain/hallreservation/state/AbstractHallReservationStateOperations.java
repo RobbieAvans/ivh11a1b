@@ -6,10 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public abstract class AbstractHallReservationStateOperations implements HallReservationStateOperations {
-    public abstract String strMailBody();
-
-    public abstract String strMailSubject();
-
+	
     @Override
     public void confirm(HallReservation hallReservation) throws StateException {
         log.debug("Bevestigen is niet mogelijk bij deze state " + hallReservation.getState());
