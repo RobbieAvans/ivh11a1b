@@ -16,9 +16,8 @@ public class Mailer implements Observer<HallReservation> {
 
     @Override
     public void notify(HallReservation hallReservation) {
-//        SimpleMail sendMail = new SimpleMail();
-//        sendMail.prepareMail(hallReservation.getCustomer().getEmail(), hallReservation.getState().strMailSubject(),
-//                hallReservation.getState().strMailBody(), hallReservation.getCustomer().getFirstName());
+        SimpleMail sendMail = new SimpleMail();
+        sendMail.prepareMail(hallReservation.getCustomer().getEmail(),"Wijziging reserverings-status", hallReservation.getState().name(),hallReservation.getCustomer().getFirstName());
 
     }
 }
