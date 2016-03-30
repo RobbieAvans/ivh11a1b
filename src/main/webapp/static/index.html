@@ -56,11 +56,11 @@
 					<nav auto-active>
 						<div class="show-for-large-up">
 							<aside  class="item"  style="position: relative;">
-								<a ui-sref="halls()"><msg key="label_hall"></msg></a>
+								<a ui-sref="halls()" data-role='manager'><msg key="label_hall"></msg></a>
 							</aside>
 							<span></span>
 							<aside  class="item" style="position: relative;">
-								<a ui-sref="hallOptions()"><msg key="label_halloption"></msg></a>
+								<a ui-sref="hallOptions()" data-role='manager'><msg key="label_halloption"></msg></a>
 							</aside>
 							<span></span>
 							<aside class="item" style="position: relative;">
@@ -68,7 +68,7 @@
 							</aside>
 							<span></span>
 							<aside class="item" style="position: relative;">
-								<a ui-sref="agenda()"><msg key="label_agenda"></msg></a>
+								<a ui-sref="agenda()" data-role='manager'><msg key="label_agenda"></msg></a>
 							</aside>
 							<span></span>
 							<aside  class="item" style="position: relative;">
@@ -84,16 +84,16 @@
 								style="display: none;">
 								<ul>
 									<li>
-										<a class="toggleMenuSmallExtra item" ui-sref="halls()"><msg key="label_hall"></msg></a>
+										<a class="toggleMenuSmallExtra item" data-role='manager' ui-sref="halls()"><msg key="label_hall"></msg></a>
 									</li>
 									<li>
-										<a class="toggleMenuSmallExtra item" ui-sref="hallOptions()"><msg key="label_halloption"></msg></a>
+										<a class="toggleMenuSmallExtra item" data-role='manager' ui-sref="hallOptions()"><msg key="label_halloption"></msg></a>
 									</li>
 									<li>
-										<a class="toggleMenuSmallExtra item" ui-sref="hallReservations()"><msg key="label_hallreservation"></msg></a>
+										<a class="toggleMenuSmallExtra item"  ui-sref="hallReservations()"><msg key="label_hallreservation"></msg></a>
 									</li>
 									<li>
-										<a class="toggleMenuSmallExtra item" ui-sref="agenda()"><msg key="label_agenda"></msg></a>
+										<a class="toggleMenuSmallExtra item" data-role='manager' ui-sref="agenda()"><msg key="label_agenda"></msg></a>
 									</li>
 									<li>
 										<a class="toggleMenuSmallExtra item" href="../../hh"><msg key="label_management_subsystem"></msg></a>
@@ -120,6 +120,7 @@
 	<script src="../scripts/controllers.js"></script>
 	<script src="../scripts/hall_service.js"></script>
 	<script src="../scripts/customer_service.js"></script>
+	<script src="../scripts/validate_session.js"></script>
 	<script src="../scripts/hallReservation_service.js"></script>
 	<script src="../scripts/auto-active.js"></script>
 	<script src="../scripts/hallOption_service.js"></script>

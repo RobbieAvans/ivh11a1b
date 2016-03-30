@@ -1,22 +1,23 @@
-<table class="table movietable">
-  <tr>
-    <td><h3>Details voor {{hall.description}}</h3></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Omschrijving</td>
-    <td>{{hall.description}}</td>
-  </tr>
-  <tr>
-    <td>Aantal stoelen</td>
-    <td>{{hall.numberOfSeats}}</td>
-  </tr>
-   <tr>
-    <td>Basisprijs</td>
-    <td>&#8364;{{hall.price}}</td>
-  </tr>
-</table>
-<div>
-   <a class="btn new" ui-sref="editHall({id:hall.id})">Wijzigen</a>
-   <a class="btn back" ui-sref="halls()">Terug naar begin</a>
-</div>
+<ins data-role="manager"></ins>
+	<table class="table movietable">
+	  <tr>
+	    <td><h3>Details voor {{hall.description}}</h3></td>
+	    <td></td>
+	  </tr>
+	  <tr>
+	    <td>Omschrijving</td>
+	    <td>{{hall.description}}</td>
+	  </tr>
+	  <tr>
+	    <td>Aantal stoelen</td>
+	    <td>{{hall.numberOfSeats}}</td>
+	  </tr>
+	   <tr>
+	    <td>Basisprijs</td>
+	    <td>&#8364;{{hall.price}}</td>
+	  </tr>
+	</table>
+	<div>
+	   <a class="btn new" ui-sref="editHall({id:hall.id})">Wijzigen</a>
+	   <a class="btn back" ui-sref="halls()">Terug naar begin</a>
+	</div>

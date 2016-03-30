@@ -1,30 +1,27 @@
 angular.module('bestellenApp.controllers', [])
-	.controller('MainController', function($scope, $state, $window, Hall,i18n, Customer, LoginRequest) {
-		
-		// Get login request
-		// now dummy data
-		var loginRequest = '{"data":{"@id":1,"id":1,"version":1,"email":"manager@hh.nl","sessionID":"e199979e-120e-48a3-99ac-3a998c00f421","role":"customer"},"success":true}';
-		
-		// Create login cookie
-		setCookie("loginData",loginRequest,1);
+	.controller('MainController', function($scope, $rootScope, $state, $window, Hall,i18n, Customer, LoginRequest,SessionValidator) {
 		
 	
+		// Get login request
+		// now dummy data
+		var loginRequest = '{"data":{"@id":1,"id":1,"version":1,"email":"manager@hh.nl","sessionID":"e199979e-120e-48a3-99ac-3a998c00f421","role":"manager"},"success":true}';
+		
+		// Create login cookie
+		SessionValidator.setCookie("loginData",loginRequest,1);
+		
+		// Set global sessionID
+		//$rootScope.sessionID = JSON.parse($rootScope.getCookie("loginData")).data.sessionID;
+		
+		// Set global role
+		//$rootScope.role = JSON.parse($rootScope.getCookie("loginData")).data.role;
 		
 
 		
 		
 		
-		function setCookie(cname, cvalue, exdays) {
-		    var d = new Date();
-		    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-		    var expires = "expires="+d.toUTCString();
-		    document.cookie = cname + "=" + cvalue + "; " + expires;
-		}
-		
-		
 		
 	})
-    .controller('HallListController', function($scope, $state, $window, Hall) {
+    .controller('HallListController', function($scope,$rootScope, $state, $window, Hall) {
         var response = Hall.get();
         response.$promise.then(function(data) {
             $scope.halls = data.data;
@@ -37,7 +34,7 @@ angular.module('bestellenApp.controllers', [])
                 $window.location.reload();
             });
         };
-    }).controller('HallViewController', function($scope, $stateParams, Hall) {
+    }).controller('HallViewController', function($scope,$rootScope, $stateParams, Hall) {
         var response = Hall.get({
             id: $stateParams.id
         });
@@ -45,7 +42,7 @@ angular.module('bestellenApp.controllers', [])
             $scope.hall = data.data;
         });
 
-    }).controller('HallCreateController', function($scope, $state, $stateParams, Hall) {
+    }).controller('HallCreateController', function($scope,$rootScope, $state, $stateParams, Hall) {
         $scope.hall = new Hall();
 
         $scope.addHall = function() {
@@ -53,7 +50,7 @@ angular.module('bestellenApp.controllers', [])
                 $state.go('halls');
             });
         };
-    }).controller('HallEditController', function($scope, $state, $stateParams, Hall) {
+    }).controller('HallEditController', function($scope,$rootScope, $state, $stateParams, Hall) {
 
 
         $scope.updateHall = function() {
@@ -74,7 +71,7 @@ angular.module('bestellenApp.controllers', [])
         };
 
         $scope.loadHall();
-    }).controller('HallOptionListController', function($scope, $state, $window, HallOption) {
+    }).controller('HallOptionListController', function($scope,$rootScope, $state, $window, HallOption) {
         var response = HallOption.get();
         response.$promise.then(function(data) {
             $scope.hallOptions = data.data;
@@ -88,7 +85,7 @@ angular.module('bestellenApp.controllers', [])
             });
         };
 
-    }).controller('HallOptionEditController', function($scope, $state, $stateParams, HallOption) {
+    }).controller('HallOptionEditController', function($scope,$rootScope, $state, $stateParams, HallOption) {
         $scope.updateHallOption = function() {
             HallOption.update({
                 id: $scope.hallOption.id
@@ -108,7 +105,7 @@ angular.module('bestellenApp.controllers', [])
 
         $scope.loadHallOption();
 
-    }).controller('HallOptionCreateController', function($scope, $state, $stateParams, HallOption) {
+    }).controller('HallOptionCreateController', function($scope,$rootScope, $state, $stateParams, HallOption) {
         $scope.hallOption = new HallOption();
 
         $scope.addHallOption = function() {
@@ -116,7 +113,7 @@ angular.module('bestellenApp.controllers', [])
                 $state.go('hallOptions');
             });
         };
-    }).controller('HallOptionViewController', function($scope, $stateParams, HallOption) {
+    }).controller('HallOptionViewController', function($scope,$rootScope, $stateParams, HallOption) {
         var response = HallOption.get({
             id: $stateParams.id
         });
@@ -124,7 +121,7 @@ angular.module('bestellenApp.controllers', [])
             $scope.hallOption = data.data;
         });
 
-    }).controller('HallReservationListController', function($scope, $state, $window, HallReservation, HallOption) {
+    }).controller('HallReservationListController', function($scope,$rootScope, $state, $window, HallReservation, HallOption) {
         var responseHallOption = HallOption.get();
         responseHallOption.$promise.then(function(data) {
             $scope.hallOptions = data.data;
@@ -172,7 +169,7 @@ angular.module('bestellenApp.controllers', [])
 
             console.log($scope.selection);
         };
-    }).controller('HallReservationEditController', function($scope, $stateParams, $state, $window, HallReservation, HallOption, Hall,PartOfDays, CustomPartOfDay,i18n) {
+    }).controller('HallReservationEditController', function($scope,$rootScope, $stateParams, $state, $window, HallReservation, HallOption, Hall,PartOfDays, CustomPartOfDay,i18n) {
         var responseHallOption = HallOption.get();
         responseHallOption.$promise.then(function(data) {
             $scope.hallOptions = data.data;
@@ -366,7 +363,7 @@ angular.module('bestellenApp.controllers', [])
 
          $scope.loadHallReservation();
          
-    }).controller('HallReservationCreateController', function($scope, $state, $stateParams, HallReservation, HallOption, Hall, PartOfDays, CustomPartOfDay,i18n) {
+    }).controller('HallReservationCreateController', function($scope,$rootScope, $state, $stateParams, HallReservation, HallOption, Hall, PartOfDays, CustomPartOfDay,i18n) {
         var responseHallOption = HallOption.get();
         responseHallOption.$promise.then(function(data) {
             $scope.hallOptions = data.data;
@@ -478,7 +475,7 @@ angular.module('bestellenApp.controllers', [])
 
             });
         };
-    }).controller('HallReservationViewController', function($scope, $stateParams, HallReservation, HallOption, Hall) {
+    }).controller('HallReservationViewController', function($scope,$rootScope, $stateParams, HallReservation, HallOption, Hall) {
     	$scope.language = function () {
             return i18n.language;
         };
@@ -501,7 +498,7 @@ angular.module('bestellenApp.controllers', [])
 
         });
 
-    }).controller('CustomerCreateController', function($scope,$state, $stateParams, Customer) {
+    }).controller('CustomerCreateController', function($scope,$rootScope,$state, $stateParams, Customer) {
     	$scope.customer = new Customer();
 
     	
@@ -513,7 +510,7 @@ angular.module('bestellenApp.controllers', [])
             });
         };
 
-    }).controller('CustomerViewController', function($scope,$state, $stateParams, Customer) {
+    }).controller('CustomerViewController', function($scope,$rootScope,$state, $stateParams, Customer) {
         var response = Customer.get({
             id: $stateParams.id
         });
@@ -521,7 +518,7 @@ angular.module('bestellenApp.controllers', [])
             $scope.customer = data.data;
         });
 
-    }).controller('AgendaController', function($scope, $compile, uiCalendarConfig, Agenda) {
+    }).controller('AgendaController', function($scope,$rootScope, $compile, uiCalendarConfig, Agenda) {
         $scope.events = [];
         
         /* event source that calls a function on every view switch */
@@ -532,7 +529,8 @@ angular.module('bestellenApp.controllers', [])
         	// Get the agendaItems
     	    var response = Agenda.get({
 	            start: momentStart.format('YYYY-MM-DD'),
-	            end: momentEnd.format('YYYY-MM-DD')
+	            end: momentEnd.format('YYYY-MM-DD'),
+	            sessionid: $scope.sessionID
 	        });
 	        
 	        response.$promise.then(function(data) {

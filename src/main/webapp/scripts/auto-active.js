@@ -1,6 +1,6 @@
 (function () {
     angular.module('autoActive', [])
-        .directive('autoActive', ['$location', function ($location) {
+        .directive('autoActive', ['$location','$state', function ($location,$state) {
         return {
             restrict: 'A',
             scope: false,
@@ -18,35 +18,8 @@
                         });
                     }
                 }
-                function validateROLE() {
-                	setTimeout(function(){
-                		// Validate logindata
-                		if(getCookie("loginData") !=""){
-                			var loginData = JSON.parse(getCookie("loginData"));
-                			if(jQuery(".pageROLE").text() != "" && jQuery(".pageROLE").text() != loginData.data.role ){
-                				alert("Deze pagina mag je niet bekijken");
-                				window.location = "/hh/static/";
-                			}
-                		}
-                	},150);
-                }
-                
-                function getCookie(cname) {
-        		    var name = cname + "=";
-        		    var ca = document.cookie.split(';');
-        		    for(var i=0; i<ca.length; i++) {
-        		        var c = ca[i];
-        		        while (c.charAt(0)==' ') c = c.substring(1);
-        		        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
-        		    }
-        		    return "";
-        		}
-
                 setActive();
-                validateROLE();
-
                 scope.$on('$locationChangeSuccess', setActive);
-                scope.$on('$locationChangeSuccess', validateROLE);
             }
         }
     }]);
