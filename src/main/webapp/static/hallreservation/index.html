@@ -14,6 +14,12 @@
 	    	<span ng-repeat="hallOption in hallReservation.hallOptions">{{hallOption.description}} </span>
 	    </td>
 	  </tr>
+   		<tr>
+	    <td>Data (+ tijd)</td>
+	    <td>
+	    	<span ng-repeat="partOfDay in hallReservation.partOfDays" style="width:100%; float:left;">{{partOfDay.date}} <small>({{partOfDay.partOfDay}})</small></span>
+	    </td>
+	  </tr>
 	  <tr>
 	    <td>Totaal prijs</td>
 	    <td>

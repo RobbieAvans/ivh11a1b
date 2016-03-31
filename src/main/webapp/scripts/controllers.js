@@ -190,7 +190,7 @@ angular.module('bestellenApp.controllers', [])
                 delete hall["@id"];
             });
         });
-    	
+        
     	 $scope.updateHallReservation = function() {
         	 // Change object for API
     		 $scope.hallReservation.hall 		= $scope.selectedHall;
