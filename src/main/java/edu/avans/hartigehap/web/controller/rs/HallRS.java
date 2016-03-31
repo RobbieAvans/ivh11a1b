@@ -73,7 +73,7 @@ public class HallRS extends BaseRS {
 	@RequestMapping(value = "/{sessionID}", method = RequestMethod.GET)
 	@ResponseBody
 	public ModelAndView allHalls(@PathVariable String sessionID) {
-		return shouldBeManager(sessionID, (Authenticatable auth) -> {
+		return shouldBeAuthenticated(sessionID, (Authenticatable auth) -> {
 			return createSuccessResponse(hallService.findAll());
 		});
 	}
@@ -105,7 +105,7 @@ public class HallRS extends BaseRS {
 	@RequestMapping(value = "/{hallId}/{sessionID}", method = RequestMethod.GET)
 	@ResponseBody
 	public ModelAndView getHall(@PathVariable long hallId, @PathVariable String sessionID) {
-		return shouldBeManager(sessionID, (Authenticatable auth) -> {
+		return shouldBeAuthenticated(sessionID, (Authenticatable auth) -> {
 			Hall hall = hallService.findById(hallId);
 
 			if (hall != null) {
