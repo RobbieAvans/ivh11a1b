@@ -1,4 +1,4 @@
-angular.module('sessionvalidator', []).factory('SessionValidator', function() {
+angular.module('sessionvalidator', []).factory('SessionValidator', function(cfg) {
 	
 	return{
 		getCookie: function(cname){
@@ -27,7 +27,7 @@ angular.module('sessionvalidator', []).factory('SessionValidator', function() {
         	    },
         	    async: false,
         	    'type': 'GET',
-        	    'url': "http://localhost:8082/hh/rest/v1/login/"+sessionID,
+        	    'url': "http://localhost:"+cfg.port+"/hh/rest/v1/login/"+sessionID,
         	    'dataType': 'json',
         	    'success': function(data){
         	    	requestData =  data.data;
@@ -48,7 +48,7 @@ angular.module('sessionvalidator', []).factory('SessionValidator', function() {
         	    },
         	    'type': 'POST',
         	    async: false,
-        	    'url': "http://localhost:8082/hh/rest/v1/login",
+        	    'url': "http://localhost:"+cfg.port+"/hh/rest/v1/login",
         	    'data': JSON.stringify(LoginRequest),
         	    'dataType': 'json',
         	    'success': function(data){

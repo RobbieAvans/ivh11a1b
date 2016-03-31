@@ -1,5 +1,5 @@
-angular.module('services.hallReservation', []).factory('HallReservation', function($resource) {
-return $resource('http://localhost:8082/hh/rest/v1/hallReservation/:id/:sessionid', { id: '@_id',sessionid : '@sessionid' }, {
+angular.module('services.hallReservation', []).factory('HallReservation', function($resource,cfg) {
+return $resource('http://localhost:'+cfg.port+'/hh/rest/v1/hallReservation/:id/:sessionid', { id: '@_id',sessionid : '@sessionid' }, {
 	    update: {
 	      method: 'PUT'
 	    },

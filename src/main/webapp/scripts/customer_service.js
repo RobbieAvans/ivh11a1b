@@ -1,5 +1,5 @@
-angular.module('services.customer', []).factory('Customer', function($resource) {
-return $resource('http://localhost:8082/hh/rest/v1/customer/:id/:sessionid', { id: '@_id',sessionid : '@sessionid' }, {
+angular.module('services.customer', []).factory('Customer', function($resource,cfg) {
+return $resource('http://localhost:'+cfg.port+'/hh/rest/v1/customer/:id/:sessionid', { id: '@_id',sessionid : '@sessionid' }, {
 	    update: {
 	      method: 'PUT'
 	    },
