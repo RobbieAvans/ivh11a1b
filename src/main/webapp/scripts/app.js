@@ -1,5 +1,7 @@
 angular.module('bestellenApp', ['ui.router','datatables','sessionvalidator', 'ngResource', 'bestellenApp.controllers', 'services.hall','services.hallOption','services.customer','services.hallReservation','autoActive','ui.calendar','services.agenda','services.partofdays']);
-
+angular.module('bestellenApp').constant('cfg', {
+	  port: 8082
+	})
 angular.module('bestellenApp').config(function($stateProvider) {
   $stateProvider.state('halls', { 
     url: '/hall/',
