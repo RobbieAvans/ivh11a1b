@@ -145,7 +145,7 @@ angular.module('bestellenApp.controllers', [])
             $scope.hallOptions = data.data;
         });
 
-        var responseHallReservation = HallReservation.get();
+        var responseHallReservation = HallReservation.get({sessionid: $rootScope.sessionID});
         responseHallReservation.$promise.then(function(data) {
             $scope.hallReservations = data.data;
             // Calculate totalPrice of hallReservation (with hallOptions)
