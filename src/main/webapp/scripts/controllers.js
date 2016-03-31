@@ -154,10 +154,20 @@ angular.module('bestellenApp.controllers', [])
 	                // Make sure Angular sees totalPrice as an int
 	            	// Get the total price out of hallReservation.totalPrice
 	                reservation.totalPrice = 200;
-	            })
+	            });
+	            
+	            // Only a manager may directly remove a HallReservation
+	            setTimeout(function(){
+	            	if($rootScope.role != "manager"){
+		            	jQuery(".btn.btn-danger.btn-verwijderen").attr("style","display:none");
+		            }
+	            },10);
+	            
         	}
 
         });
+        
+       
 
         $scope.deleteHallReservation = function(hallReservation) {
             HallReservation.delete({
@@ -378,7 +388,7 @@ angular.module('bestellenApp.controllers', [])
 
          $scope.loadHallReservation();
          
-    }).controller('HallReservationCreateController', function($scope,$rootScope,SessionValidator, $state, $stateParams, HallReservation,HallOption, Hall, PartOfDays, CustomPartOfDay,i18n) {
+    }).controller('HallReservationCreateController', function($scope,$rootScope,SessionValidator, $state, $stateParams, HallReservation,HallOption, Hall, PartOfDays,Customer, CustomPartOfDay,i18n) {
         var responseHallOption = HallOption.get({sessionid: $rootScope.sessionID});
         responseHallOption.$promise.then(function(data) {
             $scope.hallOptions = data.data;
@@ -388,6 +398,13 @@ angular.module('bestellenApp.controllers', [])
                 delete option["@id"];
             });
         });
+        
+        var responseCustomer = Customer.get({sessionid: $rootScope.sessionID});
+        responseCustomer.$promise.then(function(data) {
+        	console.log(data);
+            $scope.allCustomers = data.data;
+        });
+
         
         if($rootScope.role =="manager"){
         	console.log("asdf");
@@ -517,7 +534,7 @@ angular.module('bestellenApp.controllers', [])
 
             });
         };
-    }).controller('HallReservationViewController', function($scope,$rootScope, $stateParams, HallReservation, HallOption, Hall) {
+    }).controller('HallReservationViewController', function($scope,$rootScope,$state, $stateParams, HallReservation, HallOption, Hall,i18n,cfg) {
     	$scope.language = function () {
             return i18n.language;
         };
@@ -525,20 +542,68 @@ angular.module('bestellenApp.controllers', [])
             i18n.setLanguage(lang);
         };
         
+        $scope.performAction = function(action){
+        	
+        	jQuery.ajax({
+        	    headers: { 
+        	        'Accept': 'application/json',
+        	        'Content-Type': 'application/json' 
+        	    },
+        	    'type': 'PUT',
+        	    async: false,
+        	    'url': "http://localhost:"+cfg.port+"/hh/rest/v1/hallReservation/"+$scope.hallReservation.id+"/"+action+"/"+ $rootScope.sessionID,
+        	    'dataType': 'json',
+        	    'success': function(data){
+        	    	if(data.success){
+        	    		var errorMessage = "Wijziging doorgevoerd.";
+        	    		jQuery(".message").removeClass("error").addClass("success").text(errorMessage).fadeIn();
+    	    			$scope.hallReservation = data.data;
+    	    			$scope.replaceActionLabels();
+    	    			setTimeout(function(){
+    	    				jQuery(".message").fadeOut();
+        	    		},2500);
+        	    	}else{
+        	    		var errorMessage = $.i18n.prop("label_"+data.data);
+        	    		jQuery(".message").removeClass("success").addClass("error").text(errorMessage).fadeIn();
+       	        		setTimeout(function(){
+    	    				jQuery(".message").fadeOut();
+        	    		},2500);
+        	    	}
+    	    	}
+    	    });
+        }
+        
+        $scope.replaceActionLabels = function(){
+        	var actionCount = 0;
+        	angular.forEach($scope.hallReservation.actions, function(action) {
+        		var btnLabel = $.i18n.prop("label_"+$scope.hallReservation.state + "_"+action);
+        		jQuery("#actionContainer msg:eq("+actionCount+")").text(btnLabel);
+        		actionCount++;
+        	});
+        }
+        
+        
         var response = HallReservation.get({
             id: $stateParams.id,
             sessionid: $rootScope.sessionID
         });
         response.$promise.then(function(data) {
             $scope.hallReservation = data.data;
-
             $scope.hallReservation.totalPrice = 0;
             $scope.hallReservation.totalPrice = $scope.hallReservation.hall.price;
             // Calculate totalPrice of hallReservation (with hallOptions)
             angular.forEach($scope.hallReservation.hallOptions, function(hallOption) {
                 $scope.hallReservation.totalPrice = parseInt($scope.hallReservation.totalPrice) + parseInt(hallOption.price);
             })
-
+            
+            console.log($scope.hallReservation);
+            
+            // Only if a hallReservation isn't final & isn't paid customers may edit it
+            setTimeout(function(){
+            	if(!$scope.hallReservation.canbemodified){
+	            	jQuery(".btn-wijzigen").attr("style","display:none");
+	            }
+            },10);
         });
 
     }).controller('CustomerCreateController', function($scope,$rootScope,$state, $stateParams, Customer) {
