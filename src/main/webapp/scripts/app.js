@@ -72,6 +72,12 @@ angular.module('bestellenApp').config(function($stateProvider) {
 			console.log(SessionValidator.isValidSession());
 			SessionValidator.setLayoutForUser();
 			$rootScope.sessionID="1234-1234-1234";
+			if(SessionValidator.getCookie("loginData") != ""){
+				$rootScope.role = JSON.parse(SessionValidator.getCookie("loginData")).data.role;
+			}else{
+				// Redirect naar login scherm
+			}
+			
 			//if($rootScope.sessionID != "asdfasdf"){
 			//	$rootScope.setCookie("loginData","",-1);
 			//}

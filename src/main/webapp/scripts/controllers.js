@@ -7,7 +7,7 @@ angular.module('bestellenApp.controllers', [])
 		var loginRequest = '{"data":{"@id":1,"id":1,"version":1,"email":"manager@hh.nl","sessionID":"e199979e-120e-48a3-99ac-3a998c00f421","role":"manager"},"success":true}';
 		
 		// Create login cookie
-		SessionValidator.setCookie("loginData",loginRequest,1);
+		//SessionValidator.setCookie("loginData",loginRequest,1);
 		
 		// Set global sessionID
 		//$rootScope.sessionID = JSON.parse($rootScope.getCookie("loginData")).data.sessionID;
@@ -134,20 +134,11 @@ angular.module('bestellenApp.controllers', [])
         var responseHallReservation = HallReservation.get();
         responseHallReservation.$promise.then(function(data) {
             $scope.hallReservations = data.data;
-            
             // Calculate totalPrice of hallReservation (with hallOptions)
             angular.forEach($scope.hallReservations, function(reservation) {
                 // Make sure Angular sees totalPrice as an int
-                reservation.totalPrice = 0;
-                reservation.totalPrice = reservation.hall.price;
-
-                $scope.selection = [];
-                angular.forEach(reservation.hallOptions, function(hallOption) {
-                    console.log("De prijs" + hallOption.price);
-                    // Create selection of HallOption
-                    $scope.selection.push(hallOption.description);
-                    reservation.totalPrice = parseInt(reservation.totalPrice) + parseInt(hallOption.price);
-                })
+            	// Get the total price out of hallReservation.totalPrice
+                reservation.totalPrice = 200;
             })
 
         });
@@ -367,7 +358,7 @@ angular.module('bestellenApp.controllers', [])
 
          $scope.loadHallReservation();
          
-    }).controller('HallReservationCreateController', function($scope,$rootScope, $state, $stateParams, HallReservation, HallOption, Hall, PartOfDays, CustomPartOfDay,i18n) {
+    }).controller('HallReservationCreateController', function($scope,$rootScope,SessionValidator, $state, $stateParams, HallReservation,HallOption, Hall, PartOfDays, CustomPartOfDay,i18n) {
         var responseHallOption = HallOption.get();
         responseHallOption.$promise.then(function(data) {
             $scope.hallOptions = data.data;
@@ -377,6 +368,14 @@ angular.module('bestellenApp.controllers', [])
                 delete option["@id"];
             });
         });
+        
+        if($rootScope.role =="manager"){
+        	console.log("asdf");
+        	setTimeout(function(){
+        		jQuery("#hiddenCustomer").fadeIn(10);
+        	},200)
+        	 
+        }
 
         var responseHall = Hall.get();
         responseHall.$promise.then(function(data) {
@@ -388,10 +387,16 @@ angular.module('bestellenApp.controllers', [])
         });
         
         $scope.selectedHall = 0;
+        $scope.selectedCustomer = 0;
         $scope.currentDate = moment(new Date()).add(-1,'weeks');
         $scope.currentWeek = moment($scope.currentDate).week();
         $scope.days = [];
         $scope.selectedPartOfDays = [];
+        
+        $scope.toggleCustomer = function toggleHall() {
+       	 	var customer = JSON.parse($scope.hallReservation.customer);
+       	 	$scope.selectedCustomer = customer;
+        };
         
         $scope.toggleHall = function toggleHall() {
        	 	var hall = JSON.parse($scope.hallReservation.hall);
@@ -462,22 +467,34 @@ angular.module('bestellenApp.controllers', [])
             $scope.hallReservation.hall = 1;
             $scope.hallReservation.partOfDays = $scope.selectedPartOfDays;
             $scope.hallReservation.hallOptions = [];
+            
+            // selectedCustomer has been set by toggleCustomer so
+            if($scope.selectedCustomer != 0){
+            	// Current sessionID is a manager, get customerDropdownValue
+            	$scope.hallReservation.customer = $scope.selectedCustomer;
+            }else{
+            	// Current sessionID is a customer, get the ID
+            	$scope.hallReservation.customer = JSON.parse(SessionValidator.getCookie("loginData")).data.id;
+            }
+            
+            alert("Geselecteerde customer "+$scope.hallReservation.customer);
+            
             jQuery("#hallReservationOptions input:checked").each(function() {
                 $scope.hallReservation.hallOptions.push(JSON.parse(jQuery(this).val()).id);
             });
 
-            $scope.hallReservation.$save(function(data) {
-            	 // Change object for API
-	       		 //$scope.hallReservation.hall 		= $scope.selectedHall.id;
-	       		 $scope.hallReservation.customer 	= 1;
-            	if(data.success){
-            		$state.go('hallReservations');
-            	}else{
-   	        		 var errorMessage = $.i18n.prop("label_"+data.data);
-   	        		 jQuery(".message").text(errorMessage).fadeIn();
-            	}
-
-            });
+     //       $scope.hallReservation.$save(function(data) {
+     //       	 // Change object for API
+	 //      		 //$scope.hallReservation.hall 		= $scope.selectedHall.id;
+	 //      		 $scope.hallReservation.customer 	= 1;
+     //       	if(data.success){
+     //       		$state.go('hallReservations');
+     //       	}else{
+   	 //       		 var errorMessage = $.i18n.prop("label_"+data.data);
+   	 //       		 jQuery(".message").text(errorMessage).fadeIn();
+     //       	}
+//
+  //          });
         };
     }).controller('HallReservationViewController', function($scope,$rootScope, $stateParams, HallReservation, HallOption, Hall) {
     	$scope.language = function () {
