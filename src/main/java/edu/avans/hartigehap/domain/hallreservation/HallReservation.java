@@ -24,6 +24,7 @@ import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.StateException;
 import edu.avans.hartigehap.domain.hallreservation.state.HallReservationState;
 import edu.avans.hartigehap.service.HallReservationService;
+import edu.avans.hartigehap.service.HallService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -33,7 +34,7 @@ import lombok.ToString;
  * @author Tom GIesbergen
  */
 
-@Configurable // Needed to autowire HallReservationService
+@Configurable // Needed to autowire HallReservationService and hallService
 @Entity
 @Getter
 @Setter
@@ -45,6 +46,10 @@ public abstract class HallReservation extends DomainObject {
     @Transient
     @Autowired
     private HallReservationService hallReservationService;
+    
+    @Transient
+    @Autowired
+    private HallService hallService;
     
     private String description;
 
@@ -91,19 +96,19 @@ public abstract class HallReservation extends DomainObject {
         notifyAllObservers();
     }
 
-    public void confirmReservation() throws StateException {
+    public void confirm() throws StateException {
         state.confirm(this);
      }
 
-    public void payReservation() throws StateException {
+    public void pay() throws StateException {
         state.pay(this);
     }
 
-    public void cancelReservation() throws StateException {
+    public void cancel() throws StateException {
         state.cancel(this);
     }
 
-    public void undoReservation() throws StateException {
+    public void undo() throws StateException {
         state.undo(this);
     }
     
@@ -144,6 +149,14 @@ public abstract class HallReservation extends DomainObject {
      */
     public void delete() {
         hallReservationService.delete(this);
+    }
+    
+    /**
+     * Same as delete method. We want to be able to save the reservation from a state class.
+     */
+    public void save() {
+		//hall.touchHallReservations();
+		hallService.save(hall);
     }
     
     /**

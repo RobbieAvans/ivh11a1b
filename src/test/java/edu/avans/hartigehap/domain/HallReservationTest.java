@@ -15,6 +15,7 @@ import edu.avans.hartigehap.domain.hallreservation.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 import edu.avans.hartigehap.domain.hallreservation.state.HallReservationState;
 import edu.avans.hartigehap.service.HallReservationService;
+import edu.avans.hartigehap.service.HallService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { HallReservationTest.class })
@@ -29,39 +30,47 @@ public class HallReservationTest {
 
         HallReservation hallReservation = new ConcreteHallReservation();
         hallReservation.setCustomer(customer);
+
+        // Set the hallServiceMock
+        HallService hallServiceMock = Mockito.mock(HallService.class);
+        hallReservation.setHallService(hallServiceMock);
         
         // Default state is SubmittedState
         assertEquals(HallReservationState.CONCEPT, hallReservation.getState());
         
-        hallReservation.cancelReservation();
+        hallReservation.cancel();
         assertEquals(HallReservationState.CANCELLED, hallReservation.getState());
 
-        hallReservation.undoReservation();
+        hallReservation.undo();
         assertEquals(HallReservationState.CONCEPT, hallReservation.getState());
 
-        hallReservation.confirmReservation();
+        hallReservation.confirm();
         assertEquals(HallReservationState.FINAL, hallReservation.getState());
         
-        hallReservation.payReservation();
+        hallReservation.pay();
         assertEquals(HallReservationState.PAID, hallReservation.getState());
     }
     
     @Test
     public void confirmCancelledTest() throws StateException {
         HallReservation hallReservation = new ConcreteHallReservation();
+        
         // Set the hallReservationServicemock
         HallReservationService hallReservationServiceMock = Mockito.mock(HallReservationService.class);
         hallReservation.setHallReservationService(hallReservationServiceMock);
+        // Set the hallServiceMock
+        HallService hallServiceMock = Mockito.mock(HallService.class);
+        hallReservation.setHallService(hallServiceMock);
         
         hallReservation.setCustomer(customer);
         
         // Default state is SubmittedState
         assertEquals(HallReservationState.CONCEPT, hallReservation.getState());
         
-        hallReservation.cancelReservation();
+        hallReservation.cancel();
         assertEquals(HallReservationState.CANCELLED, hallReservation.getState());
 
-        hallReservation.confirmReservation();
+        hallReservation.confirm();
         // Check if the delete method is called on the mock
         verify(hallReservationServiceMock).delete(hallReservation);
     }
@@ -74,7 +83,7 @@ public class HallReservationTest {
         // Default state is SubmittedState
         assertEquals(HallReservationState.CONCEPT, hallReservation.getState());
         
-        hallReservation.undoReservation(); 
+        hallReservation.undo(); 
         // Undo is not possible in the CONCEPT state, we expect an StateException
     }
 }

@@ -29,12 +29,14 @@ public class HallReservationResponse {
     private List<HallOption> hallOptions = new ArrayList<>();
     private Hall hall;
     private List<PartOfDayRequest> partOfDays = new ArrayList<>();
+    private String[] actions;
 
     public HallReservationResponse(HallReservation hallReservation) {
         id = hallReservation.getId();
         description = hallReservation.getDescription();
         state = hallReservation.getState();
-
+        actions = state.getPossibleActions();
+        
         /**
          * We have to clone some objects because they can exist multiple times
          * in the json. In this way the have all a unique json @id property

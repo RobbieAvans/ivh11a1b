@@ -30,4 +30,9 @@ public abstract class AbstractHallReservationStateOperations implements HallRese
         log.debug("Undo is niet mogelijk bij deze state " + hallReservation.getState());
         throw new StateException("Invalid state transition");
     }
+    
+    @Override
+    public String[] possibleActions() {
+    	return new String[] {};
+    }
 }
