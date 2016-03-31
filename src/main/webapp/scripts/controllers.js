@@ -180,7 +180,7 @@ angular.module('bestellenApp.controllers', [])
             console.log($scope.selection);
         };
     }).controller('HallReservationEditController', function($scope,$rootScope, $stateParams, $state, $window, HallReservation, HallOption, Hall,PartOfDays, CustomPartOfDay,i18n) {
-        var responseHallOption = HallOption.get();
+        var responseHallOption = HallOption.get({sessionid: $rootScope.sessionID});
         responseHallOption.$promise.then(function(data) {
             $scope.hallOptions = data.data;
         });
@@ -188,7 +188,7 @@ angular.module('bestellenApp.controllers', [])
         $scope.selectedHallOptions 	= [];
         $scope.selectedHall			= 0;
         
-        var responseHall = Hall.get();
+        var responseHall = Hall.get({sessionid: $rootScope.sessionID});
         responseHall.$promise.then(function(data) {
             $scope.halls = data.data;
             // Remove @id
@@ -524,7 +524,8 @@ angular.module('bestellenApp.controllers', [])
         };
         
         var response = HallReservation.get({
-            id: $stateParams.id
+            id: $stateParams.id,
+            sessionid: $rootScope.sessionID
         });
         response.$promise.then(function(data) {
             $scope.hallReservation = data.data;
