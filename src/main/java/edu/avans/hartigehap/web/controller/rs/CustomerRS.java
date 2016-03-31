@@ -60,7 +60,7 @@ public class CustomerRS extends BaseRS {
 
 	@RequestMapping(value = "/customer/{sessionID}", method = RequestMethod.GET)
 	@ResponseBody
-	public ModelAndView createCustomer(@PathVariable String sessionID) {
+	public ModelAndView getAllCustomers(@PathVariable String sessionID) {
 		return shouldBeManager(sessionID, (Authenticatable auth) -> {
 			return createSuccessResponse(customerService.findAll());
 		});

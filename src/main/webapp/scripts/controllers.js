@@ -544,7 +544,7 @@ angular.module('bestellenApp.controllers', [])
         $scope.addCustomer = function() {
         	console.log($scope.customer);
         	
-            $scope.customer.$save({sessionid: $rootScope.sessionID},function() {
+            $scope.customer.$save(function() {
             	$state.go('hallReservations');
             });
         };

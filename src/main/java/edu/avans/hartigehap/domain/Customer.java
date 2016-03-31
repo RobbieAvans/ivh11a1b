@@ -90,7 +90,13 @@ public class Customer extends AuthDomainObject {
         this.birthDate = birthDate;
         this.partySize = partySize;
         this.description = description;
-        this.photo = photo.clone();
+        
+        // Photo is nullable
+        if (photo != null) {
+        	this.photo = photo.clone();
+        } else {
+        	this.photo = photo;
+        }
     }
 
     // This method only updates user-editable fields

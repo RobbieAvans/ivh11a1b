@@ -40,4 +40,8 @@ public enum HallReservationState {
     public void undo(HallReservation hallReservation) throws StateException {
         operations.undo(hallReservation);
     }
+    
+    public String[] getPossibleActions() {
+    	return operations.possibleActions();
+    }
 }

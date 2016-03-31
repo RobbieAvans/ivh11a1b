@@ -12,4 +12,6 @@ public interface HallReservationStateOperations {
     public void cancel(HallReservation hallReservation) throws StateException;
     
     public void undo(HallReservation hallReservation) throws StateException;
+    
+    public String[] possibleActions();
 }
