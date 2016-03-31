@@ -85,9 +85,7 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         reservation.addPartOfDay(part2);
 
         // Asserts for domain
-        assertEquals("137.5", reservation.getPrice().toString()); // 55.0 because
-                                                                 // the hall is
-                                                                 // not set
+        assertEquals("137.5", reservation.getPrice().toString());
         assertEquals(description, reservation.getDescription());
         assertEquals(2, reservation.getHallOptions().size());
         assertEquals("FirstName", reservation.getCustomer().getFirstName());

@@ -1,8 +1,19 @@
 package edu.avans.hartigehap.web.controller.rs;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
+
+import edu.avans.hartigehap.domain.Authenticatable;
+import edu.avans.hartigehap.domain.Manager;
+import edu.avans.hartigehap.domain.handler.Handler;
+import edu.avans.hartigehap.domain.handler.login.CustomerSessionHandler;
+import edu.avans.hartigehap.domain.handler.login.ManagerSessionHandler;
+import edu.avans.hartigehap.web.controller.rs.body.InvalidJsonRequestException;
+import edu.avans.hartigehap.web.controller.rs.security.AuthCallback;
+import edu.avans.hartigehap.web.controller.rs.security.NotAuthorizedException;
 
 public abstract class BaseRS {
 
@@ -36,5 +47,43 @@ public abstract class BaseRS {
         modelAndView.addObject(DATA_FIELD, object);
 
         return modelAndView;
+    }
+    
+    protected ModelAndView shouldBeInRole(String sessionID, String[] roles, AuthCallback callback) {
+    	
+    	return shouldBeAuthenticated(sessionID, (Authenticatable auth) -> {
+            if (Arrays.asList(roles).contains(auth.getRole())) {
+            	return callback.handleRequest(auth);
+            }
+            
+        	throw new NotAuthorizedException();
+    	});   
+    }
+    
+    protected ModelAndView shouldBeInRole(String sessionID, String role, AuthCallback callback) {
+    	return shouldBeInRole(sessionID, new String[] { role }, callback);
+    }
+    
+    protected ModelAndView shouldBeManager(String sessionID, AuthCallback callback) {
+    	return shouldBeInRole(sessionID, Manager.ROLE, callback);
+    }
+    
+    protected ModelAndView shouldBeAuthenticated(String sessionID, AuthCallback callback) {
+    	Handler<String, Authenticatable> handler = new CustomerSessionHandler();
+        handler.setSuccessor(new ManagerSessionHandler());
+    	
+        Authenticatable auth = handler.handleRequest(sessionID);
+        
+        if (auth != null) {
+        	try {
+				return callback.handleRequest(auth);
+			} catch (NotAuthorizedException e) {
+				return createErrorResponse("not_authorized");
+			} catch (InvalidJsonRequestException e) {
+				return createErrorResponse(e.getMessage());
+			}
+        }
+        
+        return createErrorResponse("not_authorized");
     }
 }

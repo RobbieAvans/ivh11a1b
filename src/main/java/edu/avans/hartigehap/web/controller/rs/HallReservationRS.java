@@ -18,131 +18,165 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.avans.hartigehap.domain.Authenticatable;
+import edu.avans.hartigehap.domain.Customer;
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
+import edu.avans.hartigehap.domain.Manager;
 import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.hallreservation.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservationOption;
+import edu.avans.hartigehap.service.CustomerService;
 import edu.avans.hartigehap.service.HallReservationService;
 import edu.avans.hartigehap.service.HallService;
 import edu.avans.hartigehap.web.controller.rs.body.HallReservationRequest;
 import edu.avans.hartigehap.web.controller.rs.body.HallReservationResponse;
-import edu.avans.hartigehap.web.controller.rs.body.InvalidJsonRequestException;
+import edu.avans.hartigehap.web.controller.rs.security.NotAuthorizedException;
 
 @Controller
 @RequestMapping(value = RSConstants.URL_PREFIX + "/hallReservation", produces = MediaType.APPLICATION_JSON_VALUE)
 public class HallReservationRS extends BaseRS {
 
-    @Autowired
-    private HallReservationService hallReservationService;
-    
-    @Autowired
-    private HallService hallService;
+	@Autowired
+	private HallReservationService hallReservationService;
 
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
-    public ModelAndView createHallReservation(@RequestBody HallReservationRequest hallReservationRequest,
-            HttpServletResponse httpResponse, WebRequest httpRequest) {
+	@Autowired
+	private HallService hallService;
+	
+	@Autowired
+	private CustomerService customerService;
 
-        try {
-            // Get the hall where we will save it on
-            Hall hall = hallReservationRequest.getHallObject();
-            hall.touchHallReservations();
+	@RequestMapping(value = "/{sessionID}", method = RequestMethod.POST)
+	@ResponseBody
+	public ModelAndView createHallReservation(@RequestBody HallReservationRequest hallReservationRequest,
+			@PathVariable String sessionID, HttpServletResponse httpResponse, WebRequest httpRequest) {
 
-            List<HallOption> hallOptions = hallReservationRequest.getHallOptionObjects();
-            Iterator<HallOption> hallOptionsIterator = hallOptions.iterator();
+		return shouldBeAuthenticated(sessionID, (Authenticatable auth) -> {
+			// Get the hall where we will save it on
+			Hall hall = hallReservationRequest.getHallObject();
+			hall.touchHallReservations();
 
-            // Create the HallReservation
-            HallReservation reservation = new ConcreteHallReservation();
+			List<HallOption> hallOptions = hallReservationRequest.getHallOptionObjects();
+			Iterator<HallOption> hallOptionsIterator = hallOptions.iterator();
 
-            // Decorate it with hallOptions
-            while (hallOptionsIterator.hasNext()) {
-                reservation = new HallReservationOption(reservation, hallOptionsIterator.next());
-            }
+			// Create the HallReservation
+			HallReservation reservation = new ConcreteHallReservation();
 
-            reservation.setDescription(hallReservationRequest.getDescription());
+			// Decorate it with hallOptions
+			while (hallOptionsIterator.hasNext()) {
+				reservation = new HallReservationOption(reservation, hallOptionsIterator.next());
+			}
 
-            // Add PartOfDays
-            for (PartOfDay partOfDay : hallReservationRequest.getPartOfDaysObjects()) {
-                reservation.addPartOfDay(partOfDay);
-            }
+			reservation.setDescription(hallReservationRequest.getDescription());
 
-            hall.addReservation(reservation);
+			if (auth.getRole() == Manager.ROLE) {
+				reservation.setCustomer(hallReservationRequest.getCustomerObject());
+			} else {
+				// If the role is customer, you can only add a reservation for yourself
+				reservation.setCustomer(customerService.findBySessionID(auth.getSessionID()));
+			}
+			
+			// Add PartOfDays
+			for (PartOfDay partOfDay : hallReservationRequest.getPartOfDaysObjects()) {
+				reservation.addPartOfDay(partOfDay);
+			}
 
-            hallService.save(hall);
+			hall.addReservation(reservation);
 
-            httpResponse.setStatus(HttpStatus.CREATED.value());
-            httpResponse.setHeader("Location",
-                    httpRequest.getContextPath() + "/hallReservation/" + reservation.getId());
+			hallService.save(hall);
 
-            return createSuccessResponse(new HallReservationResponse(reservation));
-        } catch (InvalidJsonRequestException e) {
-            return createErrorResponse(e.getMessage());
-        }
-    }
+			httpResponse.setStatus(HttpStatus.CREATED.value());
+			httpResponse.setHeader("Location",
+					httpRequest.getContextPath() + "/hallReservation/" + reservation.getId());
 
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseBody
-    public ModelAndView allHallReservations() {
-        List<HallReservationResponse> response = new ArrayList<>();
+			return createSuccessResponse(new HallReservationResponse(reservation));
+		});
+	}
 
-        // Fill wrapper
-        for (HallReservation hallReservation : hallReservationService.findAll()) {
-            response.add(new HallReservationResponse(hallReservation));
-        }
+	@RequestMapping(value = "/{sessionID}", method = RequestMethod.GET)
+	@ResponseBody
+	public ModelAndView allHallReservations(@PathVariable String sessionID) {
+		
+		return shouldBeAuthenticated(sessionID, (Authenticatable auth) -> {
+			List<HallReservationResponse> response = new ArrayList<>();
 
-        return createSuccessResponse(response);
-    }
+			// Fill wrapper
+			for (HallReservation hallReservation : hallReservationService.findAll()) {
+				// Only add it if it's a manager or if the hallReservation is for the customer
+				if (auth.getRole() != Customer.ROLE || hallReservation.getCustomer().getSessionID().equals(auth.getSessionID())) {
+					response.add(new HallReservationResponse(hallReservation));
+				}
+			}
 
-    @RequestMapping(value = "/{hallReservationId}", method = RequestMethod.GET)
-    @ResponseBody
-    public ModelAndView getHallReservation(@PathVariable long hallReservationId) {
+			return createSuccessResponse(response);
+		});
+	}
 
-        HallReservation hallReservation = hallReservationService.findById(hallReservationId);
+	@RequestMapping(value = "/{hallReservationId}/{sessionID}", method = RequestMethod.GET)
+	@ResponseBody
+	public ModelAndView getHallReservation(@PathVariable long hallReservationId, @PathVariable String sessionID) {
 
-        if (hallReservation != null) {
-            return createSuccessResponse(new HallReservationResponse(hallReservation));
-        }
+		return shouldBeAuthenticated(sessionID, (Authenticatable auth) -> {
+			HallReservation hallReservation = hallReservationService.findById(hallReservationId);
+	
+			if (hallReservation != null) {
+				checkHallReservationAuth(hallReservation, auth);
+				
+				return createSuccessResponse(new HallReservationResponse(hallReservation));
+			}
+	
+			return createErrorResponse("hallreservation_not_exists");
+		});
+	}
 
-        return createErrorResponse("hallreservation_not_exists");
-    }
+	@RequestMapping(value = "/{hallReservationId}/{sessionID}", method = RequestMethod.PUT)
+	@ResponseBody
+	public ModelAndView updateHallReservation(@RequestBody HallReservationRequest hallReservationRequest,
+			@PathVariable long hallReservationId, @PathVariable String sessionID, HttpServletResponse httpResponse) {
 
-    @RequestMapping(value = "/{hallReservationId}", method = RequestMethod.PUT)
-    @ResponseBody
-    public ModelAndView updateHallReservation(@RequestBody HallReservationRequest hallReservationRequest,
-            @PathVariable long hallReservationId, HttpServletResponse httpResponse) {
+		return shouldBeAuthenticated(sessionID, (Authenticatable auth) -> {
+			HallReservation hallReservation = hallReservationService.findById(hallReservationId);
+			
+			if (hallReservation != null) {
+				checkHallReservationAuth(hallReservation, auth);
+				
+				hallReservation = hallReservationService.update(hallReservation, hallReservationRequest);
 
-        HallReservation hallReservation = hallReservationService.findById(hallReservationId);
+				httpResponse.setStatus(HttpStatus.OK.value());
 
-        if (hallReservation != null) {
-            try {
-                hallReservation = hallReservationService.update(hallReservation, hallReservationRequest);
+				return createSuccessResponse(new HallReservationResponse(hallReservation));
+				
+			}
 
-                httpResponse.setStatus(HttpStatus.OK.value());
+			return createErrorResponse("hallreservation_not_exists");
+		});
+	}
 
-                return createSuccessResponse(new HallReservationResponse(hallReservation));
-            } catch (InvalidJsonRequestException e) {
-                return createErrorResponse(e.getMessage());
-            }
-        }
+	@RequestMapping(value = "/{hallReservationId}/{sessionID}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public ModelAndView removeHallReservation(@PathVariable long hallReservationId, @PathVariable String sessionID,
+			HttpServletResponse httpResponse) {
+		
+		return shouldBeManager(sessionID, (Authenticatable auth) -> {
+			HallReservation hallReservation = hallReservationService.findById(hallReservationId);
 
-        return createErrorResponse("hallreservation_not_exists");
-    }
+			if (hallReservation != null) {
+				hallReservationService.delete(hallReservation);
 
-    @RequestMapping(value = "/{hallReservationId}", method = RequestMethod.DELETE)
-    @ResponseBody
-    public ModelAndView removeHallReservation(@PathVariable long hallReservationId, HttpServletResponse httpResponse) {
-        HallReservation hallReservation = hallReservationService.findById(hallReservationId);
+				httpResponse.setStatus(HttpStatus.OK.value());
 
-        if (hallReservation != null) {
-            hallReservationService.delete(hallReservation);
+				return createSuccessResponse(hallReservationId);
+			}
 
-            httpResponse.setStatus(HttpStatus.OK.value());
-
-            return createSuccessResponse(hallReservationId);
-        }
-
-        return createErrorResponse("hallreservation_not_exists");
-    }
+			return createErrorResponse("hallreservation_not_exists");
+		});
+	}
+	
+	private void checkHallReservationAuth(HallReservation hallReservation, Authenticatable auth) throws NotAuthorizedException {
+		// Check if the customer can change this reservation
+		if (auth.getRole() == Customer.ROLE && !hallReservation.getCustomer().getSessionID().equals(auth.getSessionID())) {
+			throw new NotAuthorizedException();
+		}
+	}
 }

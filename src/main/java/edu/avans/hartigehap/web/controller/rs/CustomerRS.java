@@ -83,7 +83,7 @@ public class CustomerRS extends BaseRS {
         Handler<String, Authenticatable> handler = new CustomerSessionHandler();
         handler.setSuccessor(new ManagerSessionHandler());
         
-        return createSuccessResponse(handler.handleRequest(sessionID) != null);
+        return createSuccessResponse(handler.handleRequest(sessionID));
     }
     
 }

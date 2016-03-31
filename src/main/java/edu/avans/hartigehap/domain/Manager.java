@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class Manager extends AuthDomainObject {
     private static final long serialVersionUID = 1L;
     
-    private static final String ROLE = "manager";
+    public static final String ROLE = "manager";
 
     @Transient
     @Override

@@ -24,10 +24,13 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
+import edu.avans.hartigehap.domain.Manager;
 import edu.avans.hartigehap.domain.hallreservation.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservationOption;
+import edu.avans.hartigehap.service.CustomerService;
 import edu.avans.hartigehap.service.HallReservationService;
+import edu.avans.hartigehap.service.ManagerService;
 import edu.avans.hartigehap.web.controller.rs.body.HallReservationRequest;
 import edu.avans.hartigehap.web.controller.rs.testutil.RestTestUtil;
 
@@ -41,14 +44,29 @@ public class HallReservationAPITest {
     private HallReservationRS hallReservationRS;
 
     @Autowired
+    private CustomerService customerServiceMock;
+    
+    @Autowired
+    private ManagerService managerServiceMock;
+    
+    @Autowired
     private HallReservationService hallReservationServiceMock;
 
     private MockMvc mockMvc;
 
+    private static final String MANAGER_SESSION_ID = "imamanager";
+    
     @Before
     public void setUp() {
         Mockito.reset(hallReservationServiceMock);
-
+        
+        // For every test we want to be a manager
+        Manager manager = new Manager();
+        manager.setSessionID(MANAGER_SESSION_ID);
+        
+        Mockito.when(customerServiceMock.findBySessionID(MANAGER_SESSION_ID)).thenReturn(null);
+        Mockito.when(managerServiceMock.findBySessionID(MANAGER_SESSION_ID)).thenReturn(manager);
+        
         mockMvc = standaloneSetup(hallReservationRS).build();
     }
 
@@ -56,14 +74,25 @@ public class HallReservationAPITest {
     public HallReservationService hallReservationService() {
         return Mockito.mock(HallReservationService.class);
     }
+    
+    @Bean
+    public ManagerService managerService() {
+        return Mockito.mock(ManagerService.class);
+    }
+    
+    @Bean
+    public CustomerService customerService() {
+        return Mockito.mock(CustomerService.class);
+    }
 
     @Test
     public void getHallReservation() throws Exception {
         Long id = 1L;
+        
         HallReservation hallReservation = getHallReservation(id);
         Mockito.when(hallReservationServiceMock.findById(id)).thenReturn(hallReservation);
-
-        mockMvc.perform(get("/rest/v1/hallReservation/1")).andExpect(status().isOk())
+        
+        mockMvc.perform(get("/rest/v1/hallReservation/1/" + MANAGER_SESSION_ID)).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.success").value(true)).andExpect(jsonPath("$.data").isNotEmpty())
                 .andExpect(jsonPath("$.data.id").value(1)).andExpect(jsonPath("$.data").isMap())
@@ -83,7 +112,7 @@ public class HallReservationAPITest {
         Mockito.when(hallReservationServiceMock.update(any(HallReservation.class), any(HallReservationRequest.class)))
                 .thenReturn(hallReservation);
                 
-        mockMvc.perform(put("/rest/v1/hallReservation/1").contentType(RestTestUtil.APPLICATION_JSON_UTF8)
+        mockMvc.perform(put("/rest/v1/hallReservation/1/" + MANAGER_SESSION_ID).contentType(RestTestUtil.APPLICATION_JSON_UTF8)
                 .content(RestTestUtil.convertObjectToJSONContent(request))).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.success").value(true)).andExpect(jsonPath("$.data").isNotEmpty())

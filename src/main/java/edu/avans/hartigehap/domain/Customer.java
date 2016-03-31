@@ -44,7 +44,7 @@ import lombok.ToString;
 public class Customer extends AuthDomainObject {
     private static final long serialVersionUID = 1L;
     
-    private static final String ROLE = "customer";
+    public static final String ROLE = "customer";
     
     @NotEmpty(message = "{validation.firstname.NotEmpty.message}")
     @Size(min = 3, max = 60, message = "{validation.firstname.Size.message}")

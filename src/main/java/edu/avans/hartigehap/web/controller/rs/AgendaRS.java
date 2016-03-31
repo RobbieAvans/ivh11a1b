@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.avans.hartigehap.domain.Authenticatable;
 import edu.avans.hartigehap.domain.agenda.AgendaItem;
 import edu.avans.hartigehap.domain.agenda.Iterator;
 import edu.avans.hartigehap.service.AgendaService;
@@ -27,28 +28,30 @@ public class AgendaRS extends BaseRS {
     @Autowired
     private AgendaService agendaService;
     
-    @RequestMapping(value = "/{start}/{end}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{start}/{end}/{sessionID}", method = RequestMethod.GET)
     @ResponseBody
-    public ModelAndView agendaItems(@PathVariable String start, @PathVariable String end) {
+    public ModelAndView agendaItems(@PathVariable String start, @PathVariable String end, @PathVariable String sessionID) {
         
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        
-        try {
-            Date startDate = format.parse(start);
-            Date endDate = format.parse(end);
-                  
-            Iterator<AgendaItem> iterator = agendaService.getItemsBetween(startDate, endDate);
-            
-            // Fill array with all items
-            List<AgendaItem> items = new ArrayList<>();
-            while (iterator.hasNext()) {
-                items.add(iterator.next());
-            }
-            
-            return createSuccessResponse(items);
-        } catch (ParseException e) {
-            return createErrorResponse("invalid_date_format");
-        }
-    }
+    	return shouldBeManager(sessionID, (Authenticatable auth) -> {
 
+		        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		        
+		        try {
+		            Date startDate = format.parse(start);
+		            Date endDate = format.parse(end);
+		                  
+		            Iterator<AgendaItem> iterator = agendaService.getItemsBetween(startDate, endDate);
+		            
+		            // Fill array with all items
+		            List<AgendaItem> items = new ArrayList<>();
+		            while (iterator.hasNext()) {
+		                items.add(iterator.next());
+		            }
+		            
+		            return createSuccessResponse(items);
+		        } catch (ParseException e) {
+		            return createErrorResponse("invalid_date_format");
+		        }
+    	});
+    }
 }
