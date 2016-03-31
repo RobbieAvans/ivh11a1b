@@ -42,7 +42,7 @@ public class HallRS extends BaseRS {
 	 * @param httpRequest
 	 * @return
 	 */
-	@RequestMapping(value = "/{hallOptionId}/{sessionID}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{sessionID}", method = RequestMethod.POST)
 	@ResponseBody
 	public ModelAndView createHall(@RequestBody Hall hall, @PathVariable String sessionID,
 			HttpServletResponse httpResponse, WebRequest httpRequest) {
@@ -70,7 +70,7 @@ public class HallRS extends BaseRS {
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "/{hallOptionId}/{sessionID}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{sessionID}", method = RequestMethod.GET)
 	@ResponseBody
 	public ModelAndView allHalls(@PathVariable String sessionID) {
 		return shouldBeManager(sessionID, (Authenticatable auth) -> {
