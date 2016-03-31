@@ -147,13 +147,15 @@ angular.module('bestellenApp.controllers', [])
 
         var responseHallReservation = HallReservation.get({sessionid: $rootScope.sessionID});
         responseHallReservation.$promise.then(function(data) {
-            $scope.hallReservations = data.data;
-            // Calculate totalPrice of hallReservation (with hallOptions)
-            angular.forEach($scope.hallReservations, function(reservation) {
-                // Make sure Angular sees totalPrice as an int
-            	// Get the total price out of hallReservation.totalPrice
-                reservation.totalPrice = 200;
-            })
+        	if(data.success){
+	            $scope.hallReservations = data.data;
+	            // Calculate totalPrice of hallReservation (with hallOptions)
+	            angular.forEach($scope.hallReservations, function(reservation) {
+	                // Make sure Angular sees totalPrice as an int
+	            	// Get the total price out of hallReservation.totalPrice
+	                reservation.totalPrice = 200;
+	            })
+        	}
 
         });
 
@@ -544,7 +546,7 @@ angular.module('bestellenApp.controllers', [])
         $scope.addCustomer = function() {
         	console.log($scope.customer);
         	
-            $scope.customer.$save({sessionid: $rootScope.sessionID},function() {
+            $scope.customer.$save(function() {
             	$state.go('hallReservations');
             });
         };
