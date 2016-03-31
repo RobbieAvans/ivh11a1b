@@ -1,4 +1,4 @@
-package edu.avans.hartigehap.web.controller.rs.security;
+package edu.avans.hartigehap.aop;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Aspect
 public class MyExecutionTimeAspect {
-    @Pointcut("@annotation(edu.avans.hartigehap.web.controller.rs.security.MyExecutionTime) && execution(* edu.avans.hartigehap..*(..))") // the
+    @Pointcut("@annotation(edu.avans.hartigehap.aop.MyExecutionTime) && execution(* edu.avans.hartigehap..*(..))") // the
                                                                                                                    // pointcut
                                                                                                                    // expression
     public void myExecutionTimeAnnotation() { // the pointcut signature

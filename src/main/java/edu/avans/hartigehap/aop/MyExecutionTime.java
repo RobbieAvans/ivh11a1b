@@ -1,4 +1,4 @@
-package edu.avans.hartigehap.web.controller.rs.security;
+package edu.avans.hartigehap.aop;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

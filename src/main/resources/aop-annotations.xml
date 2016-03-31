@@ -12,6 +12,6 @@ http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
     <aop:aspectj-autoproxy/>
 
-    <context:component-scan base-package="edu.avans.hartigehap.web.controller.rs.security"/>
+    <context:component-scan base-package="edu.avans.hartigehap.aop"/>
     
 </beans>
