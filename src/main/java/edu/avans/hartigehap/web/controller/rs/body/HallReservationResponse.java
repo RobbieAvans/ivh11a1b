@@ -25,6 +25,7 @@ public class HallReservationResponse {
     private Long id;
     private String description;
     private HallReservationState state;
+    private boolean canbemodified;
     private Customer customer;
     private List<HallOption> hallOptions = new ArrayList<>();
     private Hall hall;
@@ -36,6 +37,7 @@ public class HallReservationResponse {
         description = hallReservation.getDescription();
         state = hallReservation.getState();
         actions = state.getPossibleActions();
+        canbemodified = hallReservation.canBeModified();
         
         /**
          * We have to clone some objects because they can exist multiple times
