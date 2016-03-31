@@ -22,21 +22,23 @@ angular.module('bestellenApp.controllers', [])
 		
 	})
     .controller('HallListController', function($scope,$rootScope, $state, $window, Hall) {
-        var response = Hall.get();
+        var response = Hall.get({sessionid: $rootScope.sessionID});
         response.$promise.then(function(data) {
             $scope.halls = data.data;
         });
 
         $scope.deleteHall = function(hall) {
             Hall.delete({
-                id: hall.id
+                id: hall.id,
+                sessionid: $rootScope.sessionID
             }, function() {
                 $window.location.reload();
             });
         };
     }).controller('HallViewController', function($scope,$rootScope, $stateParams, Hall) {
         var response = Hall.get({
-            id: $stateParams.id
+            id: $stateParams.id,
+            sessionid: $rootScope.sessionID
         });
         response.$promise.then(function(data) {
             $scope.hall = data.data;
@@ -46,7 +48,7 @@ angular.module('bestellenApp.controllers', [])
         $scope.hall = new Hall();
 
         $scope.addHall = function() {
-            $scope.hall.$save(function() {
+            $scope.hall.$save({sessionid: $rootScope.sessionID},function() {
                 $state.go('halls');
             });
         };
@@ -55,7 +57,8 @@ angular.module('bestellenApp.controllers', [])
 
         $scope.updateHall = function() {
             Hall.update({
-                id: $scope.hall.id
+                id: $scope.hall.id,
+                sessionid: $rootScope.sessionID
             }, $scope.hall, function() {
                 $state.go('halls');
             });
@@ -63,7 +66,8 @@ angular.module('bestellenApp.controllers', [])
 
         $scope.loadHall = function() {
             var response = Hall.get({
-                id: $stateParams.id
+                id: $stateParams.id,
+                sessionid: $rootScope.sessionID
             });
             response.$promise.then(function(data) {
                 $scope.hall = data.data;

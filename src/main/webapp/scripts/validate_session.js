@@ -33,7 +33,7 @@ angular.module('sessionvalidator', []).factory('SessionValidator', function() {
 			console.log(jQuery("ins[data-role]").data("role"));
 			// check if user may access curent page
 			if(jQuery("ins[data-role]").data("role") != null && jQuery("ins[data-role]").data("role").indexOf(JSON.parse(this.getCookie("loginData")).data.role) <=0){
-				window.location = 'http://localhost:8082/hh';
+				//window.location = 'http://localhost:8082/hh';
 			}
 		}
 	}
