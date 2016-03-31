@@ -61,31 +61,37 @@ angular.module('bestellenApp').config(function($stateProvider) {
 	  url: '/agenda',
 	  templateUrl: 'agenda/agenda.html',
 	  controller: 'AgendaController'
+  }).state('login', { 
+	    url: '/login/',
+	    templateUrl: 'login/index.html',
+	    controller: 'LoginController'
   });
 }).run(function($state,$rootScope,LoginRequest,SessionValidator) {
 	$rootScope.$on('$stateChangeStart', 
 	function(event, toState, toParams, fromState, fromParams){ 
-	    // get user data
-		validateSessionID();
-		
-		function validateSessionID(){
-			console.log(SessionValidator.isValidSession());
-			SessionValidator.setLayoutForUser();
-			$rootScope.sessionID="1234-1234-1234";
-			if(SessionValidator.getCookie("loginData") != ""){
-				$rootScope.role = JSON.parse(SessionValidator.getCookie("loginData")).data.role;
+		console.log("KOMT IE NU HIER ");
+		if(SessionValidator.getCookie("loginData") != ""){
+			if(SessionValidator.isValidSession() != null){
+				SessionValidator.setCookie("loginData",JSON.stringify(SessionValidator.isValidSession()),15);
+				
+				$rootScope.userID		= JSON.parse(SessionValidator.getCookie("loginData")).id;
+				$rootScope.sessionID	= JSON.parse(SessionValidator.getCookie("loginData")).sessionID;
+				$rootScope.role 		= JSON.parse(SessionValidator.getCookie("loginData")).role;
+				
+				// Alter lay-out depending on user-role
+				//console.log("Moet nu hier komen want is correct ingelogd, rol: " + $rootScope.role);
+				SessionValidator.setLayoutForUser($rootScope.role);
 			}else{
-				// Redirect naar login scherm
+				console.log("Komt ie hier?");
+				//SessionValidator.logout();
+				SessionValidator.setLayoutForUser("");
+				// Redirect naar LOGIN
 			}
-			
-			//if($rootScope.sessionID != "asdfasdf"){
-			//	$rootScope.setCookie("loginData","",-1);
-			//}
-			//console.log($rootScope.sessionID);
+		}else{
+			console.log("Hij moet hier komen");
+			SessionValidator.setLayoutForUser("");
+			// Redirect naar LOGIN
 		}
-		
-		
-		
 	})
 	
   $state.go('registerCustomer');

@@ -18,23 +18,75 @@ angular.module('sessionvalidator', []).factory('SessionValidator', function() {
 		    document.cookie = cname + "=" + cvalue + "; " + expires;
 		},
 		isValidSession: function(){
-			if(this.getCookie("loginData") != null){
-				return true;
-			}else{
-				return false;
-			}
+			var sessionID 	= JSON.parse(this.getCookie("loginData")).sessionID;
+			var requestData = "";
+			jQuery.ajax({
+        	    headers: { 
+        	        'Accept': 'application/json',
+        	        'Content-Type': 'application/json' 
+        	    },
+        	    async: false,
+        	    'type': 'GET',
+        	    'url': "http://localhost:8082/hh/rest/v1/login/"+sessionID,
+        	    'dataType': 'json',
+        	    'success': function(data){
+        	    	requestData =  data.data;
+    	    	}
+    	    });
+			return requestData;
 		},
-		setLayoutForUser: function(){
-			// hide menu-items which not may be accessed
-			if(JSON.parse(this.getCookie("loginData")).data.role == "customer"){
-				jQuery("nav a[data-role='manager']").parent().hide();
-			}
-			
-			console.log(jQuery("ins[data-role]").data("role"));
-			// check if user may access curent page
-			if(jQuery("ins[data-role]").data("role") != null && jQuery("ins[data-role]").data("role").indexOf(JSON.parse(this.getCookie("loginData")).data.role) <=0){
-				//window.location = 'http://localhost:8082/hh';
-			}
+		logout: function(){
+			this.setCookie("loginData","",-1);
+			return true;
+		},
+		login: function(LoginRequest){
+			var requestData = "";
+			jQuery.ajax({
+        	    headers: { 
+        	        'Accept': 'application/json',
+        	        'Content-Type': 'application/json' 
+        	    },
+        	    'type': 'POST',
+        	    async: false,
+        	    'url': "http://localhost:8082/hh/rest/v1/login",
+        	    'data': JSON.stringify(LoginRequest),
+        	    'dataType': 'json',
+        	    'success': function(data){
+        	    	requestData = data.data;
+    	    	}
+    	    });
+			return requestData;
+		},
+		setLayoutForUser: function(role){
+			// Wait till DOM-ready
+			setTimeout(function(){
+				// hide menu-items which not may be accessed
+				console.log("MIJN ROL "+ role);
+				
+				//if(role == ""){
+				//	jQuery("nav a[data-role]").parent().hide();
+				//}else if(role == "customer"){
+				//	jQuery("nav a[data-role='manager']").parent().hide();
+				//}
+				
+				if(role == ""){
+					jQuery("nav a[data-role]").parent().hide();
+				}else{
+					jQuery("nav a").each(function(){
+						if(jQuery(this).data("role") != undefined && jQuery(this).data("role").toString().indexOf(role)<0){
+							console.log("button role "+ jQuery(this).data("role"));
+							jQuery(this).parent().hide();
+						}else{
+							jQuery(this).parent().show();
+						}
+					})
+				}
+				console.log(jQuery("ins[data-role]").data("role"));
+				// check if user may access curent page
+				if(jQuery("ins[data-role]").data("role") != null && jQuery("ins[data-role]").data("role").indexOf(role) <=0){
+					//window.location = 'http://localhost:8082/hh';
+				}
+			},200);
 		}
 	}
 });

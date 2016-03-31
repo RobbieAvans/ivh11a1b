@@ -1,30 +1,40 @@
 angular.module('bestellenApp.controllers', [])
 	.controller('MainController', function($scope, $rootScope, $state, $window, Hall,i18n, Customer, LoginRequest,SessionValidator) {
-		
-	
-		// Get login request
-		// now dummy data
-		var loginRequest = '{"data":{"@id":1,"id":1,"version":1,"email":"manager@hh.nl","sessionID":"e199979e-120e-48a3-99ac-3a998c00f421","role":"manager"},"success":true}';
-		
-		// Create login cookie
-		//SessionValidator.setCookie("loginData",loginRequest,1);
-		
-		// Set global sessionID
-		//$rootScope.sessionID = JSON.parse($rootScope.getCookie("loginData")).data.sessionID;
-		
-		// Set global role
-		//$rootScope.role = JSON.parse($rootScope.getCookie("loginData")).data.role;
-		
 
 		
+		// Logout method
+		$scope.logout = function(){
+			if(SessionValidator.logout()){
+				console.log("uitloggen");
+				$state.go('login');
+			}
+		}
 		
-		
-		
-	})
-    .controller('HallListController', function($scope,$rootScope, $state, $window, Hall) {
+	}).controller('LoginController', function($scope,$rootScope,$state, $stateParams, Customer, LoginRequest,SessionValidator) {
+       
+        $scope.loginRequest = new LoginRequest();
+        $scope.loginRequest.email = "tom@live.nl";
+        $scope.loginRequest.password = "test";
+        
+        
+        $scope.login = function() {
+        	console.log(SessionValidator.login($scope.loginRequest));
+        	if(SessionValidator.login($scope.loginRequest) != "login_fail"){
+        		SessionValidator.setCookie("loginData",JSON.stringify(SessionValidator.login($scope.loginRequest)),15);
+        		SessionValidator.setLayoutForUser($rootScope.role);
+        		$state.go('hallReservations');
+        		
+        	}
+        };
+
+    }).controller('HallListController', function($scope,$rootScope, $state, $window, Hall) {
         var response = Hall.get({sessionid: $rootScope.sessionID});
         response.$promise.then(function(data) {
-            $scope.halls = data.data;
+        	if(data.success){
+        		$scope.halls = data.data;
+        	}else{
+        		alert("niet correct geautoriseerd");
+        	}
         });
 
         $scope.deleteHall = function(hall) {
@@ -76,14 +86,15 @@ angular.module('bestellenApp.controllers', [])
 
         $scope.loadHall();
     }).controller('HallOptionListController', function($scope,$rootScope, $state, $window, HallOption) {
-        var response = HallOption.get();
+        var response = HallOption.get({sessionid: $rootScope.sessionID});
         response.$promise.then(function(data) {
             $scope.hallOptions = data.data;
         });
 
         $scope.deleteHallOption = function(hallOption) {
             HallOption.delete({
-                id: hallOption.id
+                id: hallOption.id,
+                sessionid: $rootScope.sessionID
             }, function() {
                 $window.location.reload();
             });
@@ -92,7 +103,8 @@ angular.module('bestellenApp.controllers', [])
     }).controller('HallOptionEditController', function($scope,$rootScope, $state, $stateParams, HallOption) {
         $scope.updateHallOption = function() {
             HallOption.update({
-                id: $scope.hallOption.id
+                id: $scope.hallOption.id,
+                sessionid: $rootScope.sessionID
             }, $scope.hallOption, function() {
                 $state.go('hallOptions');
             });
@@ -100,7 +112,8 @@ angular.module('bestellenApp.controllers', [])
 
         $scope.loadHallOption = function() {
             var response = HallOption.get({
-                id: $stateParams.id
+                id: $stateParams.id,
+                sessionid: $rootScope.sessionID
             });
             response.$promise.then(function(data) {
                 $scope.hallOption = data.data;
@@ -113,20 +126,21 @@ angular.module('bestellenApp.controllers', [])
         $scope.hallOption = new HallOption();
 
         $scope.addHallOption = function() {
-            $scope.hallOption.$save(function() {
+            $scope.hallOption.$save({sessionid: $rootScope.sessionID},function() {
                 $state.go('hallOptions');
             });
         };
     }).controller('HallOptionViewController', function($scope,$rootScope, $stateParams, HallOption) {
         var response = HallOption.get({
-            id: $stateParams.id
+            id: $stateParams.id,
+            sessionid: $rootScope.sessionID
         });
         response.$promise.then(function(data) {
             $scope.hallOption = data.data;
         });
 
     }).controller('HallReservationListController', function($scope,$rootScope, $state, $window, HallReservation, HallOption) {
-        var responseHallOption = HallOption.get();
+        var responseHallOption = HallOption.get({sessionid: $rootScope.sessionID});
         responseHallOption.$promise.then(function(data) {
             $scope.hallOptions = data.data;
         });
@@ -145,7 +159,8 @@ angular.module('bestellenApp.controllers', [])
 
         $scope.deleteHallReservation = function(hallReservation) {
             HallReservation.delete({
-                id: hallReservation.id
+                id: hallReservation.id,
+                sessionid: $rootScope.sessionID
             }, function() {
                 $window.location.reload();
             });
@@ -194,7 +209,8 @@ angular.module('bestellenApp.controllers', [])
     		 $scope.hallReservation.partOfDays 	= $scope.selectedPartOfDays;
     		 
              HallReservation.update({
-            	 id: $scope.hallReservation.id
+            	 id: $scope.hallReservation.id,
+            	 sessionid: $rootScope.sessionID
              }, $scope.hallReservation, function(data) {
 	        	 if(data.success){
 	        		 $state.go('hallReservations');
@@ -207,7 +223,8 @@ angular.module('bestellenApp.controllers', [])
 
          $scope.loadHallReservation = function() {
              var response = HallReservation.get({
-                 id: $stateParams.id
+                 id: $stateParams.id,
+                 sessionid: $rootScope.sessionID
              });
              response.$promise.then(function(data) {
                  $scope.hallReservation = data.data;           
@@ -269,7 +286,8 @@ angular.module('bestellenApp.controllers', [])
          	// Get partOfDays for hall.id and week
          	var response = PartOfDays.get({
          		hallid: $scope.selectedHall,
- 	            weeknmr: moment($scope.currentDate).week()
+ 	            weeknmr: moment($scope.currentDate).week(),
+ 	            sessionid: $rootScope.sessionID
  	        });
  	        
  	        response.$promise.then(function(data) {
@@ -359,7 +377,7 @@ angular.module('bestellenApp.controllers', [])
          $scope.loadHallReservation();
          
     }).controller('HallReservationCreateController', function($scope,$rootScope,SessionValidator, $state, $stateParams, HallReservation,HallOption, Hall, PartOfDays, CustomPartOfDay,i18n) {
-        var responseHallOption = HallOption.get();
+        var responseHallOption = HallOption.get({sessionid: $rootScope.sessionID});
         responseHallOption.$promise.then(function(data) {
             $scope.hallOptions = data.data;
 
@@ -377,7 +395,7 @@ angular.module('bestellenApp.controllers', [])
         	 
         }
 
-        var responseHall = Hall.get();
+        var responseHall = Hall.get({sessionid: $rootScope.sessionID});
         responseHall.$promise.then(function(data) {
             $scope.halls = data.data;
             // Remove @id
@@ -443,7 +461,8 @@ angular.module('bestellenApp.controllers', [])
         	// Get partOfDays for hall.id and week
         	var response = PartOfDays.get({
         		hallid: $scope.selectedHall,
-	            weeknmr: moment($scope.currentDate).week()
+	            weeknmr: moment($scope.currentDate).week(),
+	            sessionid: $rootScope.sessionID
 	        });
 	        
 	        response.$promise.then(function(data) {
@@ -474,7 +493,7 @@ angular.module('bestellenApp.controllers', [])
             	$scope.hallReservation.customer = $scope.selectedCustomer;
             }else{
             	// Current sessionID is a customer, get the ID
-            	$scope.hallReservation.customer = JSON.parse(SessionValidator.getCookie("loginData")).data.id;
+            	$scope.hallReservation.customer = $rootScope.userID;
             }
             
             alert("Geselecteerde customer "+$scope.hallReservation.customer);
@@ -483,18 +502,18 @@ angular.module('bestellenApp.controllers', [])
                 $scope.hallReservation.hallOptions.push(JSON.parse(jQuery(this).val()).id);
             });
 
-     //       $scope.hallReservation.$save(function(data) {
-     //       	 // Change object for API
-	 //      		 //$scope.hallReservation.hall 		= $scope.selectedHall.id;
-	 //      		 $scope.hallReservation.customer 	= 1;
-     //       	if(data.success){
-     //       		$state.go('hallReservations');
-     //       	}else{
-   	 //       		 var errorMessage = $.i18n.prop("label_"+data.data);
-   	 //       		 jQuery(".message").text(errorMessage).fadeIn();
-     //       	}
-//
-  //          });
+            $scope.hallReservation.$save({sessionid: $rootScope.sessionID},function(data) {
+            	 // Change object for API
+	       		 //$scope.hallReservation.hall 		= $scope.selectedHall.id;
+	       		 //$scope.hallReservation.customer 	= $
+            	if(data.success){
+            		$state.go('hallReservations');
+            	}else{
+   	        		 var errorMessage = $.i18n.prop("label_"+data.data);
+   	        		 jQuery(".message").text(errorMessage).fadeIn();
+            	}
+
+            });
         };
     }).controller('HallReservationViewController', function($scope,$rootScope, $stateParams, HallReservation, HallOption, Hall) {
     	$scope.language = function () {
@@ -521,19 +540,19 @@ angular.module('bestellenApp.controllers', [])
 
     }).controller('CustomerCreateController', function($scope,$rootScope,$state, $stateParams, Customer) {
     	$scope.customer = new Customer();
-
-    	
         $scope.addCustomer = function() {
         	console.log($scope.customer);
         	
-            $scope.customer.$save(function() {
-                $state.go('viewCustomer');
+            $scope.customer.$save({sessionid: $rootScope.sessionID},function() {
+            	$state.go('hallReservations');
             });
         };
 
     }).controller('CustomerViewController', function($scope,$rootScope,$state, $stateParams, Customer) {
+    	console.log("GebruikersID  " + $rootScope.userID);
         var response = Customer.get({
-            id: $stateParams.id
+            id: $rootScope.userID,
+            sessionid: $rootScope.sessionID
         });
         response.$promise.then(function(data) {
             $scope.customer = data.data;

@@ -64,7 +64,7 @@
 							</aside>
 							<span></span>
 							<aside class="item" style="position: relative;">
-								<a ui-sref="hallReservations()"><msg key="label_hallreservation"></msg></a>
+								<a data-role='customer,manager' ui-sref="hallReservations()"><msg key="label_hallreservation"></msg></a>
 							</aside>
 							<span></span>
 							<aside class="item" style="position: relative;">
@@ -72,9 +72,13 @@
 							</aside>
 							<span></span>
 							<aside  class="item" style="position: relative;">
-								<a href="../../hh"><msg key="label_management_subsystem"></msg></a>
+								<a href="../../hh" ><msg key="label_management_subsystem"></msg></a>
 							</aside>
 							<span></span>
+							<aside  class="item" style="position: relative;">
+								<a data-role='customer,manager' ng-click="logout()">Uitloggen</a>
+							</aside>
+							
 						</div>
 						<div class="toggle show-for-medium-down">
 							<a>menu</a>
