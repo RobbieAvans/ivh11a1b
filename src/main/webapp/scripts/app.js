@@ -68,10 +68,9 @@ angular.module('bestellenApp').config(function($stateProvider) {
 	    templateUrl: 'login/index.html',
 	    controller: 'LoginController'
   });
-}).run(function($state,$rootScope,LoginRequest,SessionValidator) {
+}).run(function($state,$rootScope,LoginRequest,SessionValidator,cfg) {
 	$rootScope.$on('$stateChangeStart', 
 	function(event, toState, toParams, fromState, fromParams){ 
-		console.log("KOMT IE NU HIER ");
 		if(SessionValidator.getCookie("loginData") != ""){
 			if(SessionValidator.isValidSession() != null){
 				SessionValidator.setCookie("loginData",JSON.stringify(SessionValidator.isValidSession()),15);
@@ -81,22 +80,25 @@ angular.module('bestellenApp').config(function($stateProvider) {
 				$rootScope.role 		= JSON.parse(SessionValidator.getCookie("loginData")).role;
 				
 				// Alter lay-out depending on user-role
-				//console.log("Moet nu hier komen want is correct ingelogd, rol: " + $rootScope.role);
 				SessionValidator.setLayoutForUser($rootScope.role);
 			}else{
-				console.log("Komt ie hier?");
-				//SessionValidator.logout();
 				SessionValidator.setLayoutForUser("");
-				// Redirect naar LOGIN
 			}
 		}else{
-			console.log("Hij moet hier komen");
 			SessionValidator.setLayoutForUser("");
-			// Redirect naar LOGIN
+			SessionValidator.setCookie("authenticated","redirect",15);
+			
+			if(SessionValidator.getCookie("authenticated") == "redirect" && window.location.href.indexOf("login")<=0){
+				SessionValidator.setCookie("authenticated","redirect",15);
+				setTimeout(function(){
+					$state.go('login');
+				},300);
+				
+			}
 		}
 	})
 	
-  $state.go('registerCustomer');
+  $state.go('login');
 });
 
 

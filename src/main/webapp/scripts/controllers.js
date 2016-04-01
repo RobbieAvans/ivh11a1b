@@ -12,7 +12,6 @@ angular.module('bestellenApp.controllers', [])
 	}).controller('LoginController', function($scope,$rootScope,$state, $stateParams, Customer, LoginRequest,SessionValidator) {
        
         $scope.login = function() {
-        	console.log(SessionValidator.login($scope.loginRequest));
         	if(SessionValidator.login($scope.loginRequest) != "login_fail"){
         		SessionValidator.setCookie("loginData",JSON.stringify(SessionValidator.login($scope.loginRequest)),15);
         		SessionValidator.setLayoutForUser($rootScope.role);
@@ -175,8 +174,6 @@ angular.module('bestellenApp.controllers', [])
             } else {
                 $scope.selection.push(hallOption);
             }
-
-            console.log($scope.selection);
         };
     }).controller('HallReservationEditController', function($scope,$rootScope, $stateParams, $state, $window, HallReservation, HallOption, Hall,PartOfDays, CustomPartOfDay,i18n) {
         var responseHallOption = HallOption.get({sessionid: $rootScope.sessionID});
@@ -185,7 +182,8 @@ angular.module('bestellenApp.controllers', [])
         });
         
         $scope.selectedHallOptions 	= [];
-        $scope.selectedHall			= 0;
+        $scope.selectedHall = 0;
+        $scope.selectedCustomer = 0;
         
         var responseHall = Hall.get({sessionid: $rootScope.sessionID});
         responseHall.$promise.then(function(data) {
@@ -199,7 +197,15 @@ angular.module('bestellenApp.controllers', [])
     	 $scope.updateHallReservation = function() {
         	 // Change object for API
     		 $scope.hallReservation.hall 		= $scope.selectedHall;
-    		 $scope.hallReservation.customer 	= 1;
+    		 
+    		 // selectedCustomer has been set by toggleCustomer so
+             if($scope.selectedCustomer != 0){
+             	// Current sessionID is a manager, get customerDropdownValue
+             	$scope.hallReservation.customer = $scope.selectedCustomer;
+             }else{
+             	// Current sessionID is a customer, get the ID
+             	$scope.hallReservation.customer = $rootScope.userID;
+             }
     		 
              // Remove @id
     		 delete $scope.hallReservation["@id"];
@@ -227,7 +233,6 @@ angular.module('bestellenApp.controllers', [])
              });
              response.$promise.then(function(data) {
                  $scope.hallReservation = data.data;           
-                 console.log($scope.hallReservation);
                  
                  // Set selected hallOptions
                  $scope.checkedHallOptions = function(option){
@@ -268,18 +273,13 @@ angular.module('bestellenApp.controllers', [])
              
          };
          
-         $scope.selectedHall = 0;
+         
          $scope.currentDate = moment(new Date()).add(-1,'weeks');
          $scope.currentWeek = moment($scope.currentDate).week();
          $scope.days = [];
          $scope.selectedPartOfDays = [];
          
          $scope.getPartOfDays = function(){
-        	 
-        	 // Set dummy PartOfDays
-        	 //$scope.hallReservation.partOfDays = [{"date":"23-03-2016","partOfDay":"Morning"},{"date":"23-03-2016","partOfDay":"Afternoon"},{"date":"23-03-2016","partOfDay":"Evening"}];
-
-        	 console.log("Check partOfDays "+ $scope.hallReservation.partOfDays);
          	$scope.currentWeek = moment($scope.currentDate).week();
          	
          	// Get partOfDays for hall.id and week
@@ -292,7 +292,6 @@ angular.module('bestellenApp.controllers', [])
  	        response.$promise.then(function(data) {
  	        	if (data.success) {
  	        		$scope.days = [];
- 	        		console.log($scope.hallReservation.partOfDays);
  	        		angular.forEach(data.data, function(days) {
  	        			$scope.days.push(days);
  			        });	
@@ -308,8 +307,6 @@ angular.module('bestellenApp.controllers', [])
  	        		$scope.partOfDay 			= new CustomPartOfDay();
  	            	$scope.partOfDay.date 		= _partOfDay.date;
  	            	$scope.partOfDay.partOfDay 	= _partOfDay.partOfDay;
- 	        		
- 	            	console.log(_partOfDay.date + "    "+_partOfDay.partOfDay );
  	            	
  	        		$scope.selectedPartOfDays.push($scope.partOfDay);
  	        		jQuery('*[data-day="'+_partOfDay.date+'"]').find('*[data-daypart="'+_partOfDay.partOfDay+'"] span').addClass("oldDate selected");
@@ -362,12 +359,17 @@ angular.module('bestellenApp.controllers', [])
              } else {
                  $scope.selectedHallOptions.push(hallOption);
              }
-             console.log($scope.selectedHallOptions);
          };
          
          $scope.toggleHall = function toggleHall() {
         	 var response = JSON.parse($scope.hallReservation.hall);
         	 $scope.selectedHall = response.id ;
+        	 $scope.getPartOfDays();
+         };
+         
+         $scope.toggleCustomer = function toggleCustomer() {
+        	 	var customer = JSON.parse($scope.hallReservation.customer);
+        	 	$scope.selectedCustomer = customer;
          };
 
          $scope.loadHallReservation();
@@ -385,7 +387,6 @@ angular.module('bestellenApp.controllers', [])
         
         var responseCustomer = Customer.get({sessionid: $rootScope.sessionID});
         responseCustomer.$promise.then(function(data) {
-        	console.log(data);
             $scope.allCustomers = data.data;
         });
 
@@ -413,7 +414,7 @@ angular.module('bestellenApp.controllers', [])
         $scope.days = [];
         $scope.selectedPartOfDays = [];
         
-        $scope.toggleCustomer = function toggleHall() {
+        $scope.toggleCustomer = function toggleCustomer() {
        	 	var customer = JSON.parse($scope.hallReservation.customer);
        	 	$scope.selectedCustomer = customer;
         };
@@ -421,7 +422,6 @@ angular.module('bestellenApp.controllers', [])
         $scope.toggleHall = function toggleHall() {
        	 	var hall = JSON.parse($scope.hallReservation.hall);
        	 	$scope.selectedHall = hall.id;
-       	 	
        	 	$scope.getPartOfDays();
         };
         
@@ -485,7 +485,7 @@ angular.module('bestellenApp.controllers', [])
         $scope.hallReservation = new HallReservation();
 
         $scope.addHallReservation = function() {
-            $scope.hallReservation.hall = 1;
+            $scope.hallReservation.hall = $scope.selectedHall;
             $scope.hallReservation.partOfDays = $scope.selectedPartOfDays;
             $scope.hallReservation.hallOptions = [];
             
@@ -539,8 +539,8 @@ angular.module('bestellenApp.controllers', [])
     	    			$scope.replaceActionLabels();
     	    			setTimeout(function(){
     	    				jQuery(".message").fadeOut();
-    	    				if($scope.hallReservation.state == "CANCELLED" && action == "confirm" ){
-    	    					$state.go("hallReservations")
+    	    				if(($scope.hallReservation.state == "CANCELLED" && action == "confirm") || ($scope.hallReservation.state == "PAID" && action == "pay") ){
+    	    					$state.go("hallReservations");
     	    				}
         	    		},2500);
         	    	}else{
@@ -587,7 +587,6 @@ angular.module('bestellenApp.controllers', [])
         };
 
     }).controller('CustomerViewController', function($scope,$rootScope,$state, $stateParams, Customer) {
-    	console.log("GebruikersID  " + $rootScope.userID);
         var response = Customer.get({
             id: $rootScope.userID,
             sessionid: $rootScope.sessionID
