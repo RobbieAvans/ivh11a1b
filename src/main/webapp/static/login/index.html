@@ -1,8 +1,9 @@
 <form class="form-horizontal" role="form" ng-submit="login()">
 <div>
 	<h1>Inloggen</h1>
-	<input type="text" ng-model="loginRequest.email"/>
-	<input type="password" ng-model="loginRequest.password"/>
+	<input type="email" ng-model="loginRequest.email" placeholder="E-mailadres" required/>
+	<input type="password" ng-model="loginRequest.password" placeholder="Wachtwoord" required/>
 	<input type="submit" class="btn save" value="inloggen"/>
+	<div  class='message'></div>
 </div>
 </form>
