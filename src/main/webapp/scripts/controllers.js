@@ -5,18 +5,12 @@ angular.module('bestellenApp.controllers', [])
 		// Logout method
 		$scope.logout = function(){
 			if(SessionValidator.logout()){
-				console.log("uitloggen");
 				$state.go('login');
 			}
 		}
 		
 	}).controller('LoginController', function($scope,$rootScope,$state, $stateParams, Customer, LoginRequest,SessionValidator) {
        
-        $scope.loginRequest = new LoginRequest();
-        $scope.loginRequest.email = "tom@live.nl";
-        $scope.loginRequest.password = "test";
-        
-        
         $scope.login = function() {
         	console.log(SessionValidator.login($scope.loginRequest));
         	if(SessionValidator.login($scope.loginRequest) != "login_fail"){
@@ -24,6 +18,9 @@ angular.module('bestellenApp.controllers', [])
         		SessionValidator.setLayoutForUser($rootScope.role);
         		$state.go('hallReservations');
         		
+        	}else{
+        		var loginMessage = $.i18n.prop("label_login_fail");
+        		jQuery(".message").text(loginMessage).fadeIn();
         	}
         };
 
@@ -331,7 +328,6 @@ angular.module('bestellenApp.controllers', [])
          	// If already exists, remove it!
          	angular.forEach($scope.selectedPartOfDays, function(selectedPartOfDay) {
     			if(selectedPartOfDay.date == $scope.partOfDay.date && selectedPartOfDay.partOfDay == $scope.partOfDay.partOfDay ){
-    				console.log("VERWIJDEREN");
     				$scope.selectedPartOfDays.splice($scope.partOfDay,1);
     				jQuery($event.target).removeClass("selected");
     				partOfDayAlreadyExists = true;
@@ -343,8 +339,6 @@ angular.module('bestellenApp.controllers', [])
          		$scope.selectedPartOfDays.push($scope.partOfDay);
              	jQuery($event.target).addClass("selected");
          	}
-         	
-         	console.log($scope.selectedPartOfDays);
         	}
          };
          
@@ -397,7 +391,6 @@ angular.module('bestellenApp.controllers', [])
 
         
         if($rootScope.role =="manager"){
-        	console.log("asdf");
         	setTimeout(function(){
         		jQuery("#hiddenCustomer").fadeIn(10);
         	},200)
