@@ -25,7 +25,6 @@ public abstract class PartOfDay extends DomainObject {
     private Date startTime;
     private Date endTime;
     private String description;
-    private Double priceFactor;
 
     @ManyToOne
     @JsonIgnore
@@ -40,7 +39,9 @@ public abstract class PartOfDay extends DomainObject {
     public abstract boolean canAddAfter(PartOfDay after);
     
     public static List<PartOfDay> orderListAsc(List<PartOfDay> partOfDays) {
-        Collections.sort(partOfDays, (o1, o2) -> o1.getStartTime().compareTo(o2.getStartTime()));
+        Collections.sort(partOfDays, (o1, o2) -> {
+        	return o1.getStartTime().compareTo(o2.getStartTime());
+        });
         
         return partOfDays;
     }

@@ -38,6 +38,7 @@ public class HallReservationRequest {
     private List<PartOfDayRequest> partOfDays = new ArrayList<>();
 
     public HallReservationRequest() {
+    	// Needed to autowire, @Configurable not working
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this); 
     }
     

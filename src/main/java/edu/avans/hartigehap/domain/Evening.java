@@ -11,7 +11,6 @@ public class Evening extends PartOfDay {
     
     private static final int STARTTIMEHOUR = 18;
     private static final int ENDTIMEHOUR = 23;
-    private static final Double PRICEFACTOR = 1.5;
 
     public Evening(){}
     
@@ -29,7 +28,6 @@ public class Evening extends PartOfDay {
 
         setStartTime(startTime);
         setEndTime(endTime);
-        setPriceFactor(PRICEFACTOR);
         setDescription("Evening");
     }
     

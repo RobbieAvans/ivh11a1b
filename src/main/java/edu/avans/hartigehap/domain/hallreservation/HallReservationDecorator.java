@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import edu.avans.hartigehap.domain.HallOption;
-import edu.avans.hartigehap.domain.PartOfDay;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,7 +32,7 @@ import lombok.ToString;
 public abstract class HallReservationDecorator extends HallReservation {
     private static final long serialVersionUID = 1L;
 
-    @OneToOne
+    @OneToOne 
     @Cascade({ CascadeType.ALL })
     private HallReservation hallReservation;
     
@@ -43,28 +42,6 @@ public abstract class HallReservationDecorator extends HallReservation {
     public HallReservationDecorator(HallReservation hallReservation, HallOption hallOption) {
         this.hallReservation = hallReservation;
         this.hallOption = hallOption;
-    }
-
-    @Override
-    @Transient
-    public Double getPrice() {
-        Double price = 0.0;
-        Double optionsPrice = getHallOption().getPrice() + hallReservation.getPrice();
-        if(getPartOfDays().size()> 0){
-            for (PartOfDay partOfDay : getPartOfDays()) {
-                price += optionsPrice * partOfDay.getPriceFactor();
-            }
-        }else{
-            price = optionsPrice;
-        }
-        
-        if (getHall() != null) {
-            for (PartOfDay partOfDay : getPartOfDays()) {
-                price += (getHall().getPrice() * partOfDay.getPriceFactor());
-            }
-
-        }
-        return price;
     }
 
     @Override

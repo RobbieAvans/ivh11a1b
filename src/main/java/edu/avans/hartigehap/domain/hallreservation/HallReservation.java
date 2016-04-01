@@ -23,6 +23,7 @@ import edu.avans.hartigehap.domain.Observer;
 import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.StateException;
 import edu.avans.hartigehap.domain.hallreservation.state.HallReservationState;
+import edu.avans.hartigehap.domain.strategy.HallReservationPriceStrategy;
 import edu.avans.hartigehap.service.HallReservationService;
 import edu.avans.hartigehap.service.HallService;
 import lombok.Getter;
@@ -42,6 +43,9 @@ import lombok.ToString;
 public abstract class HallReservation extends DomainObject {
 
     private static final long serialVersionUID = 1L;
+    
+    @Transient
+    private HallReservationPriceStrategy strategy;
     
     @Transient
     @Autowired
@@ -113,18 +117,21 @@ public abstract class HallReservation extends DomainObject {
     }
     
     @Transient
-    public Double getPrice() {
-        Double price = 0.0;
-
-        if (hall != null) {
-            for (PartOfDay partOfDay : partOfDays) {
-                price += (getHall().getPrice() * partOfDay.getPriceFactor());
-            }
-        }
-
-        return price;
+    /**
+     * This method should only be called on the last method in the decorater.
+     * Otherwise a nullpointerexception might be thrown
+     * 
+     * @param strategy
+     * @return
+     */
+    public double getPriceInVat() {
+        return strategy.calculateInVat(this);
     }
 
+    public double getPriceExVat() {
+        return strategy.calculateExVat(this);
+    }
+    
     @Transient
     public List<HallOption> getHallOptions() {
         return new ArrayList<>();

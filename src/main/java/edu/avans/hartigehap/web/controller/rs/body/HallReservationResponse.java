@@ -14,6 +14,9 @@ import edu.avans.hartigehap.domain.HallOption;
 import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 import edu.avans.hartigehap.domain.hallreservation.state.HallReservationState;
+import edu.avans.hartigehap.domain.strategy.HallReservationPriceStrategy;
+import edu.avans.hartigehap.domain.strategy.HallReservationPriceStrategyFactory;
+import edu.avans.hartigehap.util.Util;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +24,7 @@ import lombok.Setter;
 @Setter
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class HallReservationResponse {
-    
+	
     private Long id;
     private String description;
     private HallReservationState state;
@@ -31,8 +34,11 @@ public class HallReservationResponse {
     private Hall hall;
     private List<PartOfDayRequest> partOfDays = new ArrayList<>();
     private String[] actions;
-
-    public HallReservationResponse(HallReservation hallReservation) {
+    private String totalPrice;
+    private String exVatPrice;
+    private String vat;
+    
+    public HallReservationResponse(HallReservation hallReservation, HallReservationPriceStrategyFactory hallReservationPriceStrategyFactory) {  	
         id = hallReservation.getId();
         description = hallReservation.getDescription();
         state = hallReservation.getState();
@@ -56,7 +62,7 @@ public class HallReservationResponse {
 
         // Clone the hall
         Hall hallReservationHall = hallReservation.getHall();
-        Hall cloneHall = new Hall(hallReservationHall.getDescription(), hallReservationHall.getNumberOfSeats(), hallReservationHall.getPrice());
+        Hall cloneHall = new Hall(hallReservationHall.getDescription(), hallReservationHall.getNumberOfSeats(), hallReservationHall.getBasePrice());
         cloneHall.setId(hallReservationHall.getId());
 
         this.hall = cloneHall;
@@ -68,9 +74,20 @@ public class HallReservationResponse {
 
         // Clone the hallOptions
         for (HallOption hallOption : hallReservation.getHallOptions()) {
-            HallOption clone = new HallOption(hallOption.getDescription(), hallOption.getPrice());
+            HallOption clone = new HallOption(hallOption.getDescription(), hallOption.getBasePrice());
             clone.setId(hallOption.getId());
             hallOptions.add(clone);
         }
+        
+        // Set the prices
+        HallReservationPriceStrategy strategy = hallReservationPriceStrategyFactory.create(hallReservation);
+        hallReservation.setStrategy(strategy);
+        
+        double totalPriceDouble = hallReservation.getPriceInVat();
+        double exVatPriceDouble = hallReservation.getPriceExVat();
+        
+        vat = Util.doubleToString(totalPriceDouble - exVatPriceDouble);
+        totalPrice = Util.doubleToString(totalPriceDouble);
+        exVatPrice = Util.doubleToString(exVatPriceDouble);
     }
 }

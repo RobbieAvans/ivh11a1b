@@ -22,11 +22,13 @@ import edu.avans.hartigehap.domain.hallreservation.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservationOption;
 import edu.avans.hartigehap.domain.hallreservation.state.HallReservationState;
+import edu.avans.hartigehap.domain.strategy.HallReservationPriceStrategyFactory;
 import edu.avans.hartigehap.service.CustomerService;
 import edu.avans.hartigehap.service.HallOptionService;
 import edu.avans.hartigehap.service.HallReservationService;
 import edu.avans.hartigehap.service.HallService;
 import edu.avans.hartigehap.service.testutil.AbstractTransactionRollbackTest;
+import edu.avans.hartigehap.util.Util;
 import edu.avans.hartigehap.web.controller.rs.body.HallReservationRequest;
 import edu.avans.hartigehap.web.controller.rs.body.PartOfDayRequest;
 
@@ -43,6 +45,9 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 
     @Autowired
     private CustomerService customerService;
+    
+    @Autowired 
+    private HallReservationPriceStrategyFactory strategyFactory;
 
     /**
      * Create the objects we need
@@ -84,15 +89,21 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         reservation.addPartOfDay(part1);
         reservation.addPartOfDay(part2);
 
+        // Add reservation to the hall
+        hall.addReservation(reservation);
+        
+        setStrategy(reservation);   
         // Asserts for domain
-        assertEquals("137.5", reservation.getPrice().toString());
+        
+        // Price strategy is:
+        // 2 * 5 + 2 * 50 + 100 + 150 (evening hall has factor 1.5) = 360.00
+        assertEquals("360.00", Util.doubleToString(reservation.getPriceExVat()));
+        // 360.00 * 1.21 = 435.60
+        assertEquals("435.60", Util.doubleToString(reservation.getPriceInVat()));
         assertEquals(description, reservation.getDescription());
         assertEquals(2, reservation.getHallOptions().size());
         assertEquals("FirstName", reservation.getCustomer().getFirstName());
         assertEquals("LastName", reservation.getCustomer().getLastName());
-
-        // Add reservation to the hall
-        hall.addReservation(reservation);
 
         // Save the hall
         hall = hallService.save(hall);
@@ -105,7 +116,11 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
 
         HallReservation foundHallReservation = hallFromDb.getReservations().iterator().next();
 
-        assertEquals("387.5", foundHallReservation.getPrice().toString());
+        setStrategy(foundHallReservation);
+        
+        // Still 2 * 5 + 2 * 50 + 100 + 150 (evening hall has factor 1.5) = 360.00
+        assertEquals("360.00", Util.doubleToString(foundHallReservation.getPriceExVat()));
+        assertEquals("435.60", Util.doubleToString(foundHallReservation.getPriceInVat()));
         assertEquals(description, foundHallReservation.getDescription());
         assertEquals(2, foundHallReservation.getHallOptions().size());
         assertEquals("FirstName", foundHallReservation.getCustomer().getFirstName());
@@ -168,7 +183,11 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         
         HallReservation updatedHallReservation = hallReservationService.update(foundHallReservation, request);
 
-        assertEquals("50.0", updatedHallReservation.getPrice().toString());
+        setStrategy(updatedHallReservation);
+        
+        // The new hall is less expensive, no more hallOptions, 1 partOfDay = 50.0
+        assertEquals("50.00", Util.doubleToString(updatedHallReservation.getPriceExVat()));
+        assertEquals("60.50", Util.doubleToString(updatedHallReservation.getPriceInVat()));
         assertEquals(hall2, updatedHallReservation.getHall());
         assertEquals(updatedDescription, updatedHallReservation.getDescription());
         // HallOptions should be removed:
@@ -191,5 +210,9 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         hallReservationService.delete(updatedHallReservation);
 
         assertEquals(null, hallReservationService.findById(updatedHallReservation.getId()));
+    }
+    
+    private void setStrategy(HallReservation hallReservation) {
+        hallReservation.setStrategy(strategyFactory.create(hallReservation));
     }
 }

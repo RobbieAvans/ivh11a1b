@@ -6,12 +6,15 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
+import edu.avans.hartigehap.domain.strategy.HallPriceStrategy;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,17 +28,20 @@ import lombok.Setter;
 public class Hall extends DomainObject {
     private static final long serialVersionUID = 1L;
 
+    @Transient
+    private HallPriceStrategy strategy;
+    
     private int numberOfSeats;
     private String description;
-    private double price;
+    private double basePrice;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hall")
     private Collection<HallReservation> reservations = new ArrayList<HallReservation>();
 
-    public Hall(String description, int numberOfSeats, double price) {
+    public Hall(String description, int numberOfSeats, double basePrice) {
         this.description = description;
         this.numberOfSeats = numberOfSeats;
-        this.price = price;
+        this.basePrice = basePrice;
     }
 
     public Hall addReservation(HallReservation hallReservation) {
@@ -49,6 +55,18 @@ public class Hall extends DomainObject {
         reservations.remove(hallReservation);
         
         return this;
+    }
+    
+    @Transient
+    @JsonIgnore
+    public double getPriceInVat() {
+    	return strategy.calculateInVat(this);
+    }
+    
+    @Transient
+    @JsonIgnore
+    public double getPriceExVat() {
+    	return strategy.calculateExVat(this);
     }
     
     /**

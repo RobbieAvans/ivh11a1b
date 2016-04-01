@@ -9,6 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,9 +28,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
 import edu.avans.hartigehap.domain.Manager;
+import edu.avans.hartigehap.domain.PartOfDayFactory;
 import edu.avans.hartigehap.domain.hallreservation.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservationOption;
+import edu.avans.hartigehap.domain.strategy.HallReservationPriceStrategyFactory;
 import edu.avans.hartigehap.service.CustomerService;
 import edu.avans.hartigehap.service.HallReservationService;
 import edu.avans.hartigehap.service.ManagerService;
@@ -84,6 +89,11 @@ public class HallReservationAPITest {
     public CustomerService customerService() {
         return Mockito.mock(CustomerService.class);
     }
+    
+    @Bean
+    public HallReservationPriceStrategyFactory strategyFactory() {
+        return Mockito.mock(HallReservationPriceStrategyFactory.class);
+    }
 
     @Test
     public void getHallReservation() throws Exception {
@@ -98,8 +108,8 @@ public class HallReservationAPITest {
                 .andExpect(jsonPath("$.data.id").value(1)).andExpect(jsonPath("$.data").isMap())
                 .andExpect(jsonPath("$.data.hallOptions").isArray())
                 .andExpect(jsonPath("$.data.hallOptions", hasSize(2)))
-                .andExpect(jsonPath("$..hallOptions[0].price").value(5.0))
-                .andExpect(jsonPath("$..hallOptions[1].price").value(50.0));
+                .andExpect(jsonPath("$..hallOptions[0].basePrice").value(5.0))
+                .andExpect(jsonPath("$..hallOptions[1].basePrice").value(50.0));
     }
 
     @Test
@@ -119,8 +129,8 @@ public class HallReservationAPITest {
                 .andExpect(jsonPath("$.data.id").value(1)).andExpect(jsonPath("$.data").isMap())
                 .andExpect(jsonPath("$.data.hallOptions").isArray())
                 .andExpect(jsonPath("$.data.hallOptions", hasSize(2)))
-                .andExpect(jsonPath("$..hallOptions[0].price").value(5.0))
-                .andExpect(jsonPath("$..hallOptions[1].price").value(50.0));
+                .andExpect(jsonPath("$..hallOptions[0].basePrice").value(5.0))
+                .andExpect(jsonPath("$..hallOptions[1].basePrice").value(50.0));
     }
 
     private HallReservation getHallReservation(Long id) {
@@ -137,6 +147,15 @@ public class HallReservationAPITest {
         reservation.setId(id);
         reservation.setHall(hall);
         
+        
+        // Get partOfDayObjects
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DATE, 1); // Add one day so it is never in the past
+
+        PartOfDayFactory factory = new PartOfDayFactory();
+        reservation.addPartOfDay(factory.makePartOfDay("Evening", calendar.getTime()));
+                
         return reservation;
     }
 }

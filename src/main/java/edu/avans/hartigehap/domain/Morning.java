@@ -9,7 +9,6 @@ public class Morning extends PartOfDay {
     private static final long serialVersionUID = 1L;
     private static final int STARTTIMEHOUR = 8;
     private static final int ENDTIMEHOUR = 13;
-    private static final Double PRICEFACTOR = 1.0;
 
     public Morning(){}
     
@@ -27,7 +26,6 @@ public class Morning extends PartOfDay {
 
         setStartTime(startTime);
         setEndTime(endTime);
-        setPriceFactor(PRICEFACTOR);
         setDescription("Morning");
     }
 

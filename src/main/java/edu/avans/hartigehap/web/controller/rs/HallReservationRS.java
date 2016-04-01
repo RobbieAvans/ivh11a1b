@@ -28,6 +28,7 @@ import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.hallreservation.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservationOption;
+import edu.avans.hartigehap.domain.strategy.HallReservationPriceStrategyFactory;
 import edu.avans.hartigehap.service.CustomerService;
 import edu.avans.hartigehap.service.HallReservationService;
 import edu.avans.hartigehap.service.HallService;
@@ -47,6 +48,9 @@ public class HallReservationRS extends BaseRS {
 
 	@Autowired
 	private CustomerService customerService;
+	
+	@Autowired
+	private HallReservationPriceStrategyFactory hallReservationPriceStrategyFactory;
 
 	@RequestMapping(value = "/{sessionID}", method = RequestMethod.POST)
 	@ResponseBody
@@ -92,7 +96,7 @@ public class HallReservationRS extends BaseRS {
 			httpResponse.setHeader("Location",
 					httpRequest.getContextPath() + "/hallReservation/" + reservation.getId());
 
-			return createSuccessResponse(new HallReservationResponse(reservation));
+			return createSuccessResponse(new HallReservationResponse(reservation, hallReservationPriceStrategyFactory));
 		});
 	}
 
@@ -109,7 +113,7 @@ public class HallReservationRS extends BaseRS {
 				// for the customer
 				if (auth.getRole() != Customer.ROLE
 						|| auth.getSessionID().equals(hallReservation.getCustomer().getSessionID())) {
-					response.add(new HallReservationResponse(hallReservation));
+					response.add(new HallReservationResponse(hallReservation, hallReservationPriceStrategyFactory));
 				}
 			}
 
@@ -127,7 +131,7 @@ public class HallReservationRS extends BaseRS {
 			if (hallReservation != null) {
 				checkHallReservationAuth(hallReservation, auth);
 
-				return createSuccessResponse(new HallReservationResponse(hallReservation));
+				return createSuccessResponse(new HallReservationResponse(hallReservation, hallReservationPriceStrategyFactory));
 			}
 
 			return createErrorResponse("hallreservation_not_exists");
@@ -149,7 +153,7 @@ public class HallReservationRS extends BaseRS {
 
 				httpResponse.setStatus(HttpStatus.OK.value());
 
-				return createSuccessResponse(new HallReservationResponse(hallReservation));
+				return createSuccessResponse(new HallReservationResponse(hallReservation, hallReservationPriceStrategyFactory));
 
 			}
 
@@ -177,7 +181,7 @@ public class HallReservationRS extends BaseRS {
 				}
 
 				httpResponse.setStatus(HttpStatus.OK.value());
-				return createSuccessResponse(new HallReservationResponse(hallReservation));
+				return createSuccessResponse(new HallReservationResponse(hallReservation, hallReservationPriceStrategyFactory));
 			}
 
 			return createErrorResponse("hallreservation_not_exists");

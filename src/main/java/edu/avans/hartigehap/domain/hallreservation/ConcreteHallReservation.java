@@ -25,6 +25,7 @@ public class ConcreteHallReservation extends HallReservation {
     private static final long serialVersionUID = 1L;
 
     public ConcreteHallReservation() {
+    	super();
         addObservers();
     }
     
