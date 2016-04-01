@@ -16,15 +16,20 @@ public class DefaultHallPriceStrategy implements HallPriceStrategy {
 	
 	@Override
 	public double calculateInVat(Hall hall) {
-		return calculateExVat(hall);
-	}
+		double price = 0.0;
+		
+		for (PartOfDay partOfDay : hallReservation.getPartOfDays()) {
+			price += partOfDayHallPriceStrategy.calculateInVat(hall, partOfDay);
+		}
+		
+		return price;	}
 
 	@Override
 	public double calculateExVat(Hall hall) {
 		double price = 0.0;
 		
 		for (PartOfDay partOfDay : hallReservation.getPartOfDays()) {
-			price += partOfDayHallPriceStrategy.calculate(hall, partOfDay);
+			price += partOfDayHallPriceStrategy.calculateExVat(hall, partOfDay);
 		}
 		
 		return price;

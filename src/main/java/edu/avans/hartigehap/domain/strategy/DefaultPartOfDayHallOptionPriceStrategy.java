@@ -14,7 +14,7 @@ public class DefaultPartOfDayHallOptionPriceStrategy implements PartOfDayHallOpt
 	}
 	
 	@Override
-	public double calculate(HallOption hallOption, PartOfDay partOfDay) {
+	public double calculateExVat(HallOption hallOption, PartOfDay partOfDay) {
 		
 		// If there are more than 3 partOfDays in the hallReservation -> the price for the last HallOption is FREE!
 		if (partOfDays.size() > 3 && partOfDays.get(partOfDays.size() - 1).equals(partOfDay)) {
@@ -22,6 +22,11 @@ public class DefaultPartOfDayHallOptionPriceStrategy implements PartOfDayHallOpt
 		}
 		
 		return hallOption.getBasePrice();
+	}
+
+	@Override
+	public double calculateInVat(HallOption hallOption, PartOfDay partOfDay) {
+		return calculateInVat(hallOption, partOfDay) * 1.21;
 	}
 
 }

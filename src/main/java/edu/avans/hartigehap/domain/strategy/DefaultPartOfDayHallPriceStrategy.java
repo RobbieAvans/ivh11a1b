@@ -7,7 +7,7 @@ import edu.avans.hartigehap.domain.PartOfDay;
 public class DefaultPartOfDayHallPriceStrategy implements PartOfDayHallPriceStrategy {
 	
 	@Override
-	public double calculate(Hall hall, PartOfDay partOfDay) {
+	public double calculateExVat(Hall hall, PartOfDay partOfDay) {
 		double price = hall.getBasePrice();
 		double priceFactor = 1.0;
 		
@@ -19,6 +19,11 @@ public class DefaultPartOfDayHallPriceStrategy implements PartOfDayHallPriceStra
 		price *= priceFactor;
 		
 		return price;
+	}
+
+	@Override
+	public double calculateInVat(Hall hall, PartOfDay partOfDay) {
+		return calculateExVat(hall, partOfDay) * 1.21;
 	}
 
 }
