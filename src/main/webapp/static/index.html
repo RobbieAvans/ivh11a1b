@@ -76,9 +76,13 @@
 							</aside>
 							<span></span>
 							<aside  class="item" style="position: relative;">
-								<a data-role='customer,manager' ng-click="logout()">Uitloggen</a>
+								<a ui-sref="registerCustomer()" ><msg key="label_registrer"></msg></a>
 							</aside>
 							
+							<aside  class="item" style="position: relative; float:right !Important;">
+								<a data-role='customer,manager' ng-click="logout()">Uitloggen</a>
+							</aside>
+							<span style="float:right !Important;"></span>
 						</div>
 						<div class="toggle show-for-medium-down">
 							<a>menu</a>
