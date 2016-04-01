@@ -4,15 +4,15 @@
 <table datatable="ng" class="row-border hover">
     <thead>
     <tr>
-        <th>Reservering (ID)</th>
+        <th style="width:200px !Important;">Reservering (ID)</th>
         <th>Totaal prijs</th>
         <th>Acties</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="hallReservation in hallReservations">
-  		<td>{{hallReservation.id}}</td>
-  		<td>&#8364;{{hallReservation.totalPrice}}</td>
+  		<td style="width:200px !Important; ">{{hallReservation.id}}</td>
+  		<td>&#8364;{{hallReservation.totalPrice}} (<small>&#8364;{{hallReservation.exVatPrice}} ex BTW</small>)</td>
           <td>
           	<a class="btn btn-primary" style="color:rgb(68, 157, 68);" ui-sref="viewHallReservation({id:hallReservation.id})">Bekijken</a>
     		<a class="btn btn-danger btn-verwijderen"  style="color:rgb(68, 157, 68);" ng-click="deleteHallReservation(hallReservation)">Verwijderen</a></td>
