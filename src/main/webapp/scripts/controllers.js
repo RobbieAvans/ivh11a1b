@@ -63,8 +63,6 @@ angular.module('bestellenApp.controllers', [])
             });
         };
     }).controller('HallEditController', function($scope,$rootScope, $state, $stateParams, Hall) {
-
-
         $scope.updateHall = function() {
             Hall.update({
                 id: $scope.hall.id,
@@ -149,20 +147,12 @@ angular.module('bestellenApp.controllers', [])
         responseHallReservation.$promise.then(function(data) {
         	if(data.success){
 	            $scope.hallReservations = data.data;
-	            // Calculate totalPrice of hallReservation (with hallOptions)
-	            angular.forEach($scope.hallReservations, function(reservation) {
-	                // Make sure Angular sees totalPrice as an int
-	            	// Get the total price out of hallReservation.totalPrice
-	                reservation.totalPrice = 200;
-	            });
-	            
 	            // Only a manager may directly remove a HallReservation
 	            setTimeout(function(){
 	            	if($rootScope.role != "manager"){
 		            	jQuery(".btn.btn-danger.btn-verwijderen").attr("style","display:none");
 		            }
 	            },10);
-	            
         	}
 
         });
@@ -515,16 +505,11 @@ angular.module('bestellenApp.controllers', [])
             	$scope.hallReservation.customer = $rootScope.userID;
             }
             
-            alert("Geselecteerde customer "+$scope.hallReservation.customer);
-            
             jQuery("#hallReservationOptions input:checked").each(function() {
                 $scope.hallReservation.hallOptions.push(JSON.parse(jQuery(this).val()).id);
             });
 
             $scope.hallReservation.$save({sessionid: $rootScope.sessionID},function(data) {
-            	 // Change object for API
-	       		 //$scope.hallReservation.hall 		= $scope.selectedHall.id;
-	       		 //$scope.hallReservation.customer 	= $
             	if(data.success){
             		$state.go('hallReservations');
             	}else{
@@ -561,6 +546,9 @@ angular.module('bestellenApp.controllers', [])
     	    			$scope.replaceActionLabels();
     	    			setTimeout(function(){
     	    				jQuery(".message").fadeOut();
+    	    				if($scope.hallReservation.state == "CANCELLED" && action == "confirm" ){
+    	    					$state.go("hallReservations")
+    	    				}
         	    		},2500);
         	    	}else{
         	    		var errorMessage = $.i18n.prop("label_"+data.data);
@@ -589,15 +577,6 @@ angular.module('bestellenApp.controllers', [])
         });
         response.$promise.then(function(data) {
             $scope.hallReservation = data.data;
-            $scope.hallReservation.totalPrice = 0;
-            $scope.hallReservation.totalPrice = $scope.hallReservation.hall.price;
-            // Calculate totalPrice of hallReservation (with hallOptions)
-            angular.forEach($scope.hallReservation.hallOptions, function(hallOption) {
-                $scope.hallReservation.totalPrice = parseInt($scope.hallReservation.totalPrice) + parseInt(hallOption.price);
-            })
-            
-            console.log($scope.hallReservation);
-            
             // Only if a hallReservation isn't final & isn't paid customers may edit it
             setTimeout(function(){
             	if(!$scope.hallReservation.canbemodified){
@@ -609,10 +588,8 @@ angular.module('bestellenApp.controllers', [])
     }).controller('CustomerCreateController', function($scope,$rootScope,$state, $stateParams, Customer) {
     	$scope.customer = new Customer();
         $scope.addCustomer = function() {
-        	console.log($scope.customer);
-        	
             $scope.customer.$save(function() {
-            	$state.go('hallReservations');
+            	$state.go('login');
             });
         };
 
