@@ -61,30 +61,17 @@ angular.module('sessionvalidator', []).factory('SessionValidator', function(cfg)
 			// Wait till DOM-ready
 			setTimeout(function(){
 				// hide menu-items which not may be accessed
-				console.log("MIJN ROL "+ role);
-				
-				//if(role == ""){
-				//	jQuery("nav a[data-role]").parent().hide();
-				//}else if(role == "customer"){
-				//	jQuery("nav a[data-role='manager']").parent().hide();
-				//}
 				
 				if(role == ""){
 					jQuery("nav a[data-role]").parent().hide();
 				}else{
 					jQuery("nav a").each(function(){
 						if(jQuery(this).data("role") != undefined && jQuery(this).data("role").toString().indexOf(role)<0){
-							console.log("button role "+ jQuery(this).data("role"));
 							jQuery(this).parent().hide();
 						}else{
 							jQuery(this).parent().show();
 						}
 					})
-				}
-				console.log(jQuery("ins[data-role]").data("role"));
-				// check if user may access curent page
-				if(jQuery("ins[data-role]").data("role") != null && jQuery("ins[data-role]").data("role").indexOf(role) <=0){
-					//window.location = 'http://localhost:8082/hh';
 				}
 			},200);
 		}
