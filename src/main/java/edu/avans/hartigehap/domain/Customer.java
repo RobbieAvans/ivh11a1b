@@ -22,6 +22,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Getter;
@@ -73,6 +74,7 @@ public class Customer extends AuthDomainObject {
 
     // no cascading
     @ManyToMany
+    @JsonIgnore
     private Collection<Restaurant> restaurants = new ArrayList<Restaurant>();
 
     // no cascading
