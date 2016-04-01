@@ -16,7 +16,9 @@
 		<property name="entityManagerFactory" ref="emf" />
 	</bean>
 
-    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+    	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+       
+        <bean id="hallReservationPriceStrategyFactory" class="edu.avans.hartigehap.domain.strategy.HallReservationPriceStrategyFactoryImpl" />
 
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
