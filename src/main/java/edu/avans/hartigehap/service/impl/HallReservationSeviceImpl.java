@@ -51,7 +51,7 @@ public class HallReservationSeviceImpl implements HallReservationService {
     }
 
     @Override
-    public void delete(HallReservation hallReservation) {
+    public void delete(HallReservation hallReservation) {    	
         hallReservationRepository.delete(hallReservation);
     }
 

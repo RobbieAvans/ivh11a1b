@@ -13,7 +13,9 @@ public interface HallOptionService {
 
     HallOption save(HallOption hallOption);
 
-    void deleteById(long id);
+    boolean deleteById(long id);
 
-    void delete(HallOption hallOption);
+    boolean delete(HallOption hallOption);
+    
+    boolean hasHallReservations(HallOption hallOption);
 }

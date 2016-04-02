@@ -130,7 +130,7 @@ public class HallOptionRS extends BaseRS {
 	 * Tested with curl:
 	 * 
 	 * curl -H "Content-Type: application/json" -X DELETE
-	 * http://localhost:8080/hh/rest/v1/hall/1
+	 * http://localhost:8080/hh/rest/v1/halloption/1
 	 * 
 	 * @param halloptionId
 	 * @param httpResponse
@@ -142,11 +142,15 @@ public class HallOptionRS extends BaseRS {
 			HttpServletResponse httpResponse) {
 		
 		return shouldBeManager(sessionID, (Authenticatable auth) -> {
-			hallOptionService.deleteById(hallOptionId);
+			boolean result = hallOptionService.deleteById(hallOptionId);
 
-			httpResponse.setStatus(HttpStatus.OK.value());
+			if (result) {
+				httpResponse.setStatus(HttpStatus.OK.value());
 
-			return createSuccessResponse(hallOptionId);
+				return createSuccessResponse(hallOptionId);	
+			}
+			
+			return createErrorResponse("hallOption_has_reservations");
 		});
 	}
 }

@@ -11,6 +11,7 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
@@ -29,6 +30,7 @@ public class Hall extends DomainObject {
     private static final long serialVersionUID = 1L;
 
     @Transient
+    @JsonIgnore
     private HallPriceStrategy strategy;
     
     private int numberOfSeats;
@@ -75,15 +77,13 @@ public class Hall extends DomainObject {
      * @return
      */
     public boolean hasActiveReservations() {
-        boolean hasActive = false;
         for (HallReservation hallReservation : reservations) {
             if (hallReservation.isActive()) {
-                hasActive = true;
-                break;
+                return true;
             }
         }
 
-        return hasActive;
+        return false;
     }
 
     /**
@@ -91,6 +91,7 @@ public class Hall extends DomainObject {
      * 
      * @return
      */
+    @JsonProperty
     public boolean canBeDeleted() {
         return !hasActiveReservations();
     }

@@ -15,6 +15,8 @@ import javax.persistence.Transient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import edu.avans.hartigehap.domain.Customer;
 import edu.avans.hartigehap.domain.DomainObject;
 import edu.avans.hartigehap.domain.Hall;
@@ -45,6 +47,7 @@ public abstract class HallReservation extends DomainObject {
     private static final long serialVersionUID = 1L;
     
     @Transient
+    @JsonIgnore
     private HallReservationPriceStrategy strategy;
     
     @Transient
@@ -68,7 +71,7 @@ public abstract class HallReservation extends DomainObject {
 
     @Transient
     private List<Observer<HallReservation>> observers = new ArrayList<>();
-
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hallReservation", orphanRemoval = true)
     private List<PartOfDay> partOfDays = new ArrayList<>();
 
