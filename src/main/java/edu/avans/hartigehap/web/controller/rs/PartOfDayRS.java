@@ -46,15 +46,11 @@ public class PartOfDayRS extends BaseRS {
 			Calendar cal = Calendar.getInstance();
 			cal.set(Calendar.WEEK_OF_YEAR, weekNr);
 			cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-			System.out.println(sdf.format(cal.getTime()));
 
 			int i = 1;
 			for (String dayName : days) {
 				DayResponse day = new DayResponse(dayName);
-				// day.setDate((gregorianCalendar.get(Calendar.DAY_OF_MONTH))+
-				// "-" +
-				// (gregorianCalendar.get(Calendar.MONTH)+ 1 ) + "-" +
-				// gregorianCalendar.get(Calendar.YEAR));
+
 				day.setDate(sdf.format(cal.getTime()));
 				cal.add(Calendar.DAY_OF_WEEK, 1);
 				for (String partName : parts) {

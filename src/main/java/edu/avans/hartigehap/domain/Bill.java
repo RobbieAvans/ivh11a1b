@@ -151,11 +151,7 @@ public class Bill extends DomainObject {
             // the currentOrder is not empty, but not yet submitted
             throw new StateException("not allowed to submit an with currentOrder in created state");
         }
-
-        // this can only happen by directly invoking HTTP requests, so not via
-        // GUI
-        // TODO better to use another exception, because now GUI shows wrong
-        // error message
+        
         if (billStatus != BillStatus.CREATED) {
             throw new StateException("not allowed to submit an already submitted bill");
         }

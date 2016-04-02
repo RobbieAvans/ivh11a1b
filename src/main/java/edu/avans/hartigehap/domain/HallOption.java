@@ -29,34 +29,34 @@ public class HallOption extends DomainObject {
     @Transient
     @JsonIgnore
     private HallOptionPriceStrategy strategy;
-    
+
     @Transient
     @Autowired
     @JsonIgnore
     private HallOptionService hallOptionService;
-    
+
     private String description;
     private Double basePrice;
-    
+
     public HallOption(String description, Double basePrice) {
         this.description = description;
         this.basePrice = basePrice;
     }
-    
+
     @Transient
     @JsonIgnore
     public double getPriceInVat() {
-    	return strategy.calculateInVat(this);
+        return strategy.calculateInVat(this);
     }
-    
+
     @Transient
     @JsonIgnore
     public double getPriceExVat() {
-    	return strategy.calculateExVat(this);
+        return strategy.calculateExVat(this);
     }
-    
+
     @JsonProperty
     public boolean canBeDeleted() {
-    	return !hallOptionService.hasHallReservations(this);
+        return !hallOptionService.hasHallReservations(this);
     }
 }

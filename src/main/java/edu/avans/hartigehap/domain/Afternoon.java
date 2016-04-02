@@ -12,7 +12,8 @@ public class Afternoon extends PartOfDay {
     private static final int STARTTIMEHOUR = 13;
     private static final int ENDTIMEHOUR = 18;
 
-    public Afternoon(){}
+    public Afternoon(){
+    }
     
     @SuppressWarnings("deprecation")
     public Afternoon(Date date) {

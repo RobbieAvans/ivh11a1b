@@ -29,7 +29,7 @@ public abstract class PartOfDay extends DomainObject {
     @ManyToOne
     @JsonIgnore
     private HallReservation hallReservation;
-    
+
     /**
      * Method that should check if another ParyOfDay can be added after this
      * 
@@ -37,12 +37,10 @@ public abstract class PartOfDay extends DomainObject {
      * @return
      */
     public abstract boolean canAddAfter(PartOfDay after);
-    
+
     public static List<PartOfDay> orderListAsc(List<PartOfDay> partOfDays) {
-        Collections.sort(partOfDays, (o1, o2) -> {
-        	return o1.getStartTime().compareTo(o2.getStartTime());
-        });
-        
+        Collections.sort(partOfDays, (o1, o2) -> o1.getStartTime().compareTo(o2.getStartTime()));
+
         return partOfDays;
     }
 }

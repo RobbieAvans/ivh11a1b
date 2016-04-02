@@ -10,7 +10,8 @@ public class Morning extends PartOfDay {
     private static final int STARTTIMEHOUR = 8;
     private static final int ENDTIMEHOUR = 13;
 
-    public Morning(){}
+    public Morning(){
+    }
     
     @SuppressWarnings("deprecation")
     public Morning(Date date) {

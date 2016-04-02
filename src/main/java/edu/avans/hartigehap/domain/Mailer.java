@@ -5,7 +5,8 @@ import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 public class Mailer implements Observer<HallReservation> {
     private static Mailer instance;
 
-    private Mailer() {}
+    private Mailer() {
+    }
 
     public static Mailer getInstance() {
         if (instance == null) {
@@ -17,7 +18,7 @@ public class Mailer implements Observer<HallReservation> {
     @Override
     public void notify(HallReservation hallReservation) {
         SimpleMail sendMail = new SimpleMail();
-        sendMail.prepareMail(hallReservation.getCustomer().getEmail(),"Wijziging reserverings-status", hallReservation.getState().name(),hallReservation.getCustomer().getFirstName());
-
+        sendMail.prepareMail(hallReservation.getCustomer().getEmail(), "Wijziging reserverings-status",
+                hallReservation.getState().name(), hallReservation.getCustomer().getFirstName());
     }
 }

@@ -32,7 +32,7 @@ public class Hall extends DomainObject {
     @Transient
     @JsonIgnore
     private HallPriceStrategy strategy;
-    
+
     private int numberOfSeats;
     private String description;
     private double basePrice;
@@ -55,22 +55,22 @@ public class Hall extends DomainObject {
 
     public Hall removeReservation(HallReservation hallReservation) {
         reservations.remove(hallReservation);
-        
+
         return this;
     }
-    
+
     @Transient
     @JsonIgnore
     public double getPriceInVat() {
-    	return strategy.calculateInVat(this);
+        return strategy.calculateInVat(this);
     }
-    
+
     @Transient
     @JsonIgnore
     public double getPriceExVat() {
-    	return strategy.calculateExVat(this);
+        return strategy.calculateExVat(this);
     }
-    
+
     /**
      * Check if the hall has activeReservations at the moment
      * 
@@ -95,7 +95,7 @@ public class Hall extends DomainObject {
     public boolean canBeDeleted() {
         return !hasActiveReservations();
     }
-    
+
     /**
      * Touch the hallReservations so they will be loaded
      */

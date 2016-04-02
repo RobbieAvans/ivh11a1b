@@ -23,134 +23,134 @@ import edu.avans.hartigehap.service.HallOptionService;
 @RequestMapping(value = RSConstants.URL_PREFIX + "/halloption", produces = MediaType.APPLICATION_JSON_VALUE)
 public class HallOptionRS extends BaseRS {
 
-	@Autowired
-	private HallOptionService hallOptionService;
+    @Autowired
+    private HallOptionService hallOptionService;
 
-	/**
-	 * Tested with curl: curl -H "Content-Type: application/json" -X POST -d
-	 * '{"version":0,"description":"api_test","price":20.20}'
-	 * http://localhost:8080/hh/rest/v1/halloption
-	 * 
-	 * Response:
-	 * 
-	 * { "data": { "@id": 1, "id": 4, "version": 0, "description": "api_test",
-	 * "price": 20.2 }, "success": true }
-	 * 
-	 * 
-	 * @param hallOption
-	 * @param httpResponse
-	 * @param httpRequest
-	 * @return
-	 */
-	@RequestMapping(value = "/{sessionID}", method = RequestMethod.POST)
-	@ResponseBody
-	public ModelAndView createHallOption(@RequestBody HallOption hallOption, @PathVariable String sessionID,
-			HttpServletResponse httpResponse, WebRequest httpRequest) {
+    /**
+     * Tested with curl: curl -H "Content-Type: application/json" -X POST -d
+     * '{"version":0,"description":"api_test","price":20.20}'
+     * http://localhost:8080/hh/rest/v1/halloption
+     * 
+     * Response:
+     * 
+     * { "data": { "@id": 1, "id": 4, "version": 0, "description": "api_test",
+     * "price": 20.2 }, "success": true }
+     * 
+     * 
+     * @param hallOption
+     * @param httpResponse
+     * @param httpRequest
+     * @return
+     */
+    @RequestMapping(value = "/{sessionID}", method = RequestMethod.POST)
+    @ResponseBody
+    public ModelAndView createHallOption(@RequestBody HallOption hallOption, @PathVariable String sessionID,
+            HttpServletResponse httpResponse, WebRequest httpRequest) {
 
-		return shouldBeManager(sessionID, (Authenticatable auth) -> {
-			HallOption savedHallOption = hallOptionService.save(hallOption);
-			httpResponse.setStatus(HttpStatus.CREATED.value());
-			httpResponse.setHeader("Location", httpRequest.getContextPath() + "/hallOption/" + savedHallOption.getId());
+        return shouldBeManager(sessionID, (Authenticatable auth) -> {
+            HallOption savedHallOption = hallOptionService.save(hallOption);
+            httpResponse.setStatus(HttpStatus.CREATED.value());
+            httpResponse.setHeader("Location", httpRequest.getContextPath() + "/hallOption/" + savedHallOption.getId());
 
-			return createSuccessResponse(savedHallOption);
-		});
-	}
+            return createSuccessResponse(savedHallOption);
+        });
+    }
 
-	/**
-	 * Tested with curl:
-	 * 
-	 * curl -H "Content-Type: application/json" -X GET
-	 * http://localhost:8080/hh/rest/v1/halloption
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "/{sessionID}", method = RequestMethod.GET)
-	@ResponseBody
-	public ModelAndView allHallOptions(@PathVariable String sessionID) {
-		return shouldBeAuthenticated(sessionID, (Authenticatable auth) -> {
-			return createSuccessResponse(hallOptionService.findAll());
-		});
-	}
+    /**
+     * Tested with curl:
+     * 
+     * curl -H "Content-Type: application/json" -X GET
+     * http://localhost:8080/hh/rest/v1/halloption
+     * 
+     * @return
+     */
+    @RequestMapping(value = "/{sessionID}", method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView allHallOptions(@PathVariable String sessionID) {
+        return shouldBeAuthenticated(sessionID, (Authenticatable auth) -> 
+            createSuccessResponse(hallOptionService.findAll())
+        );
+    }
 
-	/**
-	 * Tested with curl:
-	 * 
-	 * curl -H "Content-Type: application/json" -X GET
-	 * http://localhost:8080/hh/rest/v1/halloption/1
-	 * 
-	 * @param hallOptionId
-	 * @return
-	 */
-	@RequestMapping(value = "/{hallOptionId}/{sessionID}", method = RequestMethod.GET)
-	@ResponseBody
-	public ModelAndView getHallOption(@PathVariable long hallOptionId, @PathVariable String sessionID) {
-		return shouldBeAuthenticated(sessionID, (Authenticatable m) -> {
-			HallOption hallOption = hallOptionService.findById(hallOptionId);
+    /**
+     * Tested with curl:
+     * 
+     * curl -H "Content-Type: application/json" -X GET
+     * http://localhost:8080/hh/rest/v1/halloption/1
+     * 
+     * @param hallOptionId
+     * @return
+     */
+    @RequestMapping(value = "/{hallOptionId}/{sessionID}", method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView getHallOption(@PathVariable long hallOptionId, @PathVariable String sessionID) {
+        return shouldBeAuthenticated(sessionID, (Authenticatable m) -> {
+            HallOption hallOption = hallOptionService.findById(hallOptionId);
 
-			if (hallOption != null) {
-				return createSuccessResponse(hallOption);
-			}
+            if (hallOption != null) {
+                return createSuccessResponse(hallOption);
+            }
 
-			return createErrorResponse("halloption_not_exists");
-		});
-	}
+            return createErrorResponse("halloption_not_exists");
+        });
+    }
 
-	/**
-	 * Tested with curl:
-	 * 
-	 * curl -H "Content-Type: application/json" -X PUT -d
-	 * '{"version":0,"description":"api_edit_test","price":20.40}'
-	 * http://localhost:8080/hh/rest/v1/halloption/1
-	 * 
-	 * @param hallOption
-	 * @param hallOptionId
-	 * @param httpResponse
-	 * @return
-	 */
-	@RequestMapping(value = "/{hallOptionId}/{sessionID}", method = RequestMethod.PUT)
-	@ResponseBody
-	public ModelAndView updateHallOption(@RequestBody HallOption hallOption, @PathVariable long hallOptionId,
-			@PathVariable String sessionID, HttpServletResponse httpResponse) {
+    /**
+     * Tested with curl:
+     * 
+     * curl -H "Content-Type: application/json" -X PUT -d
+     * '{"version":0,"description":"api_edit_test","price":20.40}'
+     * http://localhost:8080/hh/rest/v1/halloption/1
+     * 
+     * @param hallOption
+     * @param hallOptionId
+     * @param httpResponse
+     * @return
+     */
+    @RequestMapping(value = "/{hallOptionId}/{sessionID}", method = RequestMethod.PUT)
+    @ResponseBody
+    public ModelAndView updateHallOption(@RequestBody HallOption hallOption, @PathVariable long hallOptionId,
+            @PathVariable String sessionID, HttpServletResponse httpResponse) {
 
-		return shouldBeManager(sessionID, (Authenticatable auth) -> {
-			if (hallOptionService.findById(hallOptionId) != null) {
-				hallOption.setId(hallOptionId);
-				hallOptionService.save(hallOption);
+        return shouldBeManager(sessionID, (Authenticatable auth) -> {
+            if (hallOptionService.findById(hallOptionId) != null) {
+                hallOption.setId(hallOptionId);
+                hallOptionService.save(hallOption);
 
-				httpResponse.setStatus(HttpStatus.OK.value());
+                httpResponse.setStatus(HttpStatus.OK.value());
 
-				return createSuccessResponse(hallOption);
-			}
+                return createSuccessResponse(hallOption);
+            }
 
-			return createErrorResponse("halloption_not_exists");
-		});
-	}
+            return createErrorResponse("halloption_not_exists");
+        });
+    }
 
-	/**
-	 * Tested with curl:
-	 * 
-	 * curl -H "Content-Type: application/json" -X DELETE
-	 * http://localhost:8080/hh/rest/v1/halloption/1
-	 * 
-	 * @param halloptionId
-	 * @param httpResponse
-	 * @return
-	 */
-	@RequestMapping(value = "/{hallOptionId}/{sessionID}", method = RequestMethod.DELETE)
-	@ResponseBody
-	public ModelAndView removeHallOption(@PathVariable long hallOptionId, @PathVariable String sessionID,
-			HttpServletResponse httpResponse) {
-		
-		return shouldBeManager(sessionID, (Authenticatable auth) -> {
-			boolean result = hallOptionService.deleteById(hallOptionId);
+    /**
+     * Tested with curl:
+     * 
+     * curl -H "Content-Type: application/json" -X DELETE
+     * http://localhost:8080/hh/rest/v1/halloption/1
+     * 
+     * @param halloptionId
+     * @param httpResponse
+     * @return
+     */
+    @RequestMapping(value = "/{hallOptionId}/{sessionID}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ModelAndView removeHallOption(@PathVariable long hallOptionId, @PathVariable String sessionID,
+            HttpServletResponse httpResponse) {
 
-			if (result) {
-				httpResponse.setStatus(HttpStatus.OK.value());
+        return shouldBeManager(sessionID, (Authenticatable auth) -> {
+            boolean result = hallOptionService.deleteById(hallOptionId);
 
-				return createSuccessResponse(hallOptionId);	
-			}
-			
-			return createErrorResponse("hallOption_has_reservations");
-		});
-	}
+            if (result) {
+                httpResponse.setStatus(HttpStatus.OK.value());
+
+                return createSuccessResponse(hallOptionId);
+            }
+
+            return createErrorResponse("hallOption_has_reservations");
+        });
+    }
 }

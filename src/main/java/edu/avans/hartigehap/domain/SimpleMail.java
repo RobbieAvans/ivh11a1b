@@ -44,14 +44,14 @@ public class SimpleMail extends Mail {
     	// Hier moet een mail object samengesteld worden en verstuurd worden
 
         
-        System.out.println("\n 1st ===> setup Mail Server Properties..");
+        log.debug("\n 1st ===> setup Mail Server Properties..");
         mailServerProperties = System.getProperties();
         mailServerProperties.put("mail.smtp.port", "587");
         mailServerProperties.put("mail.smtp.auth", "true");
         mailServerProperties.put("mail.smtp.starttls.enable", "true");
-        System.out.println("Mail Server Properties have been setup successfully..");
+        log.debug("Mail Server Properties have been setup successfully..");
         try {
-            System.out.println("\n\n 2nd ===> get Mail Session..");
+            log.debug("\n\n 2nd ===> get Mail Session..");
             getMailSession = Session.getDefaultInstance(mailServerProperties, null);
             generateMailMessage = new MimeMessage(getMailSession);
             
@@ -59,9 +59,9 @@ public class SimpleMail extends Mail {
             generateMailMessage.setSubject(strSubject);
             String emailBody = strMessage;
             generateMailMessage.setContent(emailBody, "text/html");
-            System.out.println("Mail Session has been created successfully..");
+            log.debug("Mail Session has been created successfully..");
      
-            System.out.println("\n\n 3rd ===> Get Session and Send mail");
+            log.debug("\n\n 3rd ===> Get Session and Send mail");
             Transport transport = getMailSession.getTransport("smtp");
      
             transport.connect("smtp.gmail.com", "ivh11a1b@gmail.com", "wwivh11a1b");

@@ -29,69 +29,67 @@ import edu.avans.hartigehap.web.controller.rs.body.LoginRequest;
 @RequestMapping(value = RSConstants.URL_PREFIX, produces = MediaType.APPLICATION_JSON_VALUE)
 public class CustomerRS extends BaseRS {
 
-	@Autowired
-	private CustomerService customerService;
+    @Autowired
+    private CustomerService customerService;
 
-	@RequestMapping(value = "/customer", method = RequestMethod.POST)
-	@ResponseBody
-	public ModelAndView createCustomer(@RequestBody CreateCustomerRequest customerRequest,
-			HttpServletResponse httpResponse, WebRequest httpRequest) {
+    @RequestMapping(value = "/customer", method = RequestMethod.POST)
+    @ResponseBody
+    public ModelAndView createCustomer(@RequestBody CreateCustomerRequest customerRequest,
+            HttpServletResponse httpResponse) {
 
-		Customer findCustomer = customerService.findByEmail(customerRequest.getEmail());
-		if (findCustomer == null) {
-			Customer customer = new Customer();
-			customer.setEmail(customerRequest.getEmail());
-			customer.setPassword(customerRequest.getPassword());
-			customer.setFirstName(customerRequest.getFirstName());
-			customer.setLastName(customerRequest.getLastName());
+        Customer findCustomer = customerService.findByEmail(customerRequest.getEmail());
+        if (findCustomer == null) {
+            Customer customer = new Customer();
+            customer.setEmail(customerRequest.getEmail());
+            customer.setPassword(customerRequest.getPassword());
+            customer.setFirstName(customerRequest.getFirstName());
+            customer.setLastName(customerRequest.getLastName());
 
-			// If registred, set initial login sessionID
-			customer.setSessionID(java.util.UUID.randomUUID().toString());
+            // If registred, set initial login sessionID
+            customer.setSessionID(java.util.UUID.randomUUID().toString());
 
-			// Save
-			Customer savedCustomer = customerService.save(customer);
-			httpResponse.setStatus(HttpStatus.CREATED.value());
+            // Save
+            Customer savedCustomer = customerService.save(customer);
+            httpResponse.setStatus(HttpStatus.CREATED.value());
 
-			return createSuccessResponse(savedCustomer);
-		} else {
-			return createErrorResponse("customer_already_exists");
-		}
-	}
+            return createSuccessResponse(savedCustomer);
+        } else {
+            return createErrorResponse("customer_already_exists");
+        }
+    }
 
-	@RequestMapping(value = "/customer/{sessionID}", method = RequestMethod.GET)
-	@ResponseBody
-	public ModelAndView getAllCustomers(@PathVariable String sessionID) {
-		return shouldBeManager(sessionID, (Authenticatable auth) -> {
-			return createSuccessResponse(customerService.findAll());
-		});
-	}
+    @RequestMapping(value = "/customer/{sessionID}", method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView getAllCustomers(@PathVariable String sessionID) {
+        return shouldBeManager(sessionID, (Authenticatable auth) -> 
+            createSuccessResponse(customerService.findAll())
+        );
+    }
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	@ResponseBody
-	public ModelAndView login(@RequestBody LoginRequest loginRequest, HttpServletResponse httpResponse,
-			WebRequest httpRequest) {
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @ResponseBody
+    public ModelAndView login(@RequestBody LoginRequest loginRequest) {
 
-		Handler<LoginRequest, Authenticatable> handler = new CustomerLoginHandler();
-		handler.setSuccessor(new ManagerLoginHandler());
+        Handler<LoginRequest, Authenticatable> handler = new CustomerLoginHandler();
+        handler.setSuccessor(new ManagerLoginHandler());
 
-		Authenticatable auth = handler.handleRequest(loginRequest);
+        Authenticatable auth = handler.handleRequest(loginRequest);
 
-		if (auth != null) {
-			return createSuccessResponse(auth);
-		}
+        if (auth != null) {
+            return createSuccessResponse(auth);
+        }
 
-		return createErrorResponse("login_fail");
-	}
+        return createErrorResponse("login_fail");
+    }
 
-	@RequestMapping(value = "/login/{sessionID}", method = RequestMethod.GET)
-	@ResponseBody
-	public ModelAndView checkLogin(@PathVariable String sessionID, HttpServletResponse httpResponse,
-			WebRequest httpRequest) {
+    @RequestMapping(value = "/login/{sessionID}", method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView checkLogin(@PathVariable String sessionID) {
 
-		Handler<String, Authenticatable> handler = new CustomerSessionHandler();
-		handler.setSuccessor(new ManagerSessionHandler());
+        Handler<String, Authenticatable> handler = new CustomerSessionHandler();
+        handler.setSuccessor(new ManagerSessionHandler());
 
-		return createSuccessResponse(handler.handleRequest(sessionID));
-	}
+        return createSuccessResponse(handler.handleRequest(sessionID));
+    }
 
 }

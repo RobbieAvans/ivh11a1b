@@ -44,9 +44,9 @@ import lombok.ToString;
 @NoArgsConstructor
 public class Customer extends AuthDomainObject {
     private static final long serialVersionUID = 1L;
-    
+
     public static final String ROLE = "customer";
-    
+
     @NotEmpty(message = "{validation.firstname.NotEmpty.message}")
     @Size(min = 3, max = 60, message = "{validation.firstname.Size.message}")
     private String firstName;
@@ -83,7 +83,6 @@ public class Customer extends AuthDomainObject {
     @OneToMany(mappedBy = "customer")
     private Collection<Bill> bills = new ArrayList<Bill>();
 
-    // TODO not complete (bills)
     public Customer(String firstName, String lastName, String email, DateTime birthDate, int partySize,
             String description, byte[] photo) {
         this.firstName = firstName;
@@ -92,12 +91,12 @@ public class Customer extends AuthDomainObject {
         this.birthDate = birthDate;
         this.partySize = partySize;
         this.description = description;
-        
+
         // Photo is nullable
         if (photo != null) {
-        	this.photo = photo.clone();
+            this.photo = photo.clone();
         } else {
-        	this.photo = photo;
+            this.photo = photo;
         }
     }
 
@@ -136,13 +135,13 @@ public class Customer extends AuthDomainObject {
         }
         return birthDateString;
     }
-    
+
     @Transient
     @Override
     public String getRole() {
         return ROLE;
     }
-    
+
     // business logic
 
 }
