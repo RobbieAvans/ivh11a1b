@@ -450,9 +450,13 @@
 				<configuration>
 					<tomcatHttpPort>8080</tomcatHttpPort>
 					<tomcatSetAwait>false</tomcatSetAwait>
-					<argLine>
-						-javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${org.aspectj-version}/aspectjweaver-${org.aspectj-version}.jar
-					</argLine>
+					<libs>
+						<jarArtifact>
+							<groupId>org.aspectj</groupId>
+							<artifactId>aspectjweaver</artifactId>
+							<version>${org.aspectj-version}</version>
+						</jarArtifact>
+					</libs>
 				</configuration>
 				<executions>
 					<execution>
