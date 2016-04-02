@@ -13,7 +13,6 @@ public class Morning extends PartOfDay {
     public Morning(){
     }
     
-    @SuppressWarnings("deprecation")
     public Morning(Date date) {
         setTime(date,STARTTIMEHOUR ,ENDTIMEHOUR);
         setDescription("Morning");

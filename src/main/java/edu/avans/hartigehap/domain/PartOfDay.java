@@ -30,6 +30,7 @@ public abstract class PartOfDay extends DomainObject {
     @JsonIgnore
     private HallReservation hallReservation;
 
+    @SuppressWarnings("deprecation")
     public void setTime(Date date, int start, int end){
 
         date.setMinutes(0);

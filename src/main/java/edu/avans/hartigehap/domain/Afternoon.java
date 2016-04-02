@@ -15,7 +15,6 @@ public class Afternoon extends PartOfDay {
     public Afternoon(){
     }
     
-    @SuppressWarnings("deprecation")
     public Afternoon(Date date) {
         setTime(date,STARTTIMEHOUR ,ENDTIMEHOUR);
         setDescription("Afternoon");
