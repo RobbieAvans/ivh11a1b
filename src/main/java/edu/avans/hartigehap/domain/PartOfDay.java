@@ -35,14 +35,14 @@ public abstract class PartOfDay extends DomainObject {
         date.setMinutes(0);
         date.setSeconds(0);
 
-        Date startTime = (Date) date.clone();
-        Date endTime = (Date) date.clone();
+        Date partStartTime = (Date) date.clone();
+        Date partEndTime = (Date) date.clone();
 
-        startTime.setHours(start);
-        endTime.setHours(end);
+        partStartTime.setHours(start);
+        partEndTime.setHours(end);
 
-        setStartTime(startTime);
-        setEndTime(endTime);
+        setStartTime(partStartTime);
+        setEndTime(partEndTime);
     }
     
     /**
