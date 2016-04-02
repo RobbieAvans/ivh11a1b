@@ -24,8 +24,6 @@ Open eindjes:
 
 * onvoldoende tests (foei!)
 
-
-
 ### How do I get set up? ###
 
 #### Installatie van de ontwikkelomgeving "Spring Tool Suite": ####
@@ -58,15 +56,19 @@ Open eindjes:
         * -javaagent:C:/Users/test/.m2/repository/org/aspectj/aspectjweaver/1.8.7/aspectjweaver-1.8.7.jar
         * Zorg ervoor dat C:/Users/test/.m2/ verwijst naar je eigen repository
 
+### Instellen poort in Angular ###
+* Eventueel kan de port in angular worden aangepast op regel 3 van src/main/webapp/scripts/app.js Standaard staat deze ingesteld op 8080
+
 #### Gebruik van de het subsysteem van de vervroegde oplevering: ####
 
 * deploy de applicatie:
     * rechter muisklik op project, "run as", "run on server"
     * check de console log op excepties
     * STS start automatisch een web browser op binnen STS
-    * andere browser? Gebruik: http://localhost:8080/hh/
-* log in met gebruikersnaam "manager" en password "manager"
-* Selecteer "Reservering subsysteem" in het menu:
-	* "Overzicht zalen" geeft een overzicht van alle zalen en mogelijkheden tot wijzingen
-	* "Overzicht zaalopties" geeft een overzicht van alle zaalopties en mogelijkheden tot wijzingen
-	* "Overzicht reserveringen" geeft een overzicht van alle reserveringen en mogelijkheden tot wijzingen
+    * andere browser? Gebruik: http://localhost:8080/hh/static/index.html
+* Voor een manager kan er ingelogd worden met email "manager@hh.nl" en wachtwoord "manager"
+* In het menu staan nu een aantal opties:
+	* "Zalen" geeft een overzicht van alle zalen en mogelijkheden tot CRUD
+	* "Zaalopties" geeft een overzicht van alle zaalopties en mogelijkheden tot CRUD
+	* "Reserveringen" geeft een overzicht van alle reserveringen en mogelijkheden tot CRUD
+    * "Agenda" geeft alle reserveringen in een agenda weer
