@@ -76,6 +76,10 @@ public class HallOptionServiceImpl implements HallOptionService {
 
     @Override
     public boolean hasHallReservations(HallOption hallOption) {
+    	/**
+    	 * Not every hallReservation has a hallOption so it's 
+    	 * not possible to use a method name query
+    	 */
         Query query = em.createQuery(
                 "SELECT 1 FROM HallReservation hallReservation WHERE hallReservation.hallOption.id = :hallOptionID");
 
