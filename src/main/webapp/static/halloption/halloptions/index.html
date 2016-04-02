@@ -14,7 +14,7 @@
   		<td>&#8364;{{hallOption.basePrice}}</td>
           <td>
           	<a class="btn btn-primary" style="color:rgb(68, 157, 68);" ui-sref="viewHallOption({id:hallOption.id})">Bekijken</a>
-   			<a class="btn btn-danger"  style="color:rgb(68, 157, 68);" ng-click="deleteHallOption(hallOption)">Verwijderen</a></td>
+  			<a class="btn btn-danger" ng-if="hallOption.canBeDeleted == true"  style="color:rgb(68, 157, 68);" ng-click="deleteHallOption(hallOption)">Verwijderen</a></td>
     </tr>
     </tbody>
 </table>
