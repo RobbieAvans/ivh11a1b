@@ -13,13 +13,14 @@ public class ManagerSessionHandler extends Handler<String, Authenticatable> {
 
     @Autowired
     private ManagerService managerService;
-    
+
     @Override
     public Authenticatable handleRequest(String request) {
         Manager manager = managerService.findBySessionID(request);
-        
-        if (manager != null) return manager;
-        
+
+        if (manager != null)
+            return manager;
+
         return (successor != null) ? successor.handleRequest(request) : null;
     }
 

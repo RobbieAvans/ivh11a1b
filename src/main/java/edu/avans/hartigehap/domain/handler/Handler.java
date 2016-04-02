@@ -6,6 +6,6 @@ public abstract class Handler<T, R> {
     public void setSuccessor(Handler<T, R> successor) {
         this.successor = successor;
     }
-    
-    abstract public R handleRequest(T request);
+
+    public abstract R handleRequest(T request);
 }

@@ -6,6 +6,6 @@ import edu.avans.hartigehap.domain.Authenticatable;
 import edu.avans.hartigehap.web.controller.rs.body.InvalidJsonRequestException;
 
 public interface AuthCallback {
-	
-	public ModelAndView handleRequest(Authenticatable auth) throws NotAuthorizedException, InvalidJsonRequestException;
+
+    public ModelAndView handleRequest(Authenticatable auth) throws NotAuthorizedException, InvalidJsonRequestException;
 }

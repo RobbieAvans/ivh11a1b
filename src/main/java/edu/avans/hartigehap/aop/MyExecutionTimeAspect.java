@@ -6,25 +6,30 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
+import edu.avans.hartigehap.service.impl.CustomerServiceImpl;
+import lombok.extern.slf4j.Slf4j;
+
 @Component
 @Aspect
+@Slf4j
 public class MyExecutionTimeAspect {
-    @Pointcut("@annotation(edu.avans.hartigehap.aop.MyExecutionTime) && execution(* edu.avans.hartigehap..*(..))") // the
-                                                                                                                   // pointcut
-                                                                                                                   // expression
-    public void myExecutionTimeAnnotation() { // the pointcut signature
+
+    // the pointcut expression
+    @Pointcut("@annotation(edu.avans.hartigehap.aop.MyExecutionTime) && execution(* edu.avans.hartigehap..*(..))")
+
+    // the pointcut signature
+    public void myExecutionTimeAnnotation() {
     }
 
+    // MyExecutionTime annotation
     @Around("myExecutionTimeAnnotation()")
     public Object myExecutionTimeAdvice(
-            ProceedingJoinPoint joinPoint /*
-                                           * , MyExecutionTime annotation
-                                           */) throws Throwable {
+            ProceedingJoinPoint joinPoint ) throws Throwable  {
         long startMillis = System.currentTimeMillis();
-        System.out.println("(AOP-myExecTime) Starting timing method " + joinPoint.getSignature());
+        log.debug("(AOP-myExecTime) Starting timing method " + joinPoint.getSignature());
         Object retVal = joinPoint.proceed();
         long duration = System.currentTimeMillis() - startMillis;
-        System.out.println("(AOP-myExecTime) Call to " + joinPoint.getSignature() + " took " + duration + " ms");
+        log.debug("(AOP-myExecTime) Call to " + joinPoint.getSignature() + " took " + duration + " ms");
         return retVal;
 
     }

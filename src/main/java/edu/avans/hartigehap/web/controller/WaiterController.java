@@ -109,14 +109,10 @@ public class WaiterController {
 
         Order order = warmupRestaurantByOrder(orderId, uiModel);
 
-        switch (event) {
-        case "orderHasBeenServed":
+        if ("orderHasBeenServed".equals(event)) {
             orderHasBeenServed(order);
-            break;
-
-        default:
+        } else {
             log.error("Internal error: event " + event + " not recognized");
-            break;
         }
 
         return "redirect:/restaurants/" + order.getBill().getDiningTable().getRestaurant().getId() + "/waiter";
@@ -136,14 +132,10 @@ public class WaiterController {
 
         Bill bill = warmupRestaurant(billId, uiModel);
 
-        switch (event) {
-        case "billHasBeenPaid":
+        if ("billHasBeenPaid".equals(event)) {
             billHasBeenPaid(bill);
-            break;
-
-        default:
+        } else {
             log.error("Internal error: event " + event + " not recognized");
-            break;
         }
 
         return "redirect:/restaurants/" + bill.getDiningTable().getRestaurant().getId() + "/waiter";

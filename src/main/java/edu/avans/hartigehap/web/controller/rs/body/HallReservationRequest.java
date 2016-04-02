@@ -29,7 +29,7 @@ public class HallReservationRequest {
     private CustomerService customerService;
     @Autowired
     private HallOptionService hallOptionService;
-    
+
     private String description;
     private HallReservationState state;
     private Long customer;
@@ -38,16 +38,17 @@ public class HallReservationRequest {
     private List<PartOfDayRequest> partOfDays = new ArrayList<>();
 
     public HallReservationRequest() {
-    	// Needed to autowire, @Configurable not working
-        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this); 
+        // Needed to autowire, @Configurable not working
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
-    
+
     @JsonIgnore
     public Hall getHallObject() throws InvalidJsonRequestException {
         Hall foundHall = hallService.findById(hall);
-        
-        if (foundHall == null) throw new InvalidJsonRequestException("hall_not_exists");
-        
+
+        if (foundHall == null)
+            throw new InvalidJsonRequestException("hall_not_exists");
+
         return foundHall;
     }
 
@@ -59,12 +60,13 @@ public class HallReservationRequest {
     @JsonIgnore
     public Customer getCustomerObject() throws InvalidJsonRequestException {
         Customer foundCustomer = customerService.findById(customer);
-        
-        if (foundCustomer == null) throw new InvalidJsonRequestException("customer_not_exists");
-        
+
+        if (foundCustomer == null)
+            throw new InvalidJsonRequestException("customer_not_exists");
+
         return foundCustomer;
     }
-    
+
     @JsonIgnore
     public List<PartOfDay> getPartOfDaysObjects() throws InvalidJsonRequestException {
         // Create an ordered list for the partOfDays
@@ -72,35 +74,33 @@ public class HallReservationRequest {
         for (PartOfDayRequest partOfDayRequest : partOfDays) {
             partOfDaysList.add(partOfDayRequest.getPartOfDayObject());
         }
-        
+
         partOfDaysList = PartOfDay.orderListAsc(partOfDaysList);
-        
+
         // Check if there is at least one partOfDay
-        if (partOfDaysList.size() == 0) {
+        if (partOfDaysList.isEmpty()) {
             throw new InvalidJsonRequestException("partofdays_is_required");
         }
-        
+
         // Check if the order for the partOfDays is correct
         for (int i = 0; i < partOfDaysList.size(); i++) {
             PartOfDay newPartOfDay = partOfDaysList.get(i);
-            if (i > 0) {
+            if (i > 0 && !partOfDaysList.get(i - 1).canAddAfter(newPartOfDay)) {
                 // Check if it is possible to add it
-                if (!partOfDaysList.get(i - 1).canAddAfter(newPartOfDay)) {
-                    throw new InvalidJsonRequestException("partofdays_invalid_order");
-                }
+                throw new InvalidJsonRequestException("partofdays_invalid_order");
             }
         }
-        
+
         // Check if the partOfDays are in the future
         if (!partOfDaysList.get(0).getStartTime().after(new Date())) {
             throw new InvalidJsonRequestException("partofdays_in_past");
         }
-        
+
         // Check if the partOfDays are available
         if (!hallService.isAvailableFor(getHallObject(), partOfDaysList)) {
             throw new InvalidJsonRequestException("hall_not_available");
         }
-        
+
         return partOfDaysList;
     }
 }

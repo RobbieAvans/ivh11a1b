@@ -24,7 +24,7 @@ import lombok.Setter;
 @Setter
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class HallReservationResponse {
-	
+
     private Long id;
     private String description;
     private HallReservationState state;
@@ -37,14 +37,15 @@ public class HallReservationResponse {
     private String totalPrice;
     private String exVatPrice;
     private String vat;
-    
-    public HallReservationResponse(HallReservation hallReservation, HallReservationPriceStrategyFactory hallReservationPriceStrategyFactory) {  	
+
+    public HallReservationResponse(HallReservation hallReservation,
+            HallReservationPriceStrategyFactory hallReservationPriceStrategyFactory) {
         id = hallReservation.getId();
         description = hallReservation.getDescription();
         state = hallReservation.getState();
         actions = state.getPossibleActions();
         canbemodified = hallReservation.canBeModified();
-        
+
         /**
          * We have to clone some objects because they can exist multiple times
          * in the json. In this way the have all a unique json @id property
@@ -53,8 +54,10 @@ public class HallReservationResponse {
         // Clone the customer
         Customer hallReservationCustomer = hallReservation.getCustomer();
         if (hallReservationCustomer != null) {
-            Customer cloneCustomer = new Customer(hallReservationCustomer.getFirstName(), hallReservationCustomer.getLastName(), hallReservationCustomer.getEmail(),
-                    hallReservationCustomer.getBirthDate(), hallReservationCustomer.getPartySize(), hallReservationCustomer.getDescription(), hallReservationCustomer.getPhoto());
+            Customer cloneCustomer = new Customer(hallReservationCustomer.getFirstName(),
+                    hallReservationCustomer.getLastName(), hallReservationCustomer.getEmail(),
+                    hallReservationCustomer.getBirthDate(), hallReservationCustomer.getPartySize(),
+                    hallReservationCustomer.getDescription(), hallReservationCustomer.getPhoto());
             cloneCustomer.setId(hallReservationCustomer.getId());
 
             this.customer = cloneCustomer;
@@ -62,14 +65,15 @@ public class HallReservationResponse {
 
         // Clone the hall
         Hall hallReservationHall = hallReservation.getHall();
-        Hall cloneHall = new Hall(hallReservationHall.getDescription(), hallReservationHall.getNumberOfSeats(), hallReservationHall.getBasePrice());
+        Hall cloneHall = new Hall(hallReservationHall.getDescription(), hallReservationHall.getNumberOfSeats(),
+                hallReservationHall.getBasePrice());
         cloneHall.setId(hallReservationHall.getId());
 
         this.hall = cloneHall;
 
         DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         for (PartOfDay partOfDay : hallReservation.getPartOfDays()) {
-            partOfDays.add(new PartOfDayRequest(format.format(partOfDay.getStartTime()),partOfDay.getDescription()));
+            partOfDays.add(new PartOfDayRequest(format.format(partOfDay.getStartTime()), partOfDay.getDescription()));
         }
 
         // Clone the hallOptions
@@ -78,14 +82,14 @@ public class HallReservationResponse {
             clone.setId(hallOption.getId());
             hallOptions.add(clone);
         }
-        
+
         // Set the prices
         HallReservationPriceStrategy strategy = hallReservationPriceStrategyFactory.create(hallReservation);
         hallReservation.setStrategy(strategy);
-        
+
         double totalPriceDouble = hallReservation.getPriceInVat();
         double exVatPriceDouble = hallReservation.getPriceExVat();
-        
+
         vat = Util.doubleToString(totalPriceDouble - exVatPriceDouble);
         totalPrice = Util.doubleToString(totalPriceDouble);
         exVatPrice = Util.doubleToString(exVatPriceDouble);

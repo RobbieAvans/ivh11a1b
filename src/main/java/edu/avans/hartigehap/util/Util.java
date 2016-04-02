@@ -4,7 +4,13 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class Util {
-	public static String doubleToString(double value) {
-		return	new BigDecimal(value).setScale(2, RoundingMode.HALF_UP).toString();
-	}
+    private static final int SCAlE = 2;
+
+    public static String doubleToString(double value) {
+        return new BigDecimal(value).setScale(SCAlE, RoundingMode.HALF_UP).toString();
+    }
+
+    private Util() {
+
+    }
 }

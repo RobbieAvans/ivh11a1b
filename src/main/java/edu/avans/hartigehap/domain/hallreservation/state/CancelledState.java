@@ -9,13 +9,13 @@ public class CancelledState extends AbstractHallReservationStateOperations {
         hallReservation.setState(HallReservationState.CONCEPT);
         hallReservation.save();
     }
-    
+
     @Override
     public void confirm(HallReservation hallReservation) {
         hallReservation.delete();
     }
-    
+
     public String[] possibleActions() {
-    	return new String[] { "confirm", "undo" } ;
+        return new String[] { "confirm", "undo" };
     }
 }

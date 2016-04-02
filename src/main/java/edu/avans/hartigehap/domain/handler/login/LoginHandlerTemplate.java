@@ -9,19 +9,18 @@ public abstract class LoginHandlerTemplate<T extends Authenticatable> extends Ha
     @Override
     public Authenticatable handleRequest(LoginRequest request) {
         T object = findByEmail(request.getEmail());
-        
-        if (object != null) {
-            // Check for password
-            if (object.checkPassword(request.getPassword())) {
-                object.refreshSessionID();
 
-                return save(object);
-            }
+        if (object != null && object.checkPassword(request.getPassword())) {
+            // Check for password
+            object.refreshSessionID();
+
+            return save(object);
         }
-        
+
         return (successor != null) ? successor.handleRequest(request) : null;
     }
-    
+
     public abstract T findByEmail(String email);
+
     public abstract T save(T object);
 }

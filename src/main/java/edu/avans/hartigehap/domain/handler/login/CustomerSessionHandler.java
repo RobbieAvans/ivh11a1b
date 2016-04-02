@@ -9,17 +9,18 @@ import edu.avans.hartigehap.domain.handler.Handler;
 import edu.avans.hartigehap.service.CustomerService;
 
 @Configurable
-public class CustomerSessionHandler extends Handler<String, Authenticatable>{
+public class CustomerSessionHandler extends Handler<String, Authenticatable> {
 
     @Autowired
     private CustomerService customerService;
-    
+
     @Override
     public Authenticatable handleRequest(String request) {
         Customer customer = customerService.findBySessionID(request);
-        
-        if (customer != null) return customer;
-        
+
+        if (customer != null)
+            return customer;
+
         return (successor != null) ? successor.handleRequest(request) : null;
     }
 
