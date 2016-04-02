@@ -30,6 +30,21 @@ public abstract class PartOfDay extends DomainObject {
     @JsonIgnore
     private HallReservation hallReservation;
 
+    public void setTime(Date date, int start, int end){
+
+        date.setMinutes(0);
+        date.setSeconds(0);
+
+        Date startTime = (Date) date.clone();
+        Date endTime = (Date) date.clone();
+
+        startTime.setHours(start);
+        endTime.setHours(end);
+
+        setStartTime(startTime);
+        setEndTime(endTime);
+    }
+    
     /**
      * Method that should check if another ParyOfDay can be added after this
      * 

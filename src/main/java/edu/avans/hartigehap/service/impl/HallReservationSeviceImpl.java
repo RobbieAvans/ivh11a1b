@@ -98,7 +98,7 @@ public class HallReservationSeviceImpl implements HallReservationService {
             hallReservationPointer = new HallReservationOption(hallReservationPointer, hallOption);
         }
 
-        if (removeHallOptions.size() > 0) {
+        if (!removeHallOptions.isEmpty()) {
             // Remove hallOptions
             List<Long> hallReservationOptionsToRemove = new ArrayList<>();
 

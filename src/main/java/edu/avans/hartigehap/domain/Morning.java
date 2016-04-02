@@ -15,18 +15,7 @@ public class Morning extends PartOfDay {
     
     @SuppressWarnings("deprecation")
     public Morning(Date date) {
-
-        date.setMinutes(0);
-        date.setSeconds(0);
-
-        Date startTime = (Date) date.clone();
-        Date endTime = (Date) date.clone();
-
-        startTime.setHours(STARTTIMEHOUR);
-        endTime.setHours(ENDTIMEHOUR);
-
-        setStartTime(startTime);
-        setEndTime(endTime);
+        setTime(date,STARTTIMEHOUR ,ENDTIMEHOUR);
         setDescription("Morning");
     }
 
