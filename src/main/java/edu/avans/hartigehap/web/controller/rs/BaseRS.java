@@ -80,10 +80,10 @@ public abstract class BaseRS {
             try {
                 return callback.handleRequest(auth);
             } catch (NotAuthorizedException e) {
-                log.debug(e.getMessage());
+                log.debug("NotAuthorizedException",e);
                 return createErrorResponse("not_authorized");
             } catch (InvalidJsonRequestException e) {
-                log.debug(e.getMessage());
+                log.debug("InvalidJsonRequestException",e);
                 return createErrorResponse(e.getMessage());
             }
         }

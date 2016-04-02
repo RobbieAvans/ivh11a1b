@@ -66,6 +66,7 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
      * 
      * @throws Exception
      */
+    @SuppressWarnings("deprecation")
     @Test
     public void CRUDHallReservation() throws Exception {
 

@@ -46,9 +46,9 @@ public class HallReservationRequest {
     public Hall getHallObject() throws InvalidJsonRequestException {
         Hall foundHall = hallService.findById(hall);
 
-        if (foundHall == null)
+        if (foundHall == null) {
             throw new InvalidJsonRequestException("hall_not_exists");
-
+        }
         return foundHall;
     }
 
@@ -61,9 +61,9 @@ public class HallReservationRequest {
     public Customer getCustomerObject() throws InvalidJsonRequestException {
         Customer foundCustomer = customerService.findById(customer);
 
-        if (foundCustomer == null)
+        if (foundCustomer == null) {
             throw new InvalidJsonRequestException("customer_not_exists");
-
+        }
         return foundCustomer;
     }
 

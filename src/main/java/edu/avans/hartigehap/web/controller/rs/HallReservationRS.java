@@ -172,7 +172,7 @@ public class HallReservationRS extends BaseRS {
                     Method method = HallReservation.class.getMethod(action);
                     method.invoke(hallReservation);
                 } catch (Exception e) {
-                    log.debug(e.getMessage());
+                    log.debug("Exception",e);
                     return createErrorResponse("invalid_state_action");
                 }
 

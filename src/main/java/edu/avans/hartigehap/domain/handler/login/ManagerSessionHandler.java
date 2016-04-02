@@ -18,9 +18,9 @@ public class ManagerSessionHandler extends Handler<String, Authenticatable> {
     public Authenticatable handleRequest(String request) {
         Manager manager = managerService.findBySessionID(request);
 
-        if (manager != null)
+        if (manager != null) {
             return manager;
-
+        }
         return (successor != null) ? successor.handleRequest(request) : null;
     }
 
