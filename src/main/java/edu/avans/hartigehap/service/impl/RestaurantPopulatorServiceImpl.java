@@ -20,6 +20,7 @@ import edu.avans.hartigehap.domain.HallOption;
 import edu.avans.hartigehap.domain.Manager;
 import edu.avans.hartigehap.domain.Meal;
 import edu.avans.hartigehap.domain.PartOfDayFactory;
+import edu.avans.hartigehap.domain.PartOfDayFactoryImlp;
 import edu.avans.hartigehap.domain.Restaurant;
 import edu.avans.hartigehap.domain.hallreservation.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
@@ -144,7 +145,7 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
 
         
         // Decorate reservation
-        PartOfDayFactory factory = new PartOfDayFactory();
+        PartOfDayFactory factory = new PartOfDayFactoryImlp();
         HallReservation reservation = new ConcreteHallReservation();
         reservation = new HallReservationOption(reservation, hallOptions.get(WIFIID));
         reservation = new HallReservationOption(reservation, hallOptions.get(DJID));

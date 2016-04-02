@@ -18,6 +18,7 @@ import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
 import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.PartOfDayFactory;
+import edu.avans.hartigehap.domain.PartOfDayFactoryImlp;
 import edu.avans.hartigehap.domain.hallreservation.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservationOption;
@@ -82,7 +83,7 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
         calendar.add(Calendar.DATE, 1); // Add one day so it is never in the
                                         // past
 
-        PartOfDayFactory factory = new PartOfDayFactory();
+        PartOfDayFactory factory = new PartOfDayFactoryImlp();
         PartOfDay part1 = factory.makePartOfDay("Evening", calendar.getTime());
         PartOfDay part2 = factory.makePartOfDay("Afternoon", calendar.getTime());
 

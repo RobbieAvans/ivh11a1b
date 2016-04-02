@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import edu.avans.hartigehap.domain.Authenticatable;
 import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.PartOfDayFactory;
+import edu.avans.hartigehap.domain.PartOfDayFactoryImlp;
 import edu.avans.hartigehap.service.PartOfDayService;
 import edu.avans.hartigehap.web.controller.rs.body.DayResponse;
 import edu.avans.hartigehap.web.controller.rs.body.DayPartResponse;
@@ -29,7 +30,7 @@ public class PartOfDayRS extends BaseRS {
     private PartOfDayService partOfDayService;
 
     // Dependency injection?
-    PartOfDayFactory factory = new PartOfDayFactory();
+    PartOfDayFactory factory = new PartOfDayFactoryImlp();
 
     @RequestMapping(value = "/{hallId}/{weekNr}/{sessionID}", method = RequestMethod.GET)
     @ResponseBody

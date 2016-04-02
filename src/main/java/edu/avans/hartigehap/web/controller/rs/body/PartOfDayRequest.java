@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.PartOfDayFactory;
+import edu.avans.hartigehap.domain.PartOfDayFactoryImlp;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +23,7 @@ public class PartOfDayRequest {
     
     @JsonIgnore
     // Dependency injection?
-    private PartOfDayFactory factory = new PartOfDayFactory();
+    private PartOfDayFactory factory = new PartOfDayFactoryImlp();
     
     private String date;
     private String partOfDay;
