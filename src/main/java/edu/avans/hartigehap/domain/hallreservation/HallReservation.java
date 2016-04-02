@@ -102,9 +102,14 @@ public abstract class HallReservation extends DomainObject {
     }
 
     public void notifyAllObservers() {
-        for (Observer<HallReservation> observer : observers) {
-            observer.notify(this);
-        }
+        HallReservation reservarion = this;
+        new Thread(new Runnable() {
+            public void run() {
+                for (Observer<HallReservation> observer : observers) {
+                    observer.notify(reservarion);
+                }
+            }
+        }).start();
     }
 
     public void setState(HallReservationState state) {
