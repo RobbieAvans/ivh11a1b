@@ -28,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
 import edu.avans.hartigehap.domain.Manager;
+import edu.avans.hartigehap.domain.PartOfDayFactory;
 import edu.avans.hartigehap.domain.PartOfDayFactoryImlp;
 import edu.avans.hartigehap.domain.hallreservation.ConcreteHallReservation;
 import edu.avans.hartigehap.domain.hallreservation.HallReservation;
@@ -154,7 +155,7 @@ public class HallReservationAPITest {
         calendar.setTime(new Date());
         calendar.add(Calendar.DATE, 1); // Add one day so it is never in the past
 
-        PartOfDayFactoryImlp factory = new PartOfDayFactoryImlp();
+        PartOfDayFactory factory = new PartOfDayFactoryImlp();
         reservation.addPartOfDay(factory.makePartOfDay("Evening", calendar.getTime()));
                 
         return reservation;
