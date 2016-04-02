@@ -14,7 +14,10 @@ public class MyExecutionTimeAspect {
 
     // the pointcut expression
     @Pointcut("@annotation(edu.avans.hartigehap.aop.MyExecutionTime) && execution(* edu.avans.hartigehap..*(..))")
-
+    // the pointcut signature
+    public void myExecutionTimeAnnotation() {
+    }
+    
     // MyExecutionTime annotation
     @Around("myExecutionTimeAnnotation()")
     public Object myExecutionTimeAdvice(
