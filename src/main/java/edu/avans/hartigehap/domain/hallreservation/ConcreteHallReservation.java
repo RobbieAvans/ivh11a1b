@@ -26,11 +26,7 @@ public class ConcreteHallReservation extends HallReservation {
 
     public ConcreteHallReservation() {
     	super();
-        addObservers();
     }
     
-    @PostLoad
-    public void addObservers() {
-        addObserver(Mailer.getInstance());
-    }
+    
 }

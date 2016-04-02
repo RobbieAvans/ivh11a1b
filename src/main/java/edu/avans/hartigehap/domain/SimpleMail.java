@@ -55,8 +55,7 @@ public class SimpleMail extends Mail {
             getMailSession = Session.getDefaultInstance(mailServerProperties, null);
             generateMailMessage = new MimeMessage(getMailSession);
             
-           // TODO Change InternetAddress to 'strReceiver'
-            generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress("ivh11a1b@gmail.com"));
+            generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(strReceiver));
             generateMailMessage.setSubject(strSubject);
             String emailBody = strMessage;
             generateMailMessage.setContent(emailBody, "text/html");

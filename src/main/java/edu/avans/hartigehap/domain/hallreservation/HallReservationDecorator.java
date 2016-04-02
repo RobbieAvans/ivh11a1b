@@ -42,6 +42,7 @@ public abstract class HallReservationDecorator extends HallReservation {
     public HallReservationDecorator(HallReservation hallReservation, HallOption hallOption) {
         this.hallReservation = hallReservation;
         this.hallOption = hallOption;
+        hallReservation.addObservers();
     }
 
     @Override

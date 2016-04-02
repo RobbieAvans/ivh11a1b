@@ -10,6 +10,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
 import javax.persistence.Transient;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import edu.avans.hartigehap.domain.Customer;
 import edu.avans.hartigehap.domain.DomainObject;
 import edu.avans.hartigehap.domain.Hall;
 import edu.avans.hartigehap.domain.HallOption;
+import edu.avans.hartigehap.domain.Mailer;
 import edu.avans.hartigehap.domain.Observer;
 import edu.avans.hartigehap.domain.PartOfDay;
 import edu.avans.hartigehap.domain.StateException;
@@ -77,10 +79,18 @@ public abstract class HallReservation extends DomainObject {
 
     public HallReservation() {
         this.state = HallReservationState.CONCEPT;
+        addObservers();
     }
 
+    @PostLoad
+    public void addObservers() {
+        addObserver(Mailer.getInstance());
+    }
+    
     public void addObserver(Observer<HallReservation> observer) {
-        observers.add(observer);
+        if (!observers.contains(observer)){
+            observers.add(observer);
+        }
     }
 
     public void addPartOfDay(PartOfDay partOfDay) {
