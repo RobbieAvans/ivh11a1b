@@ -59,6 +59,13 @@ public class HallReservationTest extends AbstractTransactionRollbackTest {
     private byte[] photo = new byte[] { 127, -128, 0 };
     private Customer customer = new Customer("FirstName", "LastName", "email", new DateTime(), 0, "description", photo);
 
+    /**
+     * This integration test will test the CRUD of hallReservation.
+     * It's an integration test that starts on the serviceLayer and
+     * goes down to the bottom (database).
+     * 
+     * @throws Exception
+     */
     @Test
     public void CRUDHallReservation() throws Exception {
 
