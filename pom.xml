@@ -428,6 +428,11 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>2.19</version>
+				<configuration>
+					<argLine>
+						-javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${org.aspectj-version}/aspectjweaver-${org.aspectj-version}.jar
+					</argLine>
+				</configuration>
 				<executions>
 					<execution>
 						<id>integration-test</id>
@@ -450,13 +455,6 @@
 				<configuration>
 					<tomcatHttpPort>8080</tomcatHttpPort>
 					<tomcatSetAwait>false</tomcatSetAwait>
-					<libs>
-						<jarArtifact>
-							<groupId>org.aspectj</groupId>
-							<artifactId>aspectjweaver</artifactId>
-							<version>${org.aspectj-version}</version>
-						</jarArtifact>
-					</libs>
 				</configuration>
 				<executions>
 					<execution>
