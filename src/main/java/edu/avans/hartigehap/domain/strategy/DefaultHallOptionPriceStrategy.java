@@ -6,33 +6,35 @@ import edu.avans.hartigehap.domain.hallreservation.HallReservation;
 
 public class DefaultHallOptionPriceStrategy implements HallOptionPriceStrategy {
 
-	private HallReservation hallReservation;
-	private PartOfDayHallOptionPriceStrategy partOfDayHallOptionPriceStrategy;
-	
-	public DefaultHallOptionPriceStrategy(PartOfDayHallOptionPriceStrategy partOfDayHallOptionPriceStrategy, HallReservation hallReservation) {
-		this.hallReservation = hallReservation;
-		this.partOfDayHallOptionPriceStrategy = partOfDayHallOptionPriceStrategy;
-	}
-	
-	@Override
-	public double calculateInVat(HallOption hallOption) {
-		double price = 0.0;
-		
-		for (PartOfDay partOfDay : hallReservation.getPartOfDays()) {
-			price += partOfDayHallOptionPriceStrategy.calculateInVat(hallOption, partOfDay);
-		}
-		
-		return price;	}
+    private HallReservation hallReservation;
+    private PartOfDayHallOptionPriceStrategy partOfDayHallOptionPriceStrategy;
 
-	@Override
-	public double calculateExVat(HallOption hallOption) {
-		double price = 0.0;
-		
-		for (PartOfDay partOfDay : hallReservation.getPartOfDays()) {
-			price += partOfDayHallOptionPriceStrategy.calculateExVat(hallOption, partOfDay);
-		}
-		
-		return price;
-	}
+    public DefaultHallOptionPriceStrategy(PartOfDayHallOptionPriceStrategy partOfDayHallOptionPriceStrategy,
+            HallReservation hallReservation) {
+        this.hallReservation = hallReservation;
+        this.partOfDayHallOptionPriceStrategy = partOfDayHallOptionPriceStrategy;
+    }
+
+    @Override
+    public double calculateInVat(HallOption hallOption) {
+        double price = 0.0;
+
+        for (PartOfDay partOfDay : hallReservation.getPartOfDays()) {
+            price += partOfDayHallOptionPriceStrategy.calculateInVat(hallOption, partOfDay);
+        }
+
+        return price;
+    }
+
+    @Override
+    public double calculateExVat(HallOption hallOption) {
+        double price = 0.0;
+
+        for (PartOfDay partOfDay : hallReservation.getPartOfDays()) {
+            price += partOfDayHallOptionPriceStrategy.calculateExVat(hallOption, partOfDay);
+        }
+
+        return price;
+    }
 
 }

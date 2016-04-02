@@ -23,65 +23,65 @@ import edu.avans.hartigehap.service.HallOptionService;
 @Transactional
 public class HallOptionServiceImpl implements HallOptionService {
 
-	@Autowired
-	private HallOptionRepository hallOptionRepository;
+    @Autowired
+    private HallOptionRepository hallOptionRepository;
 
     @PersistenceContext
     private EntityManager em;
 
-	@Override
-	@Transactional(readOnly = true)
-	public List<HallOption> findAll() {
-		Sort sort = new Sort(Sort.Direction.ASC, "id");
-		return Lists.newArrayList(hallOptionRepository.findAll(sort));
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public List<HallOption> findAll() {
+        Sort sort = new Sort(Sort.Direction.ASC, "id");
+        return Lists.newArrayList(hallOptionRepository.findAll(sort));
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public HallOption findById(Long hallOptionId) {
-		return hallOptionRepository.findOne(hallOptionId);
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public HallOption findById(Long hallOptionId) {
+        return hallOptionRepository.findOne(hallOptionId);
+    }
 
-	@Override
-	public HallOption save(HallOption hallOption) {
-		return hallOptionRepository.save(hallOption);
-	}
+    @Override
+    public HallOption save(HallOption hallOption) {
+        return hallOptionRepository.save(hallOption);
+    }
 
-	@Override
-	public boolean deleteById(long hallOptionId) {
-		HallOption hallOption = hallOptionRepository.findOne(hallOptionId);
+    @Override
+    public boolean deleteById(long hallOptionId) {
+        HallOption hallOption = hallOptionRepository.findOne(hallOptionId);
 
-		if (hallOption != null) {
-			return delete(hallOption);
-		}
+        if (hallOption != null) {
+            return delete(hallOption);
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public boolean delete(HallOption hallOption) {
-		if (hallOption.canBeDeleted()) {
-			hallOptionRepository.delete(hallOption);
+    @Override
+    public boolean delete(HallOption hallOption) {
+        if (hallOption.canBeDeleted()) {
+            hallOptionRepository.delete(hallOption);
 
-			return true;
-		}
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public List<HallOption> findByIds(List<Long> hallOptionIds) {
-		return hallOptionRepository.findByIdIn(hallOptionIds);
-	}
+    @Override
+    public List<HallOption> findByIds(List<Long> hallOptionIds) {
+        return hallOptionRepository.findByIdIn(hallOptionIds);
+    }
 
-	@Override
-	public boolean hasHallReservations(HallOption hallOption) {		
-		Query query = em.createQuery(
-				"SELECT 1 FROM HallReservation hallReservation WHERE hallReservation.hallOption.id = :hallOptionID");
+    @Override
+    public boolean hasHallReservations(HallOption hallOption) {
+        Query query = em.createQuery(
+                "SELECT 1 FROM HallReservation hallReservation WHERE hallReservation.hallOption.id = :hallOptionID");
 
-		query.setParameter("hallOptionID", hallOption.getId());
-		
-		return !query.getResultList().isEmpty();
-	}
+        query.setParameter("hallOptionID", hallOption.getId());
+
+        return !query.getResultList().isEmpty();
+    }
 
 }

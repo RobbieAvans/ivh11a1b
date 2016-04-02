@@ -38,7 +38,6 @@ import lombok.ToString;
  * 
  * @author Tom GIesbergen
  */
-
 @Configurable // Needed to autowire HallReservationService and hallService
 @Entity
 @Getter
@@ -47,25 +46,25 @@ import lombok.ToString;
 public abstract class HallReservation extends DomainObject {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Transient
     @JsonIgnore
     private HallReservationPriceStrategy strategy;
-    
+
     @Transient
     @Autowired
     private HallReservationService hallReservationService;
-    
+
     @Transient
     @Autowired
     private HallService hallService;
-    
+
     private String description;
 
     @Enumerated(EnumType.STRING)
     private HallReservationState state;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
     private Customer customer;
 
     @ManyToOne
@@ -73,7 +72,7 @@ public abstract class HallReservation extends DomainObject {
 
     @Transient
     private List<Observer<HallReservation>> observers = new ArrayList<>();
-    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hallReservation", orphanRemoval = true)
     private List<PartOfDay> partOfDays = new ArrayList<>();
 
@@ -86,9 +85,9 @@ public abstract class HallReservation extends DomainObject {
     public void addObservers() {
         addObserver(Mailer.getInstance());
     }
-    
+
     public void addObserver(Observer<HallReservation> observer) {
-        if (!observers.contains(observer)){
+        if (!observers.contains(observer)) {
             observers.add(observer);
         }
     }
@@ -101,7 +100,7 @@ public abstract class HallReservation extends DomainObject {
     public List<PartOfDay> getPartOfDays() {
         return PartOfDay.orderListAsc(partOfDays);
     }
-    
+
     public void notifyAllObservers() {
         for (Observer<HallReservation> observer : observers) {
             observer.notify(this);
@@ -115,7 +114,7 @@ public abstract class HallReservation extends DomainObject {
 
     public void confirm() throws StateException {
         state.confirm(this);
-     }
+    }
 
     public void pay() throws StateException {
         state.pay(this);
@@ -128,7 +127,7 @@ public abstract class HallReservation extends DomainObject {
     public void undo() throws StateException {
         state.undo(this);
     }
-    
+
     @Transient
     /**
      * This method should only be called on the last method in the decorater.
@@ -144,7 +143,7 @@ public abstract class HallReservation extends DomainObject {
     public double getPriceExVat() {
         return strategy.calculateExVat(this);
     }
-    
+
     @Transient
     public List<HallOption> getHallOptions() {
         return new ArrayList<>();
@@ -156,51 +155,54 @@ public abstract class HallReservation extends DomainObject {
         hall = null;
         partOfDays.clear();
     }
-    
+
     /**
-     * This method is necessary because we want to be able to delete a reservation
-     * from a hallReservationState. And it is not possible to autowire the service
-     * into the state class because the state class is created with new. Also 
-     * aspectj weaving is not possible because the states are enum?
+     * This method is necessary because we want to be able to delete a
+     * reservation from a hallReservationState. And it is not possible to
+     * autowire the service into the state class because the state class is
+     * created with new. Also aspectj weaving is not possible because the states
+     * are enum?
      * 
-     * https://eclipse.org/aspectj/doc/released/adk15notebook/enums-in-aspectj5.html
-     * http://www.nurkiewicz.com/2009/10/ddd-in-spring-made-easy-with-aspectj.html
+     * https://eclipse.org/aspectj/doc/released/adk15notebook/enums-in-aspectj5.
+     * html
+     * http://www.nurkiewicz.com/2009/10/ddd-in-spring-made-easy-with-aspectj.
+     * html
      * 
      */
     public void delete() {
         hallReservationService.delete(this);
     }
-    
+
     /**
-     * Same as delete method. We want to be able to save the reservation from a state class.
+     * Same as delete method. We want to be able to save the reservation from a
+     * state class.
      */
     public void save() {
-		//hall.touchHallReservations();
-		hallService.save(hall);
+        hallService.save(hall);
     }
-    
+
     /**
-     * Should return whether the reservation is active or not. e.g. is in
-     * the future and has not the CancelledState
+     * Should return whether the reservation is active or not. e.g. is in the
+     * future and has not the CancelledState
      * 
      * @return
      */
     public boolean isActive() {
         return !getState().equals(HallReservationState.CANCELLED) && (getEndTime().after(new Date()));
     }
-    
+
     @Transient
     public Date getStartTime() {
         return getPartOfDays().get(0).getStartTime();
     }
-    
+
     @Transient
     public Date getEndTime() {
-        List<PartOfDay> partOfDays = getPartOfDays();
-        return partOfDays.get(partOfDays.size() - 1).getEndTime();
+        return getPartOfDays().get(getPartOfDays().size() - 1).getEndTime();
     }
-    
+
     public boolean canBeModified() {
-        return !getState().equals(HallReservationState.FINAL) && !getState().equals(HallReservationState.PAID) && getStartTime().after(new Date());
+        return !getState().equals(HallReservationState.FINAL) && !getState().equals(HallReservationState.PAID)
+                && getStartTime().after(new Date());
     }
 }

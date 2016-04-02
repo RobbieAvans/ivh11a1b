@@ -155,7 +155,6 @@ public class RestaurantPopulatorServiceImpl implements RestaurantPopulatorServic
         reservation.addPartOfDay(factory.makePartOfDay("evening", new Date()));
 
         hall.addReservation(reservation);
-        //hallRepository.save(hall);
         
         // Create manager
         Manager manager = new Manager();

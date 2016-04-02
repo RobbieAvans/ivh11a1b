@@ -24,13 +24,13 @@ public class PartOfDayServiceImpl implements PartOfDayService{
   
     @Override
     public List<PartOfDay> findByWeekAndHall(int hallId, int weekNr) {
-        List<PartOfDay> PartOfDays = new ArrayList<>();
+        List<PartOfDay> partOfDays = new ArrayList<>();
         for (PartOfDay partOfDay : partOfDayRepository.findAll()){
             if(partOfDay.getHallReservation().getHall().getId() == hallId && Integer.parseInt(new SimpleDateFormat("w").format(partOfDay.getStartTime())) == weekNr){
-                PartOfDays.add(partOfDay);
+                partOfDays.add(partOfDay);
             }
         }
-        return PartOfDays;
+        return partOfDays;
     }
     
     @Override

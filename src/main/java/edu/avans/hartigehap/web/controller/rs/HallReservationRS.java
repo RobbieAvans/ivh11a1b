@@ -68,8 +68,9 @@ public class HallReservationRS extends BaseRS {
             // Create the HallReservation
             HallReservation reservation = new ConcreteHallReservation();
             // Decorate it with hallOptions
-            while (hallOptionsIterator.hasNext())
+            while (hallOptionsIterator.hasNext()) {
                 reservation = new HallReservationOption(reservation, hallOptionsIterator.next());
+            }
 
             reservation.setDescription(hallReservationRequest.getDescription());
             if (auth.getRole() == Manager.ROLE) {
@@ -80,8 +81,9 @@ public class HallReservationRS extends BaseRS {
                 reservation.setCustomer(customerService.findBySessionID(auth.getSessionID()));
             }
             // Add PartOfDays
-            for (PartOfDay partOfDay : hallReservationRequest.getPartOfDaysObjects())
+            for (PartOfDay partOfDay : hallReservationRequest.getPartOfDaysObjects()){
                 reservation.addPartOfDay(partOfDay);
+            }
             hall.addReservation(reservation);
             hallService.save(hall);
             httpResponse.setStatus(HttpStatus.CREATED.value());

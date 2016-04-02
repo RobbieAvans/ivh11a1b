@@ -51,7 +51,7 @@ public class HallReservationSeviceImpl implements HallReservationService {
     }
 
     @Override
-    public void delete(HallReservation hallReservation) {    	
+    public void delete(HallReservation hallReservation) {
         hallReservationRepository.delete(hallReservation);
     }
 
@@ -64,7 +64,7 @@ public class HallReservationSeviceImpl implements HallReservationService {
         if (!hallReservationPointer.canBeModified()) {
             throw new InvalidJsonRequestException("hallreservation_cannot_be_changed");
         }
-        
+
         // Get the hall where we will save it on
         Hall hall = hallReservationRequest.getHallObject();
 
@@ -139,7 +139,7 @@ public class HallReservationSeviceImpl implements HallReservationService {
         // Set other
         hallReservationPointer.setDescription(hallReservationRequest.getDescription());
         hallReservationPointer.setCustomer(hallReservationRequest.getCustomerObject());
-        
+
         // Add partOfDays
         for (PartOfDay partOfDay : hallReservationRequest.getPartOfDaysObjects()) {
             hallReservationPointer.addPartOfDay(partOfDay);

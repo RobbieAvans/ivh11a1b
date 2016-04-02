@@ -15,7 +15,7 @@ public interface CustomerService {
 
     Customer findByFirstNameAndLastName(String firstName, String lastName);
     
-    Customer findByEmail(String Email);
+    Customer findByEmail(String email);
     
     Customer findBySessionID(String sessionID);
 
