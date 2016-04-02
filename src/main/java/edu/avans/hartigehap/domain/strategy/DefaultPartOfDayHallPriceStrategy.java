@@ -6,13 +6,13 @@ import edu.avans.hartigehap.domain.PartOfDay;
 
 public class DefaultPartOfDayHallPriceStrategy implements PartOfDayHallPriceStrategy {
     private static final double VAT = 1.21;
-    private static final double DEFEALTPRICE = 1;
+    private static final double DEFAULTPRICE = 1;
     private static final double OTHERPRICE = 1.5;
 
     @Override
     public double calculateExVat(Hall hall, PartOfDay partOfDay) {
         double price = hall.getBasePrice();
-        double priceFactor = DEFEALTPRICE;
+        double priceFactor = DEFAULTPRICE;
 
         // Evening is more expensive
         if (partOfDay instanceof Evening) {
@@ -28,5 +28,4 @@ public class DefaultPartOfDayHallPriceStrategy implements PartOfDayHallPriceStra
     public double calculateInVat(Hall hall, PartOfDay partOfDay) {
         return calculateExVat(hall, partOfDay) * VAT;
     }
-
 }

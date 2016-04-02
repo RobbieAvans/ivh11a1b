@@ -64,8 +64,9 @@ public class HallReservationAPITest {
     @Before
     public void setUp() {
         Mockito.reset(hallReservationServiceMock);
+        Mockito.reset(customerServiceMock);
+        Mockito.reset(managerServiceMock);
         
-        // For every test we want to be a manager
         Manager manager = new Manager();
         manager.setSessionID(MANAGER_SESSION_ID);
         
